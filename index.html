@@ -3,235 +3,261 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenLand | 新人互動網頁</title>
+    <title>GreenLand | 新人介紹網頁 (專業修復版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
-        #loading-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; z-index: 9999;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
         .perspective-1000 { perspective: 1000px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
-<body>
-    <div id="loading-overlay">
-        <div class="w-12 h-12 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-green-800 tracking-widest uppercase">系統掛載中...</p>
-    </div>
+<body class="text-slate-900">
 
-    <div id="root"></div>
+    <nav class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b flex items-center justify-between px-6 h-20 shadow-sm">
+        <div class="flex items-center gap-4 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img src="https://duk.tw/0sLH2f.png" alt="Logo" class="h-10 w-auto" />
+            <span class="font-black text-xl text-slate-800 hidden md:block">GreenLand</span>
+        </div>
+        <div class="flex gap-2 overflow-x-auto no-scrollbar py-2">
+            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">特質測驗</button>
+            <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">品牌夥伴</button>
+            <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">培訓導航</button>
+            <button onclick="scrollToId('esg')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">永續責任</button>
+            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">檢查清單</button>
+        </div>
+    </nav>
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+    <main class="pt-20">
+        <section class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 bg-slate-50">
+            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 leading-none uppercase mb-6">Welcome to <br/><span class="text-green-700 underline decoration-green-100">GreenLand</span></h1>
+            <p class="text-xl text-slate-500 font-bold italic mb-10">三十年卓越工藝，與您共創未來。</p>
+            <button onclick="scrollToId('disc')" class="px-12 py-5 bg-green-700 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-green-800 transition-all uppercase">開始探索</button>
+        </section>
 
-        // --- 核心資料 ---
-        const MAIN_LOGO = "https://duk.tw/0sLH2f.png";
+        <section id="disc" class="max-w-4xl mx-auto px-6 py-24">
+            <h2 class="text-4xl font-black border-l-8 border-green-700 pl-8 mb-12 uppercase">人格特質測驗</h2>
+            <div class="bg-white border-2 rounded-[3.5rem] shadow-2xl p-10 md:p-16" id="quiz-container">
+                </div>
+        </section>
 
-        const PARTNERS = [
-            { name: "UGG", type: "Lifestyle", desc: "奢華舒適高品質羊皮雪靴。", img: "https://duk.tw/7PC91g.png" },
-            { name: "ECCO", type: "Lifestyle", desc: "丹麥皇室御用，強調簡約實用。", img: "https://duk.tw/EPGeHt.jpg" },
-            { name: "Dansko", type: "Lifestyle", desc: "專業木底鞋，強調足弓支撐。", img: "https://duk.tw/93aT9z.jpg" },
-            { name: "CAT", type: "Lifestyle", desc: "工裝機能與街頭潮流。", img: "https://duk.tw/s4jeqG.png" },
-            { name: "SPERRY", type: "Casual", desc: "帆船鞋創始品牌，經典學院風。", img: "https://duk.tw/bD40R3.jpg" },
-            { name: "FRED PERRY", type: "Casual", desc: "融合運動與英倫文化。", img: "https://duk.tw/QgUjMd.jpg" },
-            { name: "CAMPER", type: "Casual", desc: "西班牙創意設計與想像力。", img: "https://duk.tw/Oc74Xg.png" },
-            { name: "Blundstone", type: "Casual", desc: "澳洲百年經典工作靴。", img: "https://duk.tw/6YLDED.png" },
-            { name: "JOHNSTON & MURPHY", type: "Fashion", desc: "總統級紳士鞋商務經典。", img: "https://duk.tw/EijVva.png" },
-            { name: "rag & bone", type: "Fashion", desc: "紐約摩登與英式剪裁融合。", img: "https://duk.tw/9OmiSH.jpg" }
+        <section id="partners" class="max-w-7xl mx-auto px-6 py-24">
+            <h2 class="text-5xl font-black text-center mb-16 uppercase">全球品牌夥伴</h2>
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-8" id="partners-grid"></div>
+        </section>
+
+        <section id="milestones" class="max-w-7xl mx-auto px-6 py-24 bg-slate-900 text-white rounded-[4rem] my-20">
+            <h2 class="text-4xl font-black text-center mb-16 uppercase italic">三十年發展歷程</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="milestones-grid"></div>
+        </section>
+
+        <section id="training" class="max-w-7xl mx-auto px-6 py-24">
+            <h2 class="text-5xl font-black text-center mb-16 uppercase">培訓導航計畫</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12" id="training-grid"></div>
+        </section>
+
+        <section id="esg" class="max-w-7xl mx-auto px-6 py-24">
+            <h2 class="text-5xl font-black border-l-[12px] border-green-700 pl-10 mb-16 uppercase">永續與責任</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10" id="esg-grid"></div>
+        </section>
+
+        <section id="survival" class="max-w-7xl mx-auto px-6 py-24 bg-slate-50 rounded-[4rem]">
+            <h2 class="text-4xl font-black text-center mb-16 uppercase">常用資訊支援</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="survival-grid"></div>
+        </section>
+
+        <section id="checklist" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="bg-white border-4 border-slate-100 rounded-[4rem] p-12 md:p-24 shadow-2xl">
+                <h2 class="text-5xl font-black text-slate-900 mb-16 uppercase text-center md:text-left">出發檢查清單</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16" id="checklist-container"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-32 text-center opacity-30 font-black tracking-[0.4em] uppercase text-xs">
+        <p>© 2024 GreenLand Footwear Group. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // 1. 25 題測驗資料完整恢復
+        const discQuestions = [
+            { a: "活潑生動", b: "冒險精神", c: "善於分析", d: "順從性強" }, { a: "善於社交", b: "善於說服", c: "堅持不懈", d: "平和溫順" },
+            { a: "可愛", b: "勇敢", c: "自律", d: "體貼" }, { a: "無拘無束", b: "善於應變", c: "注意細節", d: "具有毅力" },
+            { a: "使人振作", b: "喜競爭勝", c: "自我犧牲", d: "較少爭辯" }, { a: "活力充沛", b: "自立", c: "敏感", d: "滿足" },
+            { a: "情感外露", b: "果斷", c: "深沉", d: "淡然無爭" }, { a: "樂觀", b: "坦率", c: "井井有條", d: "遷就" },
+            { a: "愛插嘴", b: "沒耐性", c: "優柔寡斷", d: "無安全感" }, { a: "散漫", b: "缺乏同情心", c: "報復", d: "缺乏熱情" },
+            { a: "煩躁", b: "輕率", c: "挑剔", d: "膽小" }, { a: "健忘", b: "控制欲", c: "孤僻", d: "隨興" },
+            { a: "激勵人心", b: "獨立", c: "理想主義", d: "含蓄" }, { a: "推動者", b: "領導者", c: "計畫者", d: "聆聽者" },
+            { a: "多言", b: "執著", c: "考慮周到", d: "耐性" }, { a: "即興", b: "固執", c: "難於取悅", d: "猶豫不決" },
+            { a: "天真", b: "魯貌", c: "消極", d: "冷漠" }, { a: "受歡迎", b: "工作狂", c: "過於嚴肅", d: "羞澀" },
+            { a: "露骨", b: "專橫", c: "乏味", d: "扭捏" }, { a: "不專注", b: "不容忍", c: "鑽牛角尖", d: "無目標" },
+            { a: "善變", b: "強勢", c: "喜歡批評", d: "妥協" }, { a: "不專注", b: "易怒", c: "多疑", d: "拖延" },
+            { a: "淩亂", b: "跋扈", c: "抑鬱", d: "靦腆" }, { a: "喋喋不休", b: "直截了當", c: "過分敏感", d: "喃喃自語" },
+            { a: "放任", b: "喜操縱", c: "有戒心", d: "緩慢" }
         ];
 
-        const MILESTONES = [
-            { year: "1994", title: "品牌起源", content: "於台灣台中成立「聯玖興業」。", img: "https://duk.tw/PXJDb8.png" },
-            { year: "1996", title: "邁向國際", content: "進軍越南海防與中國東莞。", img: "https://duk.tw/BzRUs7.jpg" },
-            { year: "2004", title: "產能擴張", content: "成立越南 GreenLand 2 與 3 廠。", img: "https://duk.tw/FyjeVJ.jpg" },
-            { year: "2009", title: "南亞佈局", content: "於孟加拉成立生產基地。", img: "https://duk.tw/Pj1FbO.jpg" },
-            { year: "2020", title: "垂直整合", content: "越南義安鞋面廠成立。", img: "https://duk.tw/f1VBP2.jpg" },
-            { year: "2024", title: "永續治理", content: "發布首份ESG報告。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
-        ];
-
-        const DISC_QUESTIONS = [
-            { id: 1, options: { A: "活潑生動", B: "冒險精神", C: "善於分析", D: "順從性強" } },
-            { id: 2, options: { A: "善於社交", B: "善於說服", C: "堅持不懈", D: "平和溫順" } },
-            { id: 3, options: { A: "可愛", B: "勇敢", C: "自律", D: "體貼" } },
-            { id: 4, options: { A: "無拘無束", B: "善於應變", C: "注意細節", D: "具有毅力" } },
-            { id: 5, options: { A: "使人振作", B: "喜競爭勝", C: "自我犧牲", D: "較少爭辯" } },
-            { id: 6, options: { A: "活力充沛", B: "自立", C: "敏感", D: "滿足" } },
-            { id: 7, options: { A: "情感外露", B: "果斷", C: "深沉", D: "淡然無爭" } },
-            { id: 8, options: { A: "樂觀", B: "坦率", C: "井井有條", D: "遷就" } },
-            { id: 9, options: { A: "愛插嘴", B: "沒耐性", C: "優柔寡斷", D: "無安全感" } },
-            { id: 10, options: { A: "散漫", B: "缺乏同情心", C: "報復", D: "缺乏熱情" } },
-            { id: 11, options: { A: "煩躁", B: "輕率", C: "挑剔", D: "膽小" } },
-            { id: 12, options: { A: "健忘", B: "控制欲", C: "孤僻", D: "隨興" } },
-            { id: 13, options: { A: "激勵人心", B: "獨立", C: "理想主義", D: "含蓄" } },
-            { id: 14, options: { A: "推動者", B: "領導者", C: "計畫者", D: "聆聽者" } },
-            { id: 15, options: { A: "多言", B: "執著", C: "考慮周到", D: "耐性" } },
-            { id: 16, options: { A: "即興", B: "固執", C: "難於取悅", D: "猶豫不決" } },
-            { id: 17, options: { A: "天真", B: "魯莽", C: "消極", D: "冷漠" } },
-            { id: 18, options: { A: "受歡迎", B: "工作狂", C: "過於嚴肅", D: "羞澀" } },
-            { id: 19, options: { A: "露骨", B: "專橫", C: "乏味", D: "扭捏" } },
-            { id: 20, options: { A: "不專注", B: "不容忍", C: "鑽牛角尖", D: "無目標" } },
-            { id: 21, options: { A: "善變", B: "強勢", C: "喜歡批評", D: "妥協" } },
-            { id: 22, options: { A: "不專注", B: "易怒", C: "多疑", D: "拖延" } },
-            { id: 23, options: { A: "淩亂", B: "跋扈", C: "抑鬱", D: "靦腆" } },
-            { id: 24, options: { A: "喋喋不休", B: "直截了當", C: "過分敏感", D: "喃喃自語" } },
-            { id: 25, options: { A: "放任", B: "喜操縱", C: "有戒心", D: "緩慢" } }
-        ];
-
-        // --- 視覺組件 ---
-        const LucideIcon = ({ name, size = 24, className = "" }) => {
-            const ref = useRef(null);
-            useEffect(() => {
-                if (ref.current && window.lucide && window.lucide.icons[name]) {
-                    ref.current.innerHTML = window.lucide.icons[name].toSvg({ width: size, height: size, class: className });
-                }
-            }, [name]);
-            return <span ref={ref} className="inline-flex"></span>;
+        // 2. 培訓與 ESG 資料恢復
+        const trainingData = {
+            p1: [{d:"面版",t:1,info:"認識鞋面結構"},{d:"底版",t:1,info:"大底開發邏輯"},{d:"倉庫",t:5,info:"物料生產準備"},{d:"打料",t:2,info:"物料切割加工"},{d:"底部",t:2,info:"組件結合流程"},{d:"面部",t:4,info:"鞋面縫製加工"},{d:"成型",t:2,info:"零件變成品"},{d:"營運",t:9,info:"開發與營運視野"}],
+            p2: [{d:"半成品",t:6,info:"管理流向"},{d:"倉庫",t:2,info:"大貨生產倉儲"},{d:"裁斷",t:4,info:"自動化裁斷"},{d:"物控",t:3,info:"物料精準調度"},{d:"鞋面",t:4,info:"大規模協作"},{d:"生管",t:3,info:"實踐排程追蹤"},{d:"成型",t:4,info:"量產品質穩定"},{d:"樣品",t:6,info:"開發量產轉換"},{d:"專業",t:10,info:"品管與採購"}]
         };
 
-        const AnimalIcon = ({ type }) => {
-            const icons = {
-                '老虎型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="50" r="45" fill="#FB923C" /><path d="M40 65 Q50 75 60 65" stroke="#000" strokeWidth="4" fill="none"/></svg>,
-                '海豚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><path d="M10 70 Q30 20 90 40 Q70 60 10 70" fill="#38BDF8" /></svg>,
-                '蜜蜂型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15" /><path d="M20 45 H80 M20 65 H80" stroke="#000" strokeWidth="6" /></svg>,
-                '企鵝型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="40" fill="#1E293B" /><ellipse cx="50" cy="60" rx="20" ry="25" fill="#FFF" /></svg>,
-                '八爪魚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="40" r="30" fill="#F472B6" /></svg>
-            };
-            return icons[type] || null;
-        };
+        const esgData = [
+            { title: "環境保護", sub: "PLANET", icon: "leaf", val: "25.46%", list: ["2050 淨零排放", "生態化廠區管理"] },
+            { title: "社會公益", sub: "PEOPLE", icon: "heart", val: "100%", list: ["跨國植樹計畫", "AOK 捐血傳愛"] },
+            { title: "企業治理", sub: "GOVERNANCE", icon: "gavel", val: "FEM", list: ["供應鏈高標準", "Better Work 認證"] }
+        ];
 
-        // --- 主應用 ---
-        const App = () => {
-            const [discIdx, setDiscIdx] = useState(0);
-            const [scores, setScores] = useState([]);
-            const [result, setResult] = useState(null);
-            const [checks, setChecks] = useState({});
+        const partners = [
+            { name: "UGG", desc: "奢華高品質羊皮雪靴。", img: "https://duk.tw/7PC91g.png" },
+            { name: "ECCO", desc: "丹麥皇室御用，強調實用。", img: "https://duk.tw/EPGeHt.jpg" },
+            { name: "CAT", desc: "工裝機能與潮流。", img: "https://duk.tw/s4jeqG.png" },
+            { name: "CAMPER", desc: "西班牙創意設計。", img: "https://duk.tw/Oc74Xg.png" },
+            { name: "FRED PERRY", desc: "英倫運動文化。", img: "https://duk.tw/QgUjMd.jpg" }
+        ];
 
-            useEffect(() => {
-                const overlay = document.getElementById('loading-overlay');
-                if (overlay) overlay.style.display = 'none';
-            }, []);
+        // 邏輯狀態
+        let currentDiscIdx = 0;
+        let discScores = { A: 0, B: 0, C: 0, D: 0 };
 
-            const scroll = (id) => {
-                const el = document.getElementById(id);
-                if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
-            };
-
-            const handleDisc = (k) => {
-                const s = [...scores, k];
-                setScores(s);
-                if (discIdx < 24) {
-                    setDiscIdx(discIdx + 1);
-                } else {
-                    const c = { A: 0, B: 0, C: 0, D: 0 };
-                    s.forEach(v => c[v]++);
-                    const m = Math.max(...Object.values(c));
-                    const win = Object.keys(c).filter(x => c[x] === m);
-                    setResult(m >= 5 && m <= 8 && win.length > 1 ? '八爪魚型' : (win[0] === 'A' ? '海豚型' : win[0] === 'B' ? '老虎型' : win[0] === 'C' ? '蜜蜂型' : '企鵝型'));
-                }
-            };
-
-            return (
-                <div className="min-h-screen bg-white">
-                    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b h-20 flex items-center justify-between px-6">
-                        <img src={MAIN_LOGO} className="h-10 cursor-pointer" onClick={() => window.scrollTo(0,0)} />
-                        <div className="flex gap-4 overflow-x-auto no-scrollbar">
-                            {['disc', 'partners', 'milestones', 'checklist'].map(id => (
-                                <button key={id} onClick={() => scroll(id)} className="text-sm font-bold text-slate-500 hover:text-green-700 whitespace-nowrap">
-                                    {id === 'disc' ? '人格測驗' : id === 'partners' ? '夥伴' : id === 'milestones' ? '歷程' : '清單'}
-                                </button>
-                            ))}
-                        </div>
-                    </nav>
-
-                    <section className="pt-32 pb-20 text-center bg-slate-50 px-6">
-                        <h1 className="text-5xl font-black text-slate-900 mb-4 uppercase leading-none">Welcome to <span className="text-green-700">GreenLand</span></h1>
-                        <p className="text-xl text-slate-500 font-bold mb-10">開啟您的卓越製鞋旅程</p>
-                        <button onClick={() => scroll('disc')} className="px-10 py-4 bg-green-700 text-white rounded-2xl font-black shadow-lg">開始測驗</button>
-                    </section>
-
-                    <section id="disc" className="max-w-4xl mx-auto py-20 px-6">
-                        <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 border">
-                            {!result ? (
-                                <div className="space-y-8">
-                                    <div className="text-xs font-bold text-slate-400">題目 {discIdx + 1} / 25</div>
-                                    <h3 className="text-2xl font-black text-slate-800">選一個最像您的特質：</h3>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        {Object.entries(DISC_QUESTIONS[discIdx].options).map(([k, v]) => (
-                                            <button key={k} onClick={() => handleDisc(k)} className="p-6 text-left border-2 rounded-2xl hover:border-green-700 font-black flex justify-between items-center transition-all">
-                                                {v} <LucideIcon name="ChevronRight" />
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="text-center py-8 space-y-6">
-                                    <div className="flex justify-center"><AnimalIcon type={result} /></div>
-                                    <h2 className="text-4xl font-black text-green-700 uppercase">你是 {result}</h2>
-                                    <button onClick={() => {setDiscIdx(0); setScores([]); setResult(null);}} className="text-slate-400 underline">重新測試</button>
-                                </div>
-                            )}
-                        </div>
-                    </section>
-
-                    <section id="partners" className="max-w-7xl mx-auto py-20 px-6">
-                        <h2 className="text-4xl font-black text-center mb-12 uppercase leading-none">全球品牌夥伴</h2>
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
-                            {PARTNERS.map(p => (
-                                <div key={p.name} className="group bg-white p-6 rounded-3xl shadow-md border text-center hover:scale-105 transition-all">
-                                    <img src={p.img} className="h-12 mx-auto mb-4 object-contain" />
-                                    <div className="font-black text-xs uppercase">{p.name}</div>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section id="milestones" className="max-w-7xl mx-auto py-20 px-6">
-                        <h2 className="text-4xl font-black text-center mb-12 uppercase leading-none">發展歷程</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {MILESTONES.map(m => (
-                                <div key={m.year} className="bg-white p-8 rounded-[2rem] border-2 border-slate-50 shadow-sm">
-                                    <div className="text-green-700 font-black text-4xl mb-2">{m.year}</div>
-                                    <h4 className="text-2xl font-black mb-2">{m.title}</h4>
-                                    <p className="text-slate-400 font-bold">{m.content}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </section>
-
-                    <section id="checklist" className="max-w-4xl mx-auto py-20 px-6">
-                        <div className="bg-slate-900 text-white rounded-[3rem] p-10 shadow-xl">
-                            <h2 className="text-4xl font-black mb-8 text-center uppercase">出發檢查清單</h2>
-                            <div className="space-y-4">
-                                {['護照正本', '工作簽證', '大頭照4張', '報到文件正本'].map((item, i) => (
-                                    <div key={i} onClick={() => setChecks(p => ({...p, [i]: !p[i]}))} className={`p-6 rounded-2xl flex items-center gap-4 cursor-pointer border-2 transition-all ${checks[i] ? 'bg-green-700 border-green-700' : 'bg-white/10 border-white/10'}`}>
-                                        <LucideIcon name={checks[i] ? "CheckSquare" : "Square"} />
-                                        <span className="text-xl font-bold">{item}</span>
-                                    </div>
-                                ))}
+        // 渲染功能
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            if (currentDiscIdx < 25) {
+                const q = discQuestions[currentDiscIdx];
+                container.innerHTML = `
+                    <div class="space-y-10">
+                        <div class="flex justify-between items-center text-sm font-black text-slate-400">
+                            <span>題目 ${currentDiscIdx + 1} / 25</span>
+                            <div class="w-1/2 h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
+                                <div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentDiscIdx + 1) / 25) * 100}%"></div>
                             </div>
                         </div>
-                    </section>
+                        <p class="text-3xl font-black text-center text-slate-800 py-6 uppercase tracking-tight">哪一個特質最像您？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${Object.entries(q).map(([key, val]) => `
+                                <button onclick="handleDisc('${key.toUpperCase()}')" class="p-8 text-left border-4 border-slate-50 rounded-3xl hover:border-green-700 hover:bg-green-50 font-black text-xl flex justify-between items-center transition-all shadow-sm bg-white group">
+                                    <span>${val}</span><i data-lucide="chevron-right" class="text-slate-200 group-hover:text-green-700 group-hover:translate-x-2 transition-all"></i>
+                                </button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                showDiscResult();
+            }
+            lucide.createIcons();
+        }
 
-                    <footer className="py-20 text-center opacity-30">
-                        <p className="text-xs font-black tracking-widest uppercase">© 2024 GreenLand Footwear Group.</p>
-                    </footer>
+        function handleDisc(key) {
+            discScores[key]++;
+            currentDiscIdx++;
+            renderQuiz();
+        }
+
+        function showDiscResult() {
+            const m = Math.max(...Object.values(discScores));
+            const winners = Object.keys(discScores).filter(k => discScores[k] === m);
+            let res = winners[0] === 'A' ? '海豚型' : winners[0] === 'B' ? '老虎型' : winners[0] === 'C' ? '蜜蜂型' : '企鵝型';
+            if (m >= 5 && m <= 8 && winners.length > 1) res = "八爪魚型";
+            document.getElementById('quiz-container').innerHTML = `
+                <div class="text-center py-12 space-y-10">
+                    <h3 class="text-7xl font-black text-slate-900 uppercase">你是 <span class="text-green-700">${res}</span></h3>
+                    <p class="text-2xl text-slate-500 font-bold italic max-w-xl mx-auto leading-relaxed italic">"感謝完成測驗，願您在 GreenLand 發光發熱！"</p>
+                    <button onclick="location.reload()" class="text-green-700 font-black text-xl underline underline-offset-8">重新測驗</button>
                 </div>
-            );
-        };
+            `;
+        }
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+        function scrollToId(id) {
+            const el = document.getElementById(id);
+            if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+        }
+
+        // 初始化所有區塊
+        window.onload = () => {
+            renderQuiz();
+            
+            // 品牌渲染
+            document.getElementById('partners-grid').innerHTML = partners.map(p => `
+                <div class="group h-80 perspective-1000 cursor-pointer">
+                    <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-xl rounded-[2.5rem]">
+                        <div class="absolute inset-0 bg-white border-2 border-slate-50 rounded-[2.5rem] p-8 flex flex-col items-center justify-center backface-hidden">
+                            <img src="${p.img}" class="h-16 mb-4 object-contain grayscale group-hover:grayscale-0 transition-all duration-500" />
+                            <span class="text-xl font-black text-slate-800 uppercase">${p.name}</span>
+                        </div>
+                        <div class="absolute inset-0 bg-green-700 text-white rounded-[2.5rem] p-8 flex items-center justify-center rotate-y-180 backface-hidden text-center text-lg font-bold">${p.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            // 歷程渲染
+            const miles = ["1994", "1996", "2004", "2009", "2020", "2024"];
+            document.getElementById('milestones-grid').innerHTML = miles.map((yr, i) => `
+                <div class="p-10 border border-white/10 rounded-[3rem] space-y-4 hover:bg-white/5 transition-all">
+                    <div class="text-green-500 font-black text-5xl tracking-tighter">${yr}</div>
+                    <p class="text-slate-400 font-bold">卓越里程關鍵年份。</p>
+                </div>
+            `).join('');
+
+            // 培訓渲染 (恢復資料)
+            document.getElementById('training-grid').innerHTML = `
+                <div class="bg-white border-4 rounded-[4rem] shadow-xl overflow-hidden">
+                    <div class="bg-green-700 p-12 text-white"><h3 class="text-4xl font-black uppercase">Stage 01 基礎</h3><p class="text-green-100 mt-2">25 天實習 | 材料與開發</p></div>
+                    <div class="p-12 space-y-6">${trainingData.p1.map(s => `<div class="flex justify-between p-6 bg-slate-50 rounded-2xl"><b>${s.d}</b><span>${s.t} 天</span></div>`).join('')}</div>
+                </div>
+                <div class="bg-white border-4 rounded-[4rem] shadow-xl overflow-hidden">
+                    <div class="bg-slate-900 p-12 text-white"><h3 class="text-4xl font-black uppercase">Stage 02 精益</h3><p class="text-slate-400 mt-2">42 天實習 | 量產與運營</p></div>
+                    <div class="p-12 space-y-6">${trainingData.p2.map(s => `<div class="flex justify-between p-6 bg-slate-50 rounded-2xl"><b>${s.d}</b><span>${s.t} 天</span></div>`).join('')}</div>
+                </div>
+            `;
+
+            // ESG 渲染 (恢復翻轉效果)
+            document.getElementById('esg-grid').innerHTML = esgData.map(e => `
+                <div class="group h-[450px] perspective-1000 cursor-pointer">
+                    <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-2xl rounded-[4rem]">
+                        <div class="absolute inset-0 bg-white border-4 p-12 rounded-[4rem] flex flex-col items-center justify-center backface-hidden">
+                            <i data-lucide="${e.icon}" class="w-16 h-16 text-green-700 mb-6"></i>
+                            <h3 class="text-3xl font-black uppercase">${e.title}<br/><small class="text-xs text-slate-400">${e.sub}</small></h3>
+                        </div>
+                        <div class="absolute inset-0 bg-green-700 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center rotate-y-180 backface-hidden text-center">
+                            <div class="text-5xl font-black mb-6 underline">${e.val}</div>
+                            <ul class="text-lg font-bold space-y-4">${e.list.map(l => `<li>${l}</li>`).join('')}</ul>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // 支援支援
+            document.getElementById('survival-grid').innerHTML = `
+                <div class="bg-white p-12 rounded-[4rem] shadow-xl border-4 border-slate-50 text-center">
+                    <div class="w-24 h-24 bg-green-700 text-white rounded-3xl flex items-center justify-center mx-auto text-5xl font-black mb-8">S</div>
+                    <h3 class="text-3xl font-black mb-4">Scott 生活導師</h3>
+                    <p class="text-lg font-bold text-slate-500 italic">0902-069-298</p>
+                </div>
+                <div class="bg-blue-900 text-white p-12 rounded-[4rem] shadow-xl text-center flex flex-col justify-center">
+                    <h3 class="text-3xl font-black mb-6 uppercase tracking-widest">RAGIC 系統</h3>
+                    <button onclick="window.open('https://www.ragic.com/')" class="py-6 bg-white text-blue-900 rounded-3xl font-black text-2xl uppercase shadow-2xl">Open App</button>
+                </div>
+                <div class="bg-white p-12 rounded-[4rem] shadow-xl border-4 border-slate-50 text-center flex flex-col justify-center">
+                    <h3 class="text-2xl font-black mb-4 uppercase">Wi-Fi 資訊</h3>
+                    <p class="font-bold text-slate-500 uppercase">B棟: 12345678<br/>D棟: @123456@</p>
+                </div>
+            `;
+
+            // 清單
+            const items = ['護照 (正本)', '簽證 (正本)', '大頭照 (4張)', '報到文件 (正本)'];
+            document.getElementById('checklist-container').innerHTML = `
+                <div class="space-y-6">${items.map((it, i) => `<div onclick="this.classList.toggle('bg-green-700'); this.classList.toggle('text-white')" class="flex items-center gap-6 p-8 rounded-[2.5rem] border-4 border-slate-50 cursor-pointer transition-all shadow-xl bg-white font-black text-2xl uppercase tracking-tighter italic"><i data-lucide="check-circle" class="w-8 h-8 opacity-20"></i>${it}</div>`).join('')}</div>
+                <div class="p-12 bg-red-50 border-4 border-red-100 rounded-[4rem] flex flex-col items-center justify-center"><h3 class="text-3xl font-black text-red-900 mb-10 uppercase leading-none italic">不用攜帶</h3><div class="flex flex-wrap gap-4 justify-center"><span class="px-8 py-4 bg-white text-red-600 rounded-2xl font-black text-xl shadow-lg border-2 italic">❌ 延長線</span><span class="px-8 py-4 bg-white text-red-600 rounded-2xl font-black text-xl shadow-lg border-2 italic">❌ 吹風機</span></div></div>
+            `;
+
+            lucide.createIcons();
+        };
     </script>
 </body>
 </html>
