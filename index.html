@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenLand | 新人介紹網頁</title>
+    <title>GreenLand | 新人互動網頁</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -11,17 +11,17 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; }
+        body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: white; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
         }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
         .perspective-1000 { perspective: 1000px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
     </style>
 </head>
 <body>
@@ -57,7 +57,7 @@
             { year: "2004", title: "產能擴張", content: "成立越南 GreenLand 2 與 3 廠。", img: "https://duk.tw/FyjeVJ.jpg" },
             { year: "2009", title: "南亞佈局", content: "於孟加拉成立生產基地。", img: "https://duk.tw/Pj1FbO.jpg" },
             { year: "2020", title: "垂直整合", content: "越南義安鞋面廠成立。", img: "https://duk.tw/f1VBP2.jpg" },
-            { year: "2024", title: "永續治理", content: "發布首份獨立 ESG 報告。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
+            { year: "2024", title: "永續治理", content: "發布首份ESG報告。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
         ];
 
         const DISC_QUESTIONS = [
@@ -101,9 +101,9 @@
 
         const AnimalIcon = ({ type }) => {
             const icons = {
-                '老虎型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="50" r="45" fill="#FB923C" /><circle cx="35" cy="45" r="5" fill="#000" /><circle cx="65" cy="45" r="5" fill="#000" /><path d="M40 65 Q50 75 60 65" stroke="#000" strokeWidth="4" fill="none"/></svg>,
-                '海豚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><path d="M10 70 Q30 20 90 40 Q70 60 10 70" fill="#38BDF8" /><circle cx="65" cy="40" r="4" fill="#000" /></svg>,
-                '蜜蜂型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15" /><path d="M20 45 H80 M20 65 H80" stroke="#000" strokeWidth="6" fill="none" /></svg>,
+                '老虎型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="50" r="45" fill="#FB923C" /><path d="M40 65 Q50 75 60 65" stroke="#000" strokeWidth="4" fill="none"/></svg>,
+                '海豚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><path d="M10 70 Q30 20 90 40 Q70 60 10 70" fill="#38BDF8" /></svg>,
+                '蜜蜂型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15" /><path d="M20 45 H80 M20 65 H80" stroke="#000" strokeWidth="6" /></svg>,
                 '企鵝型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="40" fill="#1E293B" /><ellipse cx="50" cy="60" rx="20" ry="25" fill="#FFF" /></svg>,
                 '八爪魚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="40" r="30" fill="#F472B6" /></svg>
             };
@@ -143,39 +143,39 @@
 
             return (
                 <div className="min-h-screen bg-white">
-                    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b h-20 flex items-center justify-between px-6 shadow-sm">
+                    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b h-20 flex items-center justify-between px-6">
                         <img src={MAIN_LOGO} className="h-10 cursor-pointer" onClick={() => window.scrollTo(0,0)} />
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 overflow-x-auto no-scrollbar">
                             {['disc', 'partners', 'milestones', 'checklist'].map(id => (
-                                <button key={id} onClick={() => scroll(id)} className="text-sm font-bold text-slate-500 hover:text-green-700">
-                                    {id === 'disc' ? '特質' : id === 'partners' ? '品牌' : id === 'milestones' ? '歷程' : '清單'}
+                                <button key={id} onClick={() => scroll(id)} className="text-sm font-bold text-slate-500 hover:text-green-700 whitespace-nowrap">
+                                    {id === 'disc' ? '人格測驗' : id === 'partners' ? '夥伴' : id === 'milestones' ? '歷程' : '清單'}
                                 </button>
                             ))}
                         </div>
                     </nav>
 
-                    <section className="pt-40 pb-20 text-center px-6 bg-slate-50">
-                        <h1 className="text-6xl font-black text-slate-900 mb-4 uppercase">Welcome to <span className="text-green-700">GreenLand</span></h1>
-                        <p className="text-xl text-slate-500 font-bold mb-10 italic">開啟您的卓越製鞋旅程</p>
-                        <button onClick={() => scroll('disc')} className="px-12 py-4 bg-green-700 text-white rounded-2xl font-black shadow-lg">開始測驗</button>
+                    <section className="pt-32 pb-20 text-center bg-slate-50 px-6">
+                        <h1 className="text-5xl font-black text-slate-900 mb-4 uppercase leading-none">Welcome to <span className="text-green-700">GreenLand</span></h1>
+                        <p className="text-xl text-slate-500 font-bold mb-10">開啟您的卓越製鞋旅程</p>
+                        <button onClick={() => scroll('disc')} className="px-10 py-4 bg-green-700 text-white rounded-2xl font-black shadow-lg">開始測驗</button>
                     </section>
 
-                    <section id="disc" className="max-w-4xl mx-auto py-24 px-6">
-                        <div className="bg-white rounded-[3rem] shadow-2xl p-10 md:p-16 border">
+                    <section id="disc" className="max-w-4xl mx-auto py-20 px-6">
+                        <div className="bg-white rounded-[2.5rem] shadow-2xl p-8 border">
                             {!result ? (
                                 <div className="space-y-8">
-                                    <div className="text-xs font-bold text-slate-400">進度 {discIdx + 1} / 25</div>
-                                    <h3 className="text-2xl font-black text-slate-800">哪一個特質最像您？</h3>
+                                    <div className="text-xs font-bold text-slate-400">題目 {discIdx + 1} / 25</div>
+                                    <h3 className="text-2xl font-black text-slate-800">選一個最像您的特質：</h3>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         {Object.entries(DISC_QUESTIONS[discIdx].options).map(([k, v]) => (
-                                            <button key={k} onClick={() => handleDisc(k)} className="p-6 text-left border-2 rounded-2xl hover:border-green-700 font-black flex justify-between">
+                                            <button key={k} onClick={() => handleDisc(k)} className="p-6 text-left border-2 rounded-2xl hover:border-green-700 font-black flex justify-between items-center transition-all">
                                                 {v} <LucideIcon name="ChevronRight" />
                                             </button>
                                         ))}
                                     </div>
                                 </div>
                             ) : (
-                                <div className="text-center space-y-6">
+                                <div className="text-center py-8 space-y-6">
                                     <div className="flex justify-center"><AnimalIcon type={result} /></div>
                                     <h2 className="text-4xl font-black text-green-700 uppercase">你是 {result}</h2>
                                     <button onClick={() => {setDiscIdx(0); setScores([]); setResult(null);}} className="text-slate-400 underline">重新測試</button>
@@ -184,38 +184,38 @@
                         </div>
                     </section>
 
-                    <section id="partners" className="max-w-7xl mx-auto py-24 px-6">
-                        <h2 className="text-4xl font-black text-center mb-16 uppercase">全球品牌夥伴</h2>
+                    <section id="partners" className="max-w-7xl mx-auto py-20 px-6">
+                        <h2 className="text-4xl font-black text-center mb-12 uppercase leading-none">全球品牌夥伴</h2>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                             {PARTNERS.map(p => (
-                                <div key={p.name} className="bg-white p-6 rounded-3xl shadow-md border text-center hover:scale-105 transition-all">
+                                <div key={p.name} className="group bg-white p-6 rounded-3xl shadow-md border text-center hover:scale-105 transition-all">
                                     <img src={p.img} className="h-12 mx-auto mb-4 object-contain" />
-                                    <div className="font-black text-sm">{p.name}</div>
+                                    <div className="font-black text-xs uppercase">{p.name}</div>
                                 </div>
                             ))}
                         </div>
                     </section>
 
-                    <section id="milestones" className="max-w-7xl mx-auto py-24 px-6 bg-slate-900 text-white rounded-[4rem]">
-                        <h2 className="text-4xl font-black text-center mb-16 uppercase">發展里程碑</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <section id="milestones" className="max-w-7xl mx-auto py-20 px-6">
+                        <h2 className="text-4xl font-black text-center mb-12 uppercase leading-none">發展歷程</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {MILESTONES.map(m => (
-                                <div key={m.year} className="space-y-4 p-8 border border-white/10 rounded-3xl">
-                                    <div className="text-green-500 font-black text-4xl">{m.year}</div>
-                                    <h4 className="text-2xl font-black">{m.title}</h4>
+                                <div key={m.year} className="bg-white p-8 rounded-[2rem] border-2 border-slate-50 shadow-sm">
+                                    <div className="text-green-700 font-black text-4xl mb-2">{m.year}</div>
+                                    <h4 className="text-2xl font-black mb-2">{m.title}</h4>
                                     <p className="text-slate-400 font-bold">{m.content}</p>
                                 </div>
                             ))}
                         </div>
                     </section>
 
-                    <section id="checklist" className="max-w-4xl mx-auto py-24 px-6">
-                        <div className="bg-green-700 text-white rounded-[3rem] p-12 shadow-xl">
-                            <h2 className="text-4xl font-black mb-10 uppercase">出發檢查清單</h2>
+                    <section id="checklist" className="max-w-4xl mx-auto py-20 px-6">
+                        <div className="bg-slate-900 text-white rounded-[3rem] p-10 shadow-xl">
+                            <h2 className="text-4xl font-black mb-8 text-center uppercase">出發檢查清單</h2>
                             <div className="space-y-4">
                                 {['護照正本', '工作簽證', '大頭照4張', '報到文件正本'].map((item, i) => (
-                                    <div key={i} onClick={() => setChecks(p => ({...p, [i]: !p[i]}))} className={`p-6 rounded-2xl flex items-center gap-4 cursor-pointer border-2 transition-all ${checks[i] ? 'bg-white text-green-700' : 'bg-green-800 border-green-600'}`}>
-                                        <LucideIcon name={checks[i] ? "CheckCircle" : "Circle"} />
+                                    <div key={i} onClick={() => setChecks(p => ({...p, [i]: !p[i]}))} className={`p-6 rounded-2xl flex items-center gap-4 cursor-pointer border-2 transition-all ${checks[i] ? 'bg-green-700 border-green-700' : 'bg-white/10 border-white/10'}`}>
+                                        <LucideIcon name={checks[i] ? "CheckSquare" : "Square"} />
                                         <span className="text-xl font-bold">{item}</span>
                                     </div>
                                 ))}
@@ -224,8 +224,7 @@
                     </section>
 
                     <footer className="py-20 text-center opacity-30">
-                        <img src={MAIN_LOGO} className="h-8 mx-auto mb-4" />
-                        <p className="text-xs font-black uppercase tracking-widest">© 2024 GreenLand Footwear Group.</p>
+                        <p className="text-xs font-black tracking-widest uppercase">© 2024 GreenLand Footwear Group.</p>
                     </footer>
                 </div>
             );
