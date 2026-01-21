@@ -3,145 +3,271 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GreenLand | 新人介紹網頁 (專業修復版)</title>
+    <title>新人介紹網頁 | GreenLand</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
+        body { 
+            font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+            scroll-behavior: smooth;
+            background-color: #f8fafc;
+        }
+        #loading-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; z-index: 9999;
+        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .perspective-1000 { perspective: 1000px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="text-slate-900">
 
-    <nav class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b flex items-center justify-between px-6 h-20 shadow-sm">
+    <div id="loading-overlay">
+        <div class="w-12 h-12 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <p class="font-bold text-green-800 tracking-widest uppercase">系統掛載中...</p>
+    </div>
+
+    <nav class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b flex items-center justify-between px-6 h-24 shadow-sm">
         <div class="flex items-center gap-4 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-            <img src="https://duk.tw/0sLH2f.png" alt="Logo" class="h-10 w-auto" />
-            <span class="font-black text-xl text-slate-800 hidden md:block">GreenLand</span>
+            <img src="https://duk.tw/0sLH2f.png" alt="Logo" class="h-12 w-auto" />
+            <span class="font-black text-xl text-slate-800 hidden md:block">新人互動網頁</span>
         </div>
         <div class="flex gap-2 overflow-x-auto no-scrollbar py-2">
-            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">特質測驗</button>
+            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">人格特質</button>
             <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">品牌夥伴</button>
+            <button onclick="scrollToId('milestones')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">發展歷程</button>
             <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">培訓導航</button>
-            <button onclick="scrollToId('esg')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">永續責任</button>
-            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">檢查清單</button>
+            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap">出發清單</button>
         </div>
     </nav>
 
-    <main class="pt-20">
-        <section class="min-h-[70vh] flex flex-col items-center justify-center text-center px-6 bg-slate-50">
-            <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 leading-none uppercase mb-6">Welcome to <br/><span class="text-green-700 underline decoration-green-100">GreenLand</span></h1>
-            <p class="text-xl text-slate-500 font-bold italic mb-10">三十年卓越工藝，與您共創未來。</p>
-            <button onclick="scrollToId('disc')" class="px-12 py-5 bg-green-700 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-green-800 transition-all uppercase">開始探索</button>
+    <main class="pt-24">
+        <section class="min-h-[85vh] flex flex-col items-center justify-center text-center px-6 relative overflow-hidden">
+            <div class="relative z-10 space-y-8 max-w-4xl fade-in">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-black shadow-inner">
+                    <i data-lucide="shield-check" class="w-4 h-4 animate-pulse"></i> Welcome to GreenLand!
+                </div>
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter text-slate-900 leading-none">歡迎加入<br/><span class="text-green-700 underline decoration-green-200">GreenLand</span></h1>
+                <p class="text-xl text-slate-500 font-bold italic">專業與溫度的結合，讓我們開啟卓越旅程。</p>
+                <div class="flex flex-wrap justify-center gap-6 pt-6">
+                    <button onclick="scrollToId('disc')" class="px-14 py-5 bg-green-700 text-white rounded-3xl font-black text-xl shadow-xl hover:bg-green-800 transition-all">開始測驗</button>
+                    <button onclick="scrollToId('checklist')" class="px-14 py-5 bg-white text-green-700 border-4 border-green-700 rounded-3xl font-black text-xl hover:bg-green-50 transition-all shadow-md">出發清單</button>
+                </div>
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-green-100/40 rounded-full blur-[140px] -z-10"></div>
         </section>
 
-        <section id="disc" class="max-w-4xl mx-auto px-6 py-24">
-            <h2 class="text-4xl font-black border-l-8 border-green-700 pl-8 mb-12 uppercase">人格特質測驗</h2>
-            <div class="bg-white border-2 rounded-[3.5rem] shadow-2xl p-10 md:p-16" id="quiz-container">
+        <section id="disc" class="max-w-6xl mx-auto px-6 py-32">
+            <h2 class="text-5xl font-black border-l-8 border-green-700 pl-8 uppercase text-slate-900 tracking-tight mb-16">人格特質測驗</h2>
+            <div id="quiz-container" class="bg-white border-2 rounded-[3.5rem] shadow-2xl p-10 md:p-20 relative">
                 </div>
         </section>
 
-        <section id="partners" class="max-w-7xl mx-auto px-6 py-24">
-            <h2 class="text-5xl font-black text-center mb-16 uppercase">全球品牌夥伴</h2>
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-8" id="partners-grid"></div>
+        <section id="partners" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <div class="text-center space-y-6">
+                <h2 class="text-6xl font-black uppercase text-slate-900 leading-none">全球品牌夥伴</h2>
+                <p class="text-slate-400 text-xl font-bold italic tracking-tight">三十年卓越工藝，提供全球頂尖鞋履製造服務</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10" id="partners-grid"></div>
         </section>
 
-        <section id="milestones" class="max-w-7xl mx-auto px-6 py-24 bg-slate-900 text-white rounded-[4rem] my-20">
-            <h2 class="text-4xl font-black text-center mb-16 uppercase italic">三十年發展歷程</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10" id="milestones-grid"></div>
+        <section id="milestones" class="max-w-7xl mx-auto px-6 py-32 space-y-24 relative overflow-hidden">
+            <h2 class="text-6xl font-black uppercase text-center tracking-tight leading-none text-slate-900">三十年足跡</h2>
+            <div class="relative max-w-5xl mx-auto py-10" id="milestones-content">
+                <div class="absolute left-1/2 inset-y-0 w-2 bg-green-50 -translate-x-1/2 hidden md:block rounded-full"></div>
+                <div class="space-y-32 relative" id="milestones-list"></div>
+            </div>
         </section>
 
-        <section id="training" class="max-w-7xl mx-auto px-6 py-24">
-            <h2 class="text-5xl font-black text-center mb-16 uppercase">培訓導航計畫</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12" id="training-grid"></div>
+        <section id="training" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <div class="text-center space-y-4">
+                <h2 class="text-6xl font-black uppercase text-slate-900">培訓導航計畫</h2>
+                <p class="text-slate-400 text-xl font-bold italic uppercase tracking-widest leading-none">Growth Pathway</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16" id="training-grid"></div>
         </section>
 
-        <section id="esg" class="max-w-7xl mx-auto px-6 py-24">
-            <h2 class="text-5xl font-black border-l-[12px] border-green-700 pl-10 mb-16 uppercase">永續與責任</h2>
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10" id="esg-grid"></div>
+        <section id="esg" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <h2 class="text-6xl font-black border-l-[12px] border-green-700 pl-10 tracking-tight leading-none uppercase text-slate-900">永續與責任</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12" id="esg-grid"></div>
         </section>
 
-        <section id="survival" class="max-w-7xl mx-auto px-6 py-24 bg-slate-50 rounded-[4rem]">
-            <h2 class="text-4xl font-black text-center mb-16 uppercase">常用資訊支援</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8" id="survival-grid"></div>
+        <section id="survival" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <div class="text-center space-y-6">
+                <h2 class="text-6xl font-black tracking-tight uppercase text-slate-900 leading-none">常用資訊</h2>
+                <p class="text-slate-400 text-2xl font-bold italic tracking-widest uppercase">Support System</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                <div class="bg-blue-900 p-14 rounded-[4rem] shadow-2xl text-white flex flex-col items-center text-center">
+                    <div class="w-24 h-24 bg-white/20 rounded-[2rem] flex items-center justify-center mb-10">
+                        <img src="https://www.ragic.com/favicon.ico" class="w-12 h-12 brightness-200" alt="Ragic" />
+                    </div>
+                    <h3 class="text-4xl font-black uppercase mb-6 leading-tight">台陸幹線上請假<br/>(RAGIC 系統)</h3>
+                    <p class="text-blue-100 text-lg font-bold opacity-80 italic mb-10 leading-relaxed uppercase">行政核心系統。報到後請連繫 HR 為您開通帳號。</p>
+                    <button onclick="window.open('https://www.ragic.com/', '_blank')" class="w-full py-7 bg-white text-blue-900 rounded-3xl font-black text-2xl flex items-center justify-center gap-4 hover:bg-blue-50 transition-all shadow-2xl uppercase">Open Ragic <i data-lucide="external-link"></i></button>
+                </div>
+                <div class="bg-white border-4 border-slate-50 p-14 rounded-[4rem] shadow-2xl flex flex-col justify-center items-center text-center">
+                    <div class="w-24 h-24 bg-green-700 text-white rounded-3xl flex items-center justify-center text-5xl font-black mb-8">HR</div>
+                    <h3 class="text-4xl font-black text-slate-800 mb-6">帳號與行政諮詢</h3>
+                    <p class="text-xl text-slate-500 font-bold mb-6 italic">如有系統登入問題，請洽人事課諮詢。</p>
+                    <div class="pt-10 border-t w-full text-slate-400 font-black uppercase tracking-widest text-sm">Headquarters Administration</div>
+                </div>
+            </div>
         </section>
 
-        <section id="checklist" class="max-w-5xl mx-auto px-6 py-24">
-            <div class="bg-white border-4 border-slate-100 rounded-[4rem] p-12 md:p-24 shadow-2xl">
-                <h2 class="text-5xl font-black text-slate-900 mb-16 uppercase text-center md:text-left">出發檢查清單</h2>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16" id="checklist-container"></div>
+        <section id="checklist" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <div class="bg-slate-50 border-[10px] border-white rounded-[5.5rem] p-12 md:p-24 space-y-24 shadow-inner">
+                <h2 class="text-6xl font-black text-slate-900 text-center tracking-tight uppercase underline decoration-green-100 leading-none">出發檢查物資</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                    <div class="space-y-10" id="checklist-items"></div>
+                    <div class="p-12 bg-red-50 border-4 border-red-100 rounded-[4.5rem] space-y-10 shadow-2xl flex flex-col items-center justify-center text-center">
+                        <h3 class="text-4xl font-black text-red-900 uppercase">不用攜帶</h3>
+                        <div class="flex flex-wrap gap-8 justify-center">
+                            <div class="px-10 py-6 bg-white text-red-600 rounded-[2.5rem] font-black shadow-xl text-2xl border-4 border-red-50">❌ 延長線</div>
+                            <div class="px-10 py-6 bg-white text-red-600 rounded-[2.5rem] font-black shadow-xl text-2xl border-4 border-red-50">❌ 吹風機</div>
+                        </div>
+                        <p class="text-red-800 font-bold italic pt-6 leading-tight uppercase underline decoration-red-200">註：北越四季分明，請備妥保暖衣物。</p>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="py-32 text-center opacity-30 font-black tracking-[0.4em] uppercase text-xs">
-        <p>© 2024 GreenLand Footwear Group. All Rights Reserved.</p>
+    <footer class="bg-white border-t-4 py-32 text-center relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 relative z-10 flex flex-col items-center gap-12 opacity-40 grayscale hover:grayscale-0 hover:opacity-100 transition-all duration-1000">
+            <img src="https://duk.tw/0sLH2f.png" alt="Footer Logo" class="w-32 h-auto" />
+            <div class="flex flex-wrap justify-center gap-10 text-base font-black uppercase tracking-[0.6em] text-slate-500">
+                <span>Excellence</span><span>Sustainability</span><span>Quality</span><span>People</span>
+            </div>
+            <p class="text-slate-300 text-xs font-bold uppercase tracking-widest italic pt-4">© 2024 GreenLand Footwear Group. All Rights Reserved.</p>
+        </div>
+        <div class="absolute bottom-[-150px] left-1/2 -translate-x-1/2 text-[25rem] font-black text-slate-50 select-none -z-10 tracking-tighter uppercase opacity-30">GREENLAND</div>
     </footer>
 
+    <div id="modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-md">
+        <div class="bg-white rounded-[4rem] max-w-2xl w-full shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div class="relative h-80 bg-slate-50">
+                <img id="modal-img" src="" class="w-full h-full object-cover" />
+                <button onclick="closeModal()" class="absolute top-8 right-8 w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-slate-500 shadow-2xl hover:text-red-500 border"><i data-lucide="x" class="w-8 h-8"></i></button>
+            </div>
+            <div class="p-12 space-y-8 font-black">
+                <div id="modal-year" class="inline-block px-5 py-2 bg-green-100 text-green-700 rounded-full text-xl uppercase">Milestone</div>
+                <h3 id="modal-title" class="text-5xl text-slate-900 leading-tight uppercase font-black"></h3>
+                <p id="modal-detail" class="text-2xl text-slate-500 font-bold italic leading-relaxed"></p>
+                <button onclick="closeModal()" class="w-full py-6 bg-green-700 text-white rounded-3xl text-xl shadow-xl hover:bg-green-800 uppercase">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // 1. 25 題測驗資料完整恢復
-        const discQuestions = [
-            { a: "活潑生動", b: "冒險精神", c: "善於分析", d: "順從性強" }, { a: "善於社交", b: "善於說服", c: "堅持不懈", d: "平和溫順" },
-            { a: "可愛", b: "勇敢", c: "自律", d: "體貼" }, { a: "無拘無束", b: "善於應變", c: "注意細節", d: "具有毅力" },
-            { a: "使人振作", b: "喜競爭勝", c: "自我犧牲", d: "較少爭辯" }, { a: "活力充沛", b: "自立", c: "敏感", d: "滿足" },
-            { a: "情感外露", b: "果斷", c: "深沉", d: "淡然無爭" }, { a: "樂觀", b: "坦率", c: "井井有條", d: "遷就" },
-            { a: "愛插嘴", b: "沒耐性", c: "優柔寡斷", d: "無安全感" }, { a: "散漫", b: "缺乏同情心", c: "報復", d: "缺乏熱情" },
-            { a: "煩躁", b: "輕率", c: "挑剔", d: "膽小" }, { a: "健忘", b: "控制欲", c: "孤僻", d: "隨興" },
-            { a: "激勵人心", b: "獨立", c: "理想主義", d: "含蓄" }, { a: "推動者", b: "領導者", c: "計畫者", d: "聆聽者" },
-            { a: "多言", b: "執著", c: "考慮周到", d: "耐性" }, { a: "即興", b: "固執", c: "難於取悅", d: "猶豫不決" },
-            { a: "天真", b: "魯貌", c: "消極", d: "冷漠" }, { a: "受歡迎", b: "工作狂", c: "過於嚴肅", d: "羞澀" },
-            { a: "露骨", b: "專橫", c: "乏味", d: "扭捏" }, { a: "不專注", b: "不容忍", c: "鑽牛角尖", d: "無目標" },
-            { a: "善變", b: "強勢", c: "喜歡批評", d: "妥協" }, { a: "不專注", b: "易怒", c: "多疑", d: "拖延" },
-            { a: "淩亂", b: "跋扈", c: "抑鬱", d: "靦腆" }, { a: "喋喋不休", b: "直截了當", c: "過分敏感", d: "喃喃自語" },
-            { a: "放任", b: "喜操縱", c: "有戒心", d: "緩慢" }
+        // --- 資料庫 ---
+        const PARTNERS = [
+            { name: "UGG", desc: "奢華舒適高品質羊皮雪靴。", img: "https://duk.tw/7PC91g.png" },
+            { name: "ECCO", desc: "丹麥皇室御用，強調簡約實用。", img: "https://duk.tw/EPGeHt.jpg" },
+            { name: "Dansko", desc: "專業木底鞋，強調足弓支撐。", img: "https://duk.tw/93aT9z.jpg" },
+            { name: "CAT", desc: "工裝機能與街頭潮流。", img: "https://duk.tw/s4jeqG.png" },
+            { name: "SPERRY", desc: "帆船鞋創始品牌，經典學院風。", img: "https://duk.tw/bD40R3.jpg" },
+            { name: "FRED PERRY", desc: "融合運動與英倫文化。", img: "https://duk.tw/QgUjMd.jpg" },
+            { name: "CAMPER", desc: "西班牙創意設計與想像力。", img: "https://duk.tw/Oc74Xg.png" },
+            { name: "Blundstone", desc: "澳洲百年經典工作靴。", img: "https://duk.tw/6YLDED.png" },
+            { name: "JOHNSTON & MURPHY", desc: "總統級紳士鞋商務經典。", img: "https://duk.tw/EijVva.png" },
+            { name: "rag & bone", desc: "紐約摩登與英式剪裁融合。", img: "https://duk.tw/9OmiSH.jpg" }
         ];
 
-        // 2. 培訓與 ESG 資料恢復
-        const trainingData = {
-            p1: [{d:"面版",t:1,info:"認識鞋面結構"},{d:"底版",t:1,info:"大底開發邏輯"},{d:"倉庫",t:5,info:"物料生產準備"},{d:"打料",t:2,info:"物料切割加工"},{d:"底部",t:2,info:"組件結合流程"},{d:"面部",t:4,info:"鞋面縫製加工"},{d:"成型",t:2,info:"零件變成品"},{d:"營運",t:9,info:"開發與營運視野"}],
-            p2: [{d:"半成品",t:6,info:"管理流向"},{d:"倉庫",t:2,info:"大貨生產倉儲"},{d:"裁斷",t:4,info:"自動化裁斷"},{d:"物控",t:3,info:"物料精準調度"},{d:"鞋面",t:4,info:"大規模協作"},{d:"生管",t:3,info:"實踐排程追蹤"},{d:"成型",t:4,info:"量產品質穩定"},{d:"樣品",t:6,info:"開發量產轉換"},{d:"專業",t:10,info:"品管與採購"}]
+        const MILESTONES = [
+            { year: "1994", title: "品牌起源", content: "於台灣台中成立「聯玖興業」。", detail: "建立製鞋工藝基石，開啟三十年輝煌里程。", img: "https://duk.tw/PXJDb8.png" },
+            { year: "1996", title: "邁向國際", content: "進軍越南海防與中國東莞。", detail: "成功將製造管理導入東南亞，建立穩定的跨國供應網絡。", img: "https://duk.tw/BzRUs7.jpg" },
+            { year: "2004", title: "產能擴張", content: "成立越南 GreenLand 2 與 3 廠。", detail: "產能大幅提升，成為知名品牌量產夥伴。", img: "https://duk.tw/FyjeVJ.jpg" },
+            { year: "2009", title: "南亞佈局", content: "於孟加拉成立生產基地。", detail: "策略性分散風險，強化集團在南亞市場影響力。", img: "https://duk.tw/Pj1FbO.jpg" },
+            { year: "2020", title: "垂直整合", content: "越南義安鞋面廠成立。", detail: "達成一體化生產，提升量產反應速度。", img: "https://duk.tw/f1VBP2.jpg" },
+            { year: "2024", title: "永續治理", content: "發布首份獨立 ESG 報告。", detail: "承諾 2050 淨零排放，致力於社會與環境願景。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
+        ];
+
+        const TRAINING = {
+            p1: [
+                { d: "面版", t: 1, info: "認識鞋面結構與版型設計" }, { d: "底版", t: 1, info: "學習大底開發邏輯" },
+                { d: "倉庫", t: 5, info: "物料入庫生產前置準備" }, { d: "打料組", t: 2, info: "物料切割與加工" },
+                { d: "底部", t: 2, info: "了解底部組件結合流程" }, { d: "面部", t: 4, info: "深入學習鞋面縫製加工" },
+                { d: "成型", t: 2, info: "見證零件變成品過程" }, { d: "營運支援", t: 9, info: "生管、開發、CSR 營運視野" }
+            ],
+            p2: [
+                { d: "半成品", t: 6, info: "半成品管理流向" }, { d: "倉庫", t: 2, info: "大貨生產倉儲物流" }, 
+                { d: "裁斷", t: 4, info: "自動化裁斷精準度" }, { d: "物控", t: 3, info: "物料精準調度" }, 
+                { d: "鞋面部", t: 4, info: "大規模流水線協作" }, { d: "生管", t: 3, info: "實踐排程追蹤" },
+                { d: "成型", t: 4, info: "量產階段品質穩定" }, { d: "樣品試做", t: 6, info: "開發到量產轉換" }, 
+                { d: "專業管理", t: 10, info: "品管、採購及業務" }
+            ]
         };
 
-        const esgData = [
-            { title: "環境保護", sub: "PLANET", icon: "leaf", val: "25.46%", list: ["2050 淨零排放", "生態化廠區管理"] },
-            { title: "社會公益", sub: "PEOPLE", icon: "heart", val: "100%", list: ["跨國植樹計畫", "AOK 捐血傳愛"] },
-            { title: "企業治理", sub: "GOVERNANCE", icon: "gavel", val: "FEM", list: ["供應鏈高標準", "Better Work 認證"] }
+        const DISC_QUESTIONS = [
+            { options: { A: "活潑生動", B: "冒險精神", C: "善於分析", D: "順從性強" } },
+            { options: { A: "善於社交", B: "善於說服", C: "堅持不懈", D: "平和溫順" } },
+            { options: { A: "可愛", B: "勇敢", C: "自律", D: "體貼" } },
+            { options: { A: "無拘無束", B: "善於應變", C: "注意細節", D: "具有毅力" } },
+            { options: { A: "使人振作", B: "喜競爭勝", C: "自我犧牲", D: "較少爭辯" } },
+            { options: { A: "活力充沛", B: "自立", C: "敏感", D: "滿足" } },
+            { options: { A: "情感外露", B: "果斷", C: "深沉", D: "淡然無爭" } },
+            { options: { A: "樂觀", B: "坦率", C: "井井有條", D: "遷就" } },
+            { options: { A: "愛插嘴", B: "沒耐性", C: "優柔寡斷", D: "無安全感" } },
+            { options: { A: "散漫", B: "缺乏同情心", C: "報復", D: "缺乏熱情" } },
+            { options: { A: "煩躁", B: "輕率", C: "挑剔", D: "膽小" } },
+            { options: { A: "健忘", B: "控制欲", C: "孤僻", D: "隨興" } },
+            { options: { A: "激勵人心", B: "獨立", C: "理想主義", D: "含蓄" } },
+            { options: { A: "推動者", B: "領導者", C: "計畫者", D: "聆聽者" } },
+            { options: { A: "多言", B: "執著", C: "考慮周到", D: "耐性" } },
+            { options: { A: "即興", B: "固執", C: "難於取悅", D: "猶豫不決" } },
+            { options: { A: "天真", B: "魯莽", C: "消極", D: "冷漠" } },
+            { options: { A: "受歡迎", B: "工作狂", C: "過於嚴肅", D: "羞澀" } },
+            { options: { A: "露骨", B: "專橫", C: "乏味", D: "扭捏" } },
+            { options: { A: "不專注", B: "不容忍", C: "鑽牛角尖", D: "無目標" } },
+            { options: { A: "善變", B: "強勢", C: "喜歡批評", D: "妥協" } },
+            { options: { A: "不專注", B: "易怒", C: "多疑", D: "拖延" } },
+            { options: { A: "淩亂", B: "跋扈", C: "抑鬱", D: "靦腆" } },
+            { options: { A: "喋喋不休", B: "直截了當", C: "過分敏感", D: "喃喃自語" } },
+            { options: { A: "放任", B: "喜操縱", C: "有戒心", D: "緩慢" } }
         ];
 
-        const partners = [
-            { name: "UGG", desc: "奢華高品質羊皮雪靴。", img: "https://duk.tw/7PC91g.png" },
-            { name: "ECCO", desc: "丹麥皇室御用，強調實用。", img: "https://duk.tw/EPGeHt.jpg" },
-            { name: "CAT", desc: "工裝機能與潮流。", img: "https://duk.tw/s4jeqG.png" },
-            { name: "CAMPER", desc: "西班牙創意設計。", img: "https://duk.tw/Oc74Xg.png" },
-            { name: "FRED PERRY", desc: "英倫運動文化。", img: "https://duk.tw/QgUjMd.jpg" }
-        ];
+        // --- 視覺組件 (SVG 注入) ---
+        const ANIMAL_ICONS = {
+            '老虎型': `<svg viewBox="0 0 100 100" class="w-32 h-32"><circle cx="50" cy="50" r="45" fill="#FB923C" /><circle cx="35" cy="45" r="5" fill="#000" /><circle cx="65" cy="45" r="5" fill="#000" /><path d="M40 65 Q50 75 60 65" stroke="#000" stroke-width="4" fill="none"/></svg>`,
+            '海豚型': `<svg viewBox="0 0 100 100" class="w-32 h-32"><path d="M10 70 Q30 20 90 40 Q70 60 10 70" fill="#38BDF8" /><circle cx="65" cy="40" r="4" fill="#000" /></svg>`,
+            '蜜蜂型': `<svg viewBox="0 0 100 100" class="w-32 h-32"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15" /><path d="M25 40 Q50 30 75 40" stroke="#000" stroke-width="8" /><circle cx="40" cy="50" r="4" fill="#000" /><circle cx="60" cy="50" r="4" fill="#000" /></svg>`,
+            '企鵝型': `<svg viewBox="0 0 100 100" class="w-32 h-32"><ellipse cx="50" cy="55" rx="35" ry="40" fill="#1E293B" /><ellipse cx="50" cy="60" rx="20" ry="25" fill="#FFF" /><path d="M45 55 L50 62 L55 55 Z" fill="#F59E0B" /></svg>`,
+            '八爪魚型': `<svg viewBox="0 0 100 100" class="w-32 h-32"><circle cx="50" cy="40" r="30" fill="#F472B6" /><circle cx="40" cy="35" r="4" fill="#000" /><circle cx="60" cy="35" r="4" fill="#000" /><path d="M20 70 Q50 90 80 70" stroke="#F472B6" stroke-width="8" fill="none"/></svg>`
+        };
 
-        // 邏輯狀態
-        let currentDiscIdx = 0;
-        let discScores = { A: 0, B: 0, C: 0, D: 0 };
+        const FOOTPRINT = `<svg viewBox="0 0 24 24" class="w-8 h-8 text-green-700" fill="currentColor"><path d="M10,2C8.9,2,8,2.9,8,4s0.9,2,2,2s2-0.9,2-2S11.1,2,10,2z M6,7C4.9,7,4,7.9,4,9s0.9,2,2,2s2-0.9,2-2S7.1,7,6,7z M18,7 c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S19.1,7,18,7z M14,12c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S15.1,12,14,12z M10,17 c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S11.1,17,10,17z" /></svg>`;
 
-        // 渲染功能
+        // --- 核心邏輯狀態 ---
+        let currentIdx = 0;
+        let scores = { A: 0, B: 0, C: 0, D: 0 };
+
+        // 渲染測驗
         function renderQuiz() {
             const container = document.getElementById('quiz-container');
-            if (currentDiscIdx < 25) {
-                const q = discQuestions[currentDiscIdx];
+            if (currentIdx < 25) {
+                const q = DISC_QUESTIONS[currentIdx];
                 container.innerHTML = `
-                    <div class="space-y-10">
+                    <div class="space-y-12 max-w-3xl mx-auto text-center">
                         <div class="flex justify-between items-center text-sm font-black text-slate-400">
-                            <span>題目 ${currentDiscIdx + 1} / 25</span>
+                            <span>題目 ${currentIdx + 1} / 25</span>
                             <div class="w-1/2 h-2 bg-slate-100 rounded-full overflow-hidden shadow-inner">
-                                <div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentDiscIdx + 1) / 25) * 100}%"></div>
+                                <div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentIdx+1)/25)*100}%"></div>
                             </div>
                         </div>
-                        <p class="text-3xl font-black text-center text-slate-800 py-6 uppercase tracking-tight">哪一個特質最像您？</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            ${Object.entries(q).map(([key, val]) => `
-                                <button onclick="handleDisc('${key.toUpperCase()}')" class="p-8 text-left border-4 border-slate-50 rounded-3xl hover:border-green-700 hover:bg-green-50 font-black text-xl flex justify-between items-center transition-all shadow-sm bg-white group">
-                                    <span>${val}</span><i data-lucide="chevron-right" class="text-slate-200 group-hover:text-green-700 group-hover:translate-x-2 transition-all"></i>
+                        <p class="text-3xl font-black py-6">挑選一個最像您的特質：</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 font-black">
+                            ${Object.entries(q.options).map(([k, v]) => `
+                                <button onclick="handleDisc('${k}')" class="p-8 text-left border-4 rounded-[2rem] hover:border-green-700 hover:bg-green-50 flex justify-between items-center transition-all bg-white shadow-sm group">
+                                    <span class="text-xl font-black">${v}</span>
+                                    <i data-lucide="chevron-right" class="text-slate-200 group-hover:text-green-700 group-hover:translate-x-2 transition-all"></i>
                                 </button>
                             `).join('')}
                         </div>
@@ -154,109 +280,156 @@
         }
 
         function handleDisc(key) {
-            discScores[key]++;
-            currentDiscIdx++;
+            scores[key]++;
+            currentIdx++;
             renderQuiz();
         }
 
         function showDiscResult() {
-            const m = Math.max(...Object.values(discScores));
-            const winners = Object.keys(discScores).filter(k => discScores[k] === m);
-            let res = winners[0] === 'A' ? '海豚型' : winners[0] === 'B' ? '老虎型' : winners[0] === 'C' ? '蜜蜂型' : '企鵝型';
-            if (m >= 5 && m <= 8 && winners.length > 1) res = "八爪魚型";
+            const maxVal = Math.max(...Object.values(scores));
+            const winKeys = Object.keys(scores).filter(k => scores[k] === maxVal);
+            let result = "";
+            let intro = "";
+
+            if (maxVal >= 5 && maxVal <= 8 && winKeys.length > 1) {
+                result = "八爪魚型";
+                intro = "能力平衡的全方位戰士，在各崗位間游刃有餘。";
+            } else {
+                const map = { A: "海豚型", B: "老虎型", C: "蜜蜂型", D: "企鵝型" };
+                const desc = {
+                    A: "活潑生動且熱愛社交，能帶來團隊正能量。",
+                    B: "冒險精神、果斷執行力，是團隊的推路機。",
+                    C: "追求細節、自律且邏輯清晰，是可靠的守門員。",
+                    D: "平和溫順、充滿耐性，是體貼的聆聽者。"
+                };
+                result = map[winKeys[0]];
+                intro = desc[winKeys[0]];
+            }
+
             document.getElementById('quiz-container').innerHTML = `
-                <div class="text-center py-12 space-y-10">
-                    <h3 class="text-7xl font-black text-slate-900 uppercase">你是 <span class="text-green-700">${res}</span></h3>
-                    <p class="text-2xl text-slate-500 font-bold italic max-w-xl mx-auto leading-relaxed italic">"感謝完成測驗，願您在 GreenLand 發光發熱！"</p>
-                    <button onclick="location.reload()" class="text-green-700 font-black text-xl underline underline-offset-8">重新測驗</button>
+                <div class="text-center py-12 space-y-10 animate-in fade-in">
+                    <div class="flex justify-center mb-8">${ANIMAL_ICONS[result]}</div>
+                    <h3 class="text-6xl font-black text-slate-900 uppercase font-black">你是 <span class="text-green-700">${result}</span></h3>
+                    <p class="text-slate-500 max-w-xl mx-auto text-xl font-bold leading-relaxed italic">${intro}</p>
+                    <button onclick="location.reload()" class="text-green-700 font-bold text-lg underline mt-8 hover:text-green-900 transition-colors">重新測試</button>
                 </div>
             `;
         }
 
+        // --- 輔助功能 ---
         function scrollToId(id) {
             const el = document.getElementById(id);
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
         }
 
-        // 初始化所有區塊
+        function openModal(item) {
+            const m = MILESTONES.find(x => x.year === item);
+            document.getElementById('modal-img').src = m.img;
+            document.getElementById('modal-year').innerText = `Milestone ${m.year}`;
+            document.getElementById('modal-title').innerText = m.title;
+            document.getElementById('modal-detail').innerText = m.detail;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
+        // --- 初始化頁面內容 ---
         window.onload = () => {
             renderQuiz();
             
-            // 品牌渲染
-            document.getElementById('partners-grid').innerHTML = partners.map(p => `
-                <div class="group h-80 perspective-1000 cursor-pointer">
-                    <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-xl rounded-[2.5rem]">
-                        <div class="absolute inset-0 bg-white border-2 border-slate-50 rounded-[2.5rem] p-8 flex flex-col items-center justify-center backface-hidden">
-                            <img src="${p.img}" class="h-16 mb-4 object-contain grayscale group-hover:grayscale-0 transition-all duration-500" />
-                            <span class="text-xl font-black text-slate-800 uppercase">${p.name}</span>
+            // 品牌夥伴
+            document.getElementById('partners-grid').innerHTML = PARTNERS.map(b => `
+                <div class="group h-80 perspective-1000 cursor-pointer font-black">
+                    <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-2xl rounded-[3rem]">
+                        <div class="absolute inset-0 bg-white border-2 border-slate-100 rounded-[3rem] p-10 flex flex-col items-center justify-center backface-hidden overflow-hidden">
+                            <div class="w-full h-24 mb-6 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-500">
+                                <img src="${b.img}" alt="${b.name}" class="max-w-full max-h-full object-contain" />
+                            </div>
+                            <span class="text-xl font-black text-slate-800 tracking-tighter uppercase">${b.name}</span>
                         </div>
-                        <div class="absolute inset-0 bg-green-700 text-white rounded-[2.5rem] p-8 flex items-center justify-center rotate-y-180 backface-hidden text-center text-lg font-bold">${p.desc}</div>
+                        <div class="absolute inset-0 bg-green-700 text-white rounded-[3rem] p-10 flex flex-col items-center justify-center rotate-y-180 backface-hidden shadow-inner">
+                            <p class="text-base font-bold text-center leading-relaxed italic">${b.desc}</p>
+                        </div>
                     </div>
                 </div>
             `).join('');
 
-            // 歷程渲染
-            const miles = ["1994", "1996", "2004", "2009", "2020", "2024"];
-            document.getElementById('milestones-grid').innerHTML = miles.map((yr, i) => `
-                <div class="p-10 border border-white/10 rounded-[3rem] space-y-4 hover:bg-white/5 transition-all">
-                    <div class="text-green-500 font-black text-5xl tracking-tighter">${yr}</div>
-                    <p class="text-slate-400 font-bold">卓越里程關鍵年份。</p>
+            // 發展歷程
+            document.getElementById('milestones-list').innerHTML = MILESTONES.map((m, idx) => `
+                <div class="flex flex-col md:flex-row items-center gap-12 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}">
+                    <div class="flex-1 w-full text-slate-900">
+                        <div onclick="openModal('${m.year}')" class="p-10 bg-white border-2 rounded-[3.5rem] shadow-2xl hover:scale-[1.02] transition-all cursor-pointer group ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'}">
+                            <div class="text-green-700 font-black text-5xl mb-4 tracking-tighter leading-none">${m.year}</div>
+                            <h4 class="text-3xl font-black mb-4 uppercase">${m.title}</h4>
+                            <p class="text-slate-400 font-bold text-lg leading-relaxed line-clamp-2">${m.content}</p>
+                            <div class="mt-8 flex items-center gap-4 text-xs font-black text-green-700 uppercase tracking-[0.3em] ${idx % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}">點擊看相片 <i data-lucide="chevron-right"></i></div>
+                        </div>
+                    </div>
+                    <div class="relative z-10 w-24 h-24 bg-white border-[10px] border-green-700 rounded-full flex items-center justify-center shadow-2xl shrink-0 group-hover:scale-125 transition-transform"><i data-lucide="map-pin" class="w-10 h-10 text-green-700 fill-current"></i></div>
+                    <div class="flex-1 hidden md:block"></div>
                 </div>
             `).join('');
 
-            // 培訓渲染 (恢復資料)
+            // 培訓導航
             document.getElementById('training-grid').innerHTML = `
-                <div class="bg-white border-4 rounded-[4rem] shadow-xl overflow-hidden">
-                    <div class="bg-green-700 p-12 text-white"><h3 class="text-4xl font-black uppercase">Stage 01 基礎</h3><p class="text-green-100 mt-2">25 天實習 | 材料與開發</p></div>
-                    <div class="p-12 space-y-6">${trainingData.p1.map(s => `<div class="flex justify-between p-6 bg-slate-50 rounded-2xl"><b>${s.d}</b><span>${s.t} 天</span></div>`).join('')}</div>
+                <div class="bg-white border-4 border-slate-50 rounded-[4rem] shadow-2xl overflow-hidden flex flex-col hover:border-green-100 transition-all font-bold">
+                    <div class="bg-green-700 p-12 text-white">
+                        <div class="flex justify-between items-center mb-8"><div class="p-5 bg-white/20 rounded-3xl"><i data-lucide="award" class="w-10 h-10"></i></div><span class="font-black text-sm opacity-60 uppercase tracking-[0.4em]">Stage 01</span></div>
+                        <h3 class="text-4xl font-black uppercase">第一階段：研發與基礎</h3>
+                        <p class="text-green-100/80 text-xl mt-4 font-bold tracking-tight italic">25 天實習 | 材料認識與開發流程</p>
+                    </div>
+                    <div class="p-12 space-y-6">
+                        ${TRAINING.p1.map(s => `<div class="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border-2 border-transparent hover:border-green-200 transition-all shadow-sm"><div><div class="font-black text-xl text-slate-800">${s.d}</div><div class="text-xs text-slate-400 font-bold uppercase mt-2">${s.info}</div></div><span class="text-base font-black text-green-700 bg-white px-5 py-2.5 rounded-2xl border shrink-0">${s.t} 天</span></div>`).join('')}
+                    </div>
                 </div>
-                <div class="bg-white border-4 rounded-[4rem] shadow-xl overflow-hidden">
-                    <div class="bg-slate-900 p-12 text-white"><h3 class="text-4xl font-black uppercase">Stage 02 精益</h3><p class="text-slate-400 mt-2">42 天實習 | 量產與運營</p></div>
-                    <div class="p-12 space-y-6">${trainingData.p2.map(s => `<div class="flex justify-between p-6 bg-slate-50 rounded-2xl"><b>${s.d}</b><span>${s.t} 天</span></div>`).join('')}</div>
+                <div class="bg-white border-4 border-slate-50 rounded-[4rem] shadow-2xl overflow-hidden flex flex-col hover:border-slate-300 transition-all font-bold">
+                    <div class="bg-slate-900 p-12 text-white">
+                        <div class="flex justify-between items-center mb-8"><div class="p-5 bg-white/20 rounded-3xl"><i data-lucide="globe" class="w-10 h-10"></i></div><span class="font-black text-sm opacity-60 uppercase tracking-[0.4em]">Stage 02</span></div>
+                        <h3 class="text-4xl font-black uppercase">第二階段：量產與精益</h3>
+                        <p class="text-slate-400 text-xl mt-4 font-bold tracking-tight italic">42 天實習 | 量產工藝與體系營運</p>
+                    </div>
+                    <div class="p-12 space-y-6">
+                        ${TRAINING.p2.map(s => `<div class="flex items-center justify-between p-6 bg-slate-50 rounded-3xl border-2 border-transparent hover:border-slate-300 transition-all shadow-sm"><div class="font-black text-xl text-slate-800">${s.d}</div><span class="text-base font-black text-slate-800 bg-white px-5 py-2.5 rounded-2xl border shrink-0">${s.t} 天</span></div>`).join('')}
+                    </div>
                 </div>
             `;
 
-            // ESG 渲染 (恢復翻轉效果)
-            document.getElementById('esg-grid').innerHTML = esgData.map(e => `
-                <div class="group h-[450px] perspective-1000 cursor-pointer">
+            // ESG 內容
+            const ESG_DATA = [
+                { title: "環境保護", sub: "PLANET", icon: "leaf", val: "25.46%", list: ["2050 淨零排放", "生態化廠區管理"] },
+                { title: "社會公益", sub: "PEOPLE", icon: "heart", val: "100%", list: ["跨國植樹計畫", "AOK 捐血傳愛"] },
+                { title: "企業治理", sub: "GOVERNANCE", icon: "gavel", val: "FEM", list: ["供應鏈高標準", "Better Work 認證"] }
+            ];
+            document.getElementById('esg-grid').innerHTML = ESG_DATA.map(e => `
+                <div class="group h-[450px] perspective-1000 cursor-pointer font-black">
                     <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-2xl rounded-[4rem]">
-                        <div class="absolute inset-0 bg-white border-4 p-12 rounded-[4rem] flex flex-col items-center justify-center backface-hidden">
-                            <i data-lucide="${e.icon}" class="w-16 h-16 text-green-700 mb-6"></i>
-                            <h3 class="text-3xl font-black uppercase">${e.title}<br/><small class="text-xs text-slate-400">${e.sub}</small></h3>
+                        <div class="absolute inset-0 bg-white border-4 p-14 rounded-[4rem] flex flex-col items-center justify-center backface-hidden shadow-sm">
+                            <div class="w-24 h-24 bg-green-100 text-green-700 rounded-3xl flex items-center justify-center shadow-xl mb-10"><i data-lucide="${e.icon}" class="w-14 h-14"></i></div>
+                            <h3 class="text-3xl font-black text-center uppercase">${e.title}<br/><span class="text-sm text-slate-400">${e.sub}</span></h3>
                         </div>
-                        <div class="absolute inset-0 bg-green-700 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center rotate-y-180 backface-hidden text-center">
-                            <div class="text-5xl font-black mb-6 underline">${e.val}</div>
-                            <ul class="text-lg font-bold space-y-4">${e.list.map(l => `<li>${l}</li>`).join('')}</ul>
+                        <div class="absolute inset-0 bg-white border-4 border-green-700 rounded-[4rem] p-10 flex flex-col items-center justify-center rotate-y-180 backface-hidden text-center shadow-inner">
+                            <div class="bg-green-50 p-6 rounded-3xl border-2 border-green-100 w-full mb-6 text-green-900 font-black text-4xl uppercase">${e.val}</div>
+                            <ul class="space-y-4 text-base font-black text-slate-600 uppercase font-black">
+                                ${e.list.map(li => `<li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-green-600 w-6 h-6"></i> ${li}</li>`).join('')}
+                            </ul>
                         </div>
                     </div>
                 </div>
             `).join('');
 
-            // 支援支援
-            document.getElementById('survival-grid').innerHTML = `
-                <div class="bg-white p-12 rounded-[4rem] shadow-xl border-4 border-slate-50 text-center">
-                    <div class="w-24 h-24 bg-green-700 text-white rounded-3xl flex items-center justify-center mx-auto text-5xl font-black mb-8">S</div>
-                    <h3 class="text-3xl font-black mb-4">Scott 生活導師</h3>
-                    <p class="text-lg font-bold text-slate-500 italic">0902-069-298</p>
+            // 出發檢查清單
+            const ITEMS = ['護照正本', '簽證正本', '個人 3C 用品', '個人常備藥物', '保暖衣物 (北越冬季)'];
+            document.getElementById('checklist-items').innerHTML = ITEMS.map((it, i) => `
+                <div onclick="this.classList.toggle('bg-green-700'); this.classList.toggle('text-white');" class="flex items-center gap-6 p-8 rounded-[2.5rem] border-4 border-slate-100 cursor-pointer transition-all shadow-xl bg-white group">
+                    <i data-lucide="check-square" class="w-8 h-8 opacity-20"></i>
+                    <span class="font-black text-2xl uppercase tracking-tighter italic">${it}</span>
                 </div>
-                <div class="bg-blue-900 text-white p-12 rounded-[4rem] shadow-xl text-center flex flex-col justify-center">
-                    <h3 class="text-3xl font-black mb-6 uppercase tracking-widest">RAGIC 系統</h3>
-                    <button onclick="window.open('https://www.ragic.com/')" class="py-6 bg-white text-blue-900 rounded-3xl font-black text-2xl uppercase shadow-2xl">Open App</button>
-                </div>
-                <div class="bg-white p-12 rounded-[4rem] shadow-xl border-4 border-slate-50 text-center flex flex-col justify-center">
-                    <h3 class="text-2xl font-black mb-4 uppercase">Wi-Fi 資訊</h3>
-                    <p class="font-bold text-slate-500 uppercase">B棟: 12345678<br/>D棟: @123456@</p>
-                </div>
-            `;
-
-            // 清單
-            const items = ['護照 (正本)', '簽證 (正本)', '大頭照 (4張)', '報到文件 (正本)'];
-            document.getElementById('checklist-container').innerHTML = `
-                <div class="space-y-6">${items.map((it, i) => `<div onclick="this.classList.toggle('bg-green-700'); this.classList.toggle('text-white')" class="flex items-center gap-6 p-8 rounded-[2.5rem] border-4 border-slate-50 cursor-pointer transition-all shadow-xl bg-white font-black text-2xl uppercase tracking-tighter italic"><i data-lucide="check-circle" class="w-8 h-8 opacity-20"></i>${it}</div>`).join('')}</div>
-                <div class="p-12 bg-red-50 border-4 border-red-100 rounded-[4rem] flex flex-col items-center justify-center"><h3 class="text-3xl font-black text-red-900 mb-10 uppercase leading-none italic">不用攜帶</h3><div class="flex flex-wrap gap-4 justify-center"><span class="px-8 py-4 bg-white text-red-600 rounded-2xl font-black text-xl shadow-lg border-2 italic">❌ 延長線</span><span class="px-8 py-4 bg-white text-red-600 rounded-2xl font-black text-xl shadow-lg border-2 italic">❌ 吹風機</span></div></div>
-            `;
+            `).join('');
 
             lucide.createIcons();
+            document.getElementById('loading-overlay').style.display = 'none';
         };
     </script>
 </body>
