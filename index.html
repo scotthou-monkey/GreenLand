@@ -11,12 +11,11 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
+        body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; }
         #loading-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: white; display: flex; flex-direction: column;
             align-items: center; justify-content: center; z-index: 9999;
-            transition: opacity 0.5s ease;
         }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .perspective-1000 { perspective: 1000px; }
@@ -28,7 +27,7 @@
 <body>
     <div id="loading-overlay">
         <div class="w-12 h-12 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-green-800 tracking-widest">系統掛載中...</p>
+        <p class="font-bold text-green-800 tracking-widest uppercase">系統掛載中...</p>
     </div>
 
     <div id="root"></div>
@@ -36,6 +35,7 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
 
+        // --- 核心資料 ---
         const MAIN_LOGO = "https://duk.tw/0sLH2f.png";
 
         const PARTNERS = [
@@ -60,39 +60,66 @@
             { year: "2024", title: "永續治理", content: "發布首份獨立 ESG 報告。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
         ];
 
-        const TRAINING = {
-            p1: [{d:"面版",t:1},{d:"底版",t:1},{d:"倉庫",t:5},{d:"打料",t:2},{d:"底部",t:2},{d:"面部",t:4},{d:"成型",t:2},{d:"營運",t:9}],
-            p2: [{d:"半成品",t:6},{d:"倉庫",t:2},{d:"裁斷",t:4},{d:"物控",t:3},{d:"鞋面",t:4},{d:"生管",t:3},{d:"成型",t:4},{d:"樣品",t:6},{d:"專業",t:10}]
-        };
-
         const DISC_QUESTIONS = [
             { id: 1, options: { A: "活潑生動", B: "冒險精神", C: "善於分析", D: "順從性強" } },
             { id: 2, options: { A: "善於社交", B: "善於說服", C: "堅持不懈", D: "平和溫順" } },
             { id: 3, options: { A: "可愛", B: "勇敢", C: "自律", D: "體貼" } },
             { id: 4, options: { A: "無拘無束", B: "善於應變", C: "注意細節", D: "具有毅力" } },
-            { id: 5, options: { A: "使人振作", B: "喜競爭勝", C: "自我犧牲", D: "較少爭辯" } }
-            // ... 簡化測試，建議您分批加入題目 ...
+            { id: 5, options: { A: "使人振作", B: "喜競爭勝", C: "自我犧牲", D: "較少爭辯" } },
+            { id: 6, options: { A: "活力充沛", B: "自立", C: "敏感", D: "滿足" } },
+            { id: 7, options: { A: "情感外露", B: "果斷", C: "深沉", D: "淡然無爭" } },
+            { id: 8, options: { A: "樂觀", B: "坦率", C: "井井有條", D: "遷就" } },
+            { id: 9, options: { A: "愛插嘴", B: "沒耐性", C: "優柔寡斷", D: "無安全感" } },
+            { id: 10, options: { A: "散漫", B: "缺乏同情心", C: "報復", D: "缺乏熱情" } },
+            { id: 11, options: { A: "煩躁", B: "輕率", C: "挑剔", D: "膽小" } },
+            { id: 12, options: { A: "健忘", B: "控制欲", C: "孤僻", D: "隨興" } },
+            { id: 13, options: { A: "激勵人心", B: "獨立", C: "理想主義", D: "含蓄" } },
+            { id: 14, options: { A: "推動者", B: "領導者", C: "計畫者", D: "聆聽者" } },
+            { id: 15, options: { A: "多言", B: "執著", C: "考慮周到", D: "耐性" } },
+            { id: 16, options: { A: "即興", B: "固執", C: "難於取悅", D: "猶豫不決" } },
+            { id: 17, options: { A: "天真", B: "魯莽", C: "消極", D: "冷漠" } },
+            { id: 18, options: { A: "受歡迎", B: "工作狂", C: "過於嚴肅", D: "羞澀" } },
+            { id: 19, options: { A: "露骨", B: "專橫", C: "乏味", D: "扭捏" } },
+            { id: 20, options: { A: "不專注", B: "不容忍", C: "鑽牛角尖", D: "無目標" } },
+            { id: 21, options: { A: "善變", B: "強勢", C: "喜歡批評", D: "妥協" } },
+            { id: 22, options: { A: "不專注", B: "易怒", C: "多疑", D: "拖延" } },
+            { id: 23, options: { A: "淩亂", B: "跋扈", C: "抑鬱", D: "靦腆" } },
+            { id: 24, options: { A: "喋喋不休", B: "直截了當", C: "過分敏感", D: "喃喃自語" } },
+            { id: 25, options: { A: "放任", B: "喜操縱", C: "有戒心", D: "緩慢" } }
         ];
 
+        // --- 視覺組件 ---
         const LucideIcon = ({ name, size = 24, className = "" }) => {
             const ref = useRef(null);
             useEffect(() => {
                 if (ref.current && window.lucide && window.lucide.icons[name]) {
                     ref.current.innerHTML = window.lucide.icons[name].toSvg({ width: size, height: size, class: className });
                 }
-            }, [name, size, className]);
+            }, [name]);
             return <span ref={ref} className="inline-flex"></span>;
         };
 
+        const AnimalIcon = ({ type }) => {
+            const icons = {
+                '老虎型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="50" r="45" fill="#FB923C" /><circle cx="35" cy="45" r="5" fill="#000" /><circle cx="65" cy="45" r="5" fill="#000" /><path d="M40 65 Q50 75 60 65" stroke="#000" strokeWidth="4" fill="none"/></svg>,
+                '海豚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><path d="M10 70 Q30 20 90 40 Q70 60 10 70" fill="#38BDF8" /><circle cx="65" cy="40" r="4" fill="#000" /></svg>,
+                '蜜蜂型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15" /><path d="M20 45 H80 M20 65 H80" stroke="#000" strokeWidth="6" fill="none" /></svg>,
+                '企鵝型': <svg viewBox="0 0 100 100" className="w-24 h-24"><ellipse cx="50" cy="55" rx="35" ry="40" fill="#1E293B" /><ellipse cx="50" cy="60" rx="20" ry="25" fill="#FFF" /></svg>,
+                '八爪魚型': <svg viewBox="0 0 100 100" className="w-24 h-24"><circle cx="50" cy="40" r="30" fill="#F472B6" /></svg>
+            };
+            return icons[type] || null;
+        };
+
+        // --- 主應用 ---
         const App = () => {
-            const [tab, setTab] = useState('hero');
+            const [discIdx, setDiscIdx] = useState(0);
+            const [scores, setScores] = useState([]);
             const [result, setResult] = useState(null);
             const [checks, setChecks] = useState({});
 
             useEffect(() => {
                 const overlay = document.getElementById('loading-overlay');
-                if (overlay) overlay.style.opacity = '0';
-                setTimeout(() => { if (overlay) overlay.style.display = 'none'; }, 500);
+                if (overlay) overlay.style.display = 'none';
             }, []);
 
             const scroll = (id) => {
@@ -100,67 +127,112 @@
                 if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
             };
 
+            const handleDisc = (k) => {
+                const s = [...scores, k];
+                setScores(s);
+                if (discIdx < 24) {
+                    setDiscIdx(discIdx + 1);
+                } else {
+                    const c = { A: 0, B: 0, C: 0, D: 0 };
+                    s.forEach(v => c[v]++);
+                    const m = Math.max(...Object.values(c));
+                    const win = Object.keys(c).filter(x => c[x] === m);
+                    setResult(m >= 5 && m <= 8 && win.length > 1 ? '八爪魚型' : (win[0] === 'A' ? '海豚型' : win[0] === 'B' ? '老虎型' : win[0] === 'C' ? '蜜蜂型' : '企鵝型'));
+                }
+            };
+
             return (
-                <div className="min-h-screen">
-                    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b h-20 flex items-center justify-between px-6">
-                        <img src={MAIN_LOGO} alt="Logo" className="h-12 w-auto" />
+                <div className="min-h-screen bg-white">
+                    <nav className="fixed top-0 inset-x-0 z-50 bg-white/90 backdrop-blur border-b h-20 flex items-center justify-between px-6 shadow-sm">
+                        <img src={MAIN_LOGO} className="h-10 cursor-pointer" onClick={() => window.scrollTo(0,0)} />
                         <div className="flex gap-4">
-                            {['partners', 'milestones', 'checklist'].map(id => (
-                                <button key={id} onClick={() => scroll(id)} className="font-bold text-slate-600 hover:text-green-700 uppercase text-sm">
-                                    {id === 'partners' ? '品牌' : id === 'milestones' ? '歷程' : '清單'}
+                            {['disc', 'partners', 'milestones', 'checklist'].map(id => (
+                                <button key={id} onClick={() => scroll(id)} className="text-sm font-bold text-slate-500 hover:text-green-700">
+                                    {id === 'disc' ? '特質' : id === 'partners' ? '品牌' : id === 'milestones' ? '歷程' : '清單'}
                                 </button>
                             ))}
                         </div>
                     </nav>
 
-                    <section id="hero" className="pt-40 pb-20 text-center px-6">
-                        <h1 className="text-6xl font-black text-slate-900 mb-6 uppercase">Welcome to <span className="text-green-700">GreenLand</span></h1>
-                        <p className="text-xl text-slate-500 font-bold mb-10">開啟您的卓越製鞋旅程</p>
-                        <button onClick={() => scroll('checklist')} className="px-10 py-4 bg-green-700 text-white rounded-full font-black shadow-lg hover:bg-green-800 transition-all uppercase">查看出發清單</button>
+                    <section className="pt-40 pb-20 text-center px-6 bg-slate-50">
+                        <h1 className="text-6xl font-black text-slate-900 mb-4 uppercase">Welcome to <span className="text-green-700">GreenLand</span></h1>
+                        <p className="text-xl text-slate-500 font-bold mb-10 italic">開啟您的卓越製鞋旅程</p>
+                        <button onClick={() => scroll('disc')} className="px-12 py-4 bg-green-700 text-white rounded-2xl font-black shadow-lg">開始測驗</button>
                     </section>
 
-                    <section id="partners" className="max-w-7xl mx-auto py-20 px-6">
-                        <h2 className="text-4xl font-black mb-12 uppercase border-l-8 border-green-700 pl-6">全球合作夥伴</h2>
+                    <section id="disc" className="max-w-4xl mx-auto py-24 px-6">
+                        <div className="bg-white rounded-[3rem] shadow-2xl p-10 md:p-16 border">
+                            {!result ? (
+                                <div className="space-y-8">
+                                    <div className="text-xs font-bold text-slate-400">進度 {discIdx + 1} / 25</div>
+                                    <h3 className="text-2xl font-black text-slate-800">哪一個特質最像您？</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {Object.entries(DISC_QUESTIONS[discIdx].options).map(([k, v]) => (
+                                            <button key={k} onClick={() => handleDisc(k)} className="p-6 text-left border-2 rounded-2xl hover:border-green-700 font-black flex justify-between">
+                                                {v} <LucideIcon name="ChevronRight" />
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="text-center space-y-6">
+                                    <div className="flex justify-center"><AnimalIcon type={result} /></div>
+                                    <h2 className="text-4xl font-black text-green-700 uppercase">你是 {result}</h2>
+                                    <button onClick={() => {setDiscIdx(0); setScores([]); setResult(null);}} className="text-slate-400 underline">重新測試</button>
+                                </div>
+                            )}
+                        </div>
+                    </section>
+
+                    <section id="partners" className="max-w-7xl mx-auto py-24 px-6">
+                        <h2 className="text-4xl font-black text-center mb-16 uppercase">全球品牌夥伴</h2>
                         <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
                             {PARTNERS.map(p => (
-                                <div key={p.name} className="bg-white p-6 rounded-3xl shadow-sm border text-center hover:shadow-md transition-all">
-                                    <img src={p.img} className="h-16 mx-auto mb-4 object-contain" />
-                                    <div className="font-black text-slate-800">{p.name}</div>
+                                <div key={p.name} className="bg-white p-6 rounded-3xl shadow-md border text-center hover:scale-105 transition-all">
+                                    <img src={p.img} className="h-12 mx-auto mb-4 object-contain" />
+                                    <div className="font-black text-sm">{p.name}</div>
                                 </div>
                             ))}
                         </div>
                     </section>
 
-                    <section id="checklist" className="max-w-4xl mx-auto py-20 px-6">
-                        <div className="bg-slate-900 text-white rounded-[3rem] p-10 md:p-20 shadow-2xl">
-                            <h2 className="text-4xl font-black mb-10 text-center uppercase">出發檢查清單</h2>
+                    <section id="milestones" className="max-w-7xl mx-auto py-24 px-6 bg-slate-900 text-white rounded-[4rem]">
+                        <h2 className="text-4xl font-black text-center mb-16 uppercase">發展里程碑</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+                            {MILESTONES.map(m => (
+                                <div key={m.year} className="space-y-4 p-8 border border-white/10 rounded-3xl">
+                                    <div className="text-green-500 font-black text-4xl">{m.year}</div>
+                                    <h4 className="text-2xl font-black">{m.title}</h4>
+                                    <p className="text-slate-400 font-bold">{m.content}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
+                    <section id="checklist" className="max-w-4xl mx-auto py-24 px-6">
+                        <div className="bg-green-700 text-white rounded-[3rem] p-12 shadow-xl">
+                            <h2 className="text-4xl font-black mb-10 uppercase">出發檢查清單</h2>
                             <div className="space-y-4">
-                                {['護照正本', '工作簽證', '大頭照4張', '報到文件'].map((item, i) => (
-                                    <div key={i} onClick={() => setChecks(prev => ({...prev, [i]: !prev[i]}))} 
-                                         className={`p-6 rounded-2xl flex items-center gap-4 cursor-pointer border-2 transition-all ${checks[i] ? 'bg-green-700 border-green-700' : 'bg-white/10 border-white/10'}`}>
-                                        <LucideIcon name={checks[i] ? "CheckCircle" : "Circle"} size={24} />
+                                {['護照正本', '工作簽證', '大頭照4張', '報到文件正本'].map((item, i) => (
+                                    <div key={i} onClick={() => setChecks(p => ({...p, [i]: !p[i]}))} className={`p-6 rounded-2xl flex items-center gap-4 cursor-pointer border-2 transition-all ${checks[i] ? 'bg-white text-green-700' : 'bg-green-800 border-green-600'}`}>
+                                        <LucideIcon name={checks[i] ? "CheckCircle" : "Circle"} />
                                         <span className="text-xl font-bold">{item}</span>
                                     </div>
                                 ))}
                             </div>
                         </div>
                     </section>
+
+                    <footer className="py-20 text-center opacity-30">
+                        <img src={MAIN_LOGO} className="h-8 mx-auto mb-4" />
+                        <p className="text-xs font-black uppercase tracking-widest">© 2024 GreenLand Footwear Group.</p>
+                    </footer>
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
-    </script>
-
-    <script>
-        setTimeout(function() {
-            var overlay = document.getElementById('loading-overlay');
-            if (overlay && overlay.style.display !== 'none') {
-                console.warn('React 掛載超時，強制關閉載入畫面。');
-                overlay.style.display = 'none';
-            }
-        }, 3000);
     </script>
 </body>
 </html>
