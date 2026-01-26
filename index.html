@@ -20,16 +20,17 @@
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
+        /* 檢查清單選中樣式 */
         .checked-item { background-color: #15803d !important; color: #ffffff !important; border-color: #14532d !important; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
         .checked-item span, .checked-item i { color: white !important; }
-        
+        /* 時間軸線條 */
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 6px; background: #bbf7d0; transform: translateX(-50%); z-index: 0; border-radius: 99px; }
         /* 地圖標記點動畫 */
         .map-marker { position: absolute; width: 24px; height: 24px; background-color: #dc2626; border: 4px solid white; border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.3); z-index: 20; }
         .map-marker:hover { transform: translate(-50%, -50%) scale(1.3); background-color: #16a34a; z-index: 30; }
         .map-marker::after { content: ''; position: absolute; top: 50%; left: 50%; width: 40px; height: 40px; background-color: rgba(220, 38, 38, 0.4); border-radius: 50%; transform: translate(-50%, -50%); animation: pulse-ring 2s infinite; z-index: -1; }
         .map-marker:hover::after { background-color: rgba(22, 163, 74, 0.4); }
         @keyframes pulse-ring { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
-
         /* 地圖 Tooltip */
         .map-tooltip { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9); background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); width: 320px; opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 4px solid #16a34a; z-index: 40; }
         .map-marker:hover .map-tooltip { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); bottom: 40px; }
@@ -114,14 +115,20 @@
                 <h2 class="text-6xl font-black uppercase text-slate-900 leading-none">三十年卓越足跡</h2>
                 <p class="text-slate-500 text-2xl font-bold italic tracking-tight">跨越國界，深耕亞洲，連結全球</p>
             </div>
-            
             <div class="relative w-full aspect-[4/3] bg-blue-50/30 rounded-[4rem] overflow-hidden border-4 border-white shadow-2xl max-w-5xl mx-auto">
-                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Asia_location_map.svg/2000px-Asia_location_map.svg.png" alt="Asia Map" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity" style="object-position: center 20%;" />
+                 <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Asia_location_map.svg" alt="Asia Map" class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity" style="object-position: center 20%;" />
                 <div class="absolute inset-0 bg-gradient-to-b from-slate-50/80 via-transparent to-slate-50/80 mix-blend-overlay"></div>
-                
                 <div id="map-markers-container" class="absolute inset-0 z-10"></div>
             </div>
              <div class="text-center text-slate-400 font-bold italic mt-8">提示：將滑鼠移至紅色據點查看詳細資訊</div>
+        </section>
+
+        <section id="milestones" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
+            <h2 class="text-6xl font-black text-center text-slate-900 uppercase">發展歷程細節</h2>
+            <div class="relative max-w-5xl mx-auto py-10">
+                <div class="timeline-line"></div>
+                <div class="space-y-32 relative" id="milestones-list"></div>
+            </div>
         </section>
 
         <section id="training" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
@@ -175,21 +182,29 @@
         <div class="absolute bottom-[-150px] left-1/2 -translate-x-1/2 text-[30rem] font-black text-slate-50 select-none -z-10 uppercase tracking-tighter">GREENLAND</div>
     </footer>
 
+    <div id="modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-md">
+        <div class="bg-white rounded-[4rem] max-w-3xl w-full shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div class="relative h-96">
+                <img id="modal-img" src="" class="w-full h-full object-cover" />
+                <button onclick="closeModal()" class="absolute top-8 right-8 w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-500 shadow-2xl border"><i data-lucide="x" class="w-8 h-8"></i></button>
+            </div>
+            <div class="p-16 space-y-10 font-black">
+                <div id="modal-year" class="inline-block px-8 py-3 bg-green-100 text-green-700 rounded-full text-2xl uppercase tracking-widest shadow-sm"></div>
+                <h3 id="modal-title" class="text-5xl text-slate-900 leading-tight uppercase font-black"></h3>
+                <p id="modal-detail" class="text-2xl text-slate-500 font-bold italic leading-relaxed"></p>
+                <button onclick="closeModal()" class="w-full py-8 bg-green-700 text-white rounded-[2.5rem] text-2xl shadow-xl hover:bg-green-800 active:scale-95 uppercase">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. 地圖資料定義 (核心更新) ---
-        // 使用百分比定位 (Top, Left) 來適應響應式地圖
+        // --- 1. 地圖資料定義 ---
         const MAP_LOCATIONS = [
-            // 台灣
             { id: 'tw', top: '46%', left: '84%', year: '1994', title: '台灣台中總部 (聯玖興業)', desc: '集團發源地，營運核心。', code: '' },
-            // 中國
             { id: 'cn-dg', top: '48%', left: '78%', year: '1997', title: '中國東莞研發中心', desc: '技術研發重鎮。', code: '523380 广东省东莞市业兴路' },
-            // 越南海防聚落 (GL1, GL2, GL3, 研發, 榮保) - 位置相近，用一個大點表示
             { id: 'vn-hp', top: '56%', left: '73%', year: '1996-2019', title: '越南海防生產基地群', desc: '含 GL1, GL2, GL3, 研發中心及榮保廠。', code: 'GL1/2/RD: QPV9+Q3 陽京郡\nGL3: JGRR+2V 永寶縣\n榮保: MFMJ+78X 永寶縣' },
-            // 越南義安 (中越)
             { id: 'vn-na', top: '58%', left: '71%', year: '2020', title: '越南義安鞋面廠', desc: '垂直整合關鍵拼圖。', code: 'PF8W+39 南壇縣' },
-            // 柬埔寨 (金邊 Sky Nice I / 磅湛 Right Union)
             { id: 'kh', top: '62%', left: '70%', year: '2007/2022', title: '柬埔寨生產基地', desc: 'Sky Nice I (已結束) & Right Union (磅湛)。', code: 'Right Union: 3325+CQ5 Skun' },
-            // 孟加拉
             { id: 'bd', top: '53%', left: '58%', year: '2009', title: '孟加拉達卡廠 (Blue Ocean)', desc: '南亞重要佈局。', code: '27M7+XJ Shafipur' }
         ];
 
@@ -207,16 +222,35 @@
             { name: "rag & bone", desc: "紐約品牌，英式剪裁與美式工裝融合。", img: "https://duk.tw/9OmiSH.jpg" }
         ];
 
+        const MILESTONES = [
+            { phase: "奠基與起步 (1994-1997)", items: [
+                { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。", img: "https://duk.tw/PXJDb8.png" },
+                { year: "1996", title: "前進海防", content: "進軍越南，成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP 兩家公司。", img: "https://duk.tw/BzRUs7.jpg" },
+                { year: "1997", title: "跨足陸越", content: "於中國東莞成立聯運鞋業；同年越南海防 GREEN LAND 1 工廠正式落成。", img: "https://duk.tw/FyjeVJ.jpg" }
+            ]},
+            { phase: "深耕越南與擴張 (2004-2009)", items: [
+                { year: "2004", title: "產能擴增", content: "於越南海防市擴展成立 GREEN LAND 2 工廠。", img: "https://duk.tw/BzRUs7.jpg" },
+                { year: "2007", title: "跨足柬埔寨", content: "於金邊成立 SKY NICE I 工廠，拓展東南亞佈局。", img: "https://duk.tw/Pj1FbO.jpg" },
+                { year: "2008", title: "海防 3 廠", content: "於越南海防市成立 GREEN LAND 3 工廠，產能再升級。", img: "https://duk.tw/FyjeVJ.jpg" },
+                { year: "2009", title: "南亞佈局", content: "於孟加拉成立 BLUE OCEAN FOOTWEAR LTD.，版圖跨足南亞。", img: "https://duk.tw/Pj1FbO.jpg" }
+            ]},
+            { phase: "現代化與重塑 (2019-2024)", items: [
+                { year: "2019", title: "大規模擴廠", content: "越南海防 GREEN LAND 3 廠完成大規模現代化擴建工程。", img: "https://duk.tw/f1VBP2.jpg" },
+                { year: "2020", title: "垂直整合", content: "於越南義安省成立專屬「鞋面廠」，完善一體化生產線。", img: "https://duk.tw/f1VBP2.jpg" },
+                { year: "2022", title: "重返柬埔寨", content: "於柬埔寨磅湛省成立 SKY NICE II 工廠。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" },
+                { year: "2024", title: "品牌更名", content: "SKY NICE II 正式更名為 RIGHT UNION INTERNATIONAL CO., LTD.。", img: "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?w=800" }
+            ]}
+        ];
+
         const TRAINING = {
             p1: [{d:"面版課",t:1,info:"認識鞋面結構與版型設計"},{d:"底版課",t:1,info:"學習大底開發邏輯與開模"},{d:"倉庫",t:5,info:"物料入庫生產前置準備"},{d:"打料組",t:2,info:"物料切割、分層與加工"},{d:"底部課",t:2,info:"底部組件結合流程實作"},{d:"面部課",t:4,info:"鞋面縫製、針車與裝飾"},{d:"成型課",t:2,info:"見證零件組合變成品"},{d:"研發與營運",t:9,info:"生管、開發與 CSR 營運視野"}],
             p2: [{d:"半成品管理",t:6,info:"管理流向"},{d:"大貨倉庫",t:2,info:"物流倉儲"},{d:"自動裁斷",t:4,info:"精準精益"},{d:"物資控制",t:3,info:"精準調度"},{d:"大規模鞋面部",t:4,info:"流水協作"},{d:"生產管理",t:3,info:"實踐排程"},{d:"大貨成型",t:4,info:"品質穩定"},{d:"樣品量產轉換",t:6,info:"開發轉換"},{d:"專業管理",t:10,info:"品管、採購與業務"}]
         };
 
-        // ESG 數據更新 (使用圖片 placeholder，您可替換)
         const ESG_CARDS = [
-            { title: "環境保護 (Planet)", img: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c29sYXIlMjBwYW5lbHN8ZW58MHx8MHx8fDA%3D", val: "25.46%", sub: "Solar Power", list: ["GL-GL 工廠太陽能替代率達 25.46%", "年減碳量達 925,820 kgCO2e", "取得 ISO 14064-1 及 ISO 14067 認證"] },
-            { title: "社會公益 (People)", img: "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d29tZW4lMjBlbXBvd2VybWVudHxlbnwwfHwwfHx8MA%3D%3D", val: "95.7%", sub: "Her+ Project", list: ["女性生理與懷孕知識理解度升至 95.7%", "自我檢查能力提升至 100% 滿分", "190 人完成永續專業培訓課程"] },
-            { title: "企業治理 (Governance)", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXVkaXR8ZW58MHx8MHx8fDA%3D", val: "FEM", sub: "Supply Chain", list: ["導入 HIGG FEM 全方位環境評估", "通過 Better Work 跨國認證", "供應鏈透明化與勞工權益保障"] }
+            { title: "環境保護 (Planet)", img: "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", val: "25.46%", sub: "Solar Power", list: ["GL-GL 工廠太陽能替代率達 25.46%", "年減碳量達 925,820 kgCO2e", "取得 ISO 14064-1 及 ISO 14067 認證"] },
+            { title: "社會公益 (People)", img: "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", val: "95.7%", sub: "Her+ Project", list: ["女性生理與懷孕知識理解度升至 95.7%", "自我檢查能力提升至 100% 滿分", "190 人完成永續專業培訓課程"] },
+            { title: "企業治理 (Governance)", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3", val: "FEM", sub: "Supply Chain", list: ["導入 HIGG FEM 全方位環境評估", "通過 Better Work 跨國認證", "供應鏈透明化與勞工權益保障"] }
         ];
 
         const JOURNEY_MONTHS = [
@@ -225,13 +259,13 @@
             { title: "結訓考核 (Graduation)", desc: "核心任務：「部門交接與報告」", detail: "實習結束前，您將完成正式的部門交接，並在每週六進行口頭報告，與團隊分享您的成長與發現。" }
         ];
 
-        // --- 3. 具象化動物圖 ---
+        // --- 3. 具象化動物圖 (全面升級) ---
         const ANIMAL_ICONS = {
-            '老虎型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><circle cx="50" cy="50" r="45" fill="#F97316"/><path d="M30 30 Q50 10 70 30 M30 70 Q50 90 70 70" stroke="black" stroke-width="6" fill="none"/><circle cx="35" cy="45" r="5" fill="black"/><circle cx="65" cy="45" r="5" fill="black"/><path d="M40 65 Q50 75 60 65" stroke="black" stroke-width="4" fill="none"/><path d="M20 50 H35 M65 50 H80" stroke="black" stroke-width="3"/></svg>`,
-            '海豚型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><path d="M10 80 Q20 20 90 50 Q70 60 10 80" fill="#38BDF8"/><circle cx="65" cy="45" r="4" fill="black"/></svg>`,
-            '蜜蜂型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><ellipse cx="50" cy="55" rx="35" ry="30" fill="#FACC15"/><path d="M20 45 H80 M20 65 H80" stroke="black" stroke-width="10"/><path d="M35 35 L20 15 M65 35 L80 15" stroke="black" stroke-width="3"/></svg>`,
-            '企鵝型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><ellipse cx="50" cy="55" rx="35" ry="40" fill="#1E293B"/><ellipse cx="50" cy="60" rx="20" ry="25" fill="white"/><circle cx="40" cy="45" r="4" fill="black"/><circle cx="60" cy="45" r="4" fill="black"/><path d="M45 55 L50 62 L55 55 Z" fill="#F59E0B"/></svg>`,
-            '八爪魚型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><circle cx="50" cy="40" r="30" fill="#F472B6"/><path d="M30 70 Q35 90 40 70 M45 70 Q50 95 55 70 M60 70 Q65 90 70 70" stroke="#F472B6" stroke-width="8" fill="none"/></svg>`
+            '老虎型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><path d="M20,80 C20,80 30,30 50,30 C70,30 80,80 80,80" fill="#F97316" stroke="black" stroke-width="2"/><circle cx="35" cy="45" r="3" fill="black"/><circle cx="65" cy="45" r="3" fill="black"/><path d="M45,65 Q50,70 55,65" stroke="black" stroke-width="3" fill="none"/><path d="M50,30 L50,10 M40,12 L35,20 M60,12 L65,20" stroke="black" stroke-width="3"/><path d="M25,50 Q30,55 35,50 M65,50 Q70,55 75,50" stroke="black" stroke-width="2"/></svg>`,
+            '海豚型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><path d="M10,60 Q30,20 80,40 Q95,50 90,70 Q80,80 50,70 Q20,60 10,60" fill="#38BDF8"/><circle cx="70" cy="45" r="3" fill="black"/><path d="M60,55 Q70,60 80,55" stroke="white" stroke-width="2" fill="none"/></svg>`,
+            '蜜蜂型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><ellipse cx="50" cy="50" rx="30" ry="25" fill="#FACC15"/><path d="M30,40 H70 M30,60 H70" stroke="black" stroke-width="6"/><circle cx="40" cy="45" r="3" fill="black"/><circle cx="60" cy="45" r="3" fill="black"/><path d="M20,30 Q5,10 20,5 Q35,10 25,30 Z M80,30 Q95,10 80,5 Q65,10 75,30 Z" fill="#E2E8F0" opacity="0.8" stroke="#CBD5E1" stroke-width="2"/></svg>`,
+            '企鵝型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><ellipse cx="50" cy="50" rx="25" ry="35" fill="#1E293B"/><ellipse cx="50" cy="55" rx="15" ry="25" fill="white"/><circle cx="43" cy="40" r="3" fill="black"/><circle cx="57" cy="40" r="3" fill="black"/><path d="M47,48 L53,48 L50,55 Z" fill="#F59E0B"/><path d="M30,75 Q20,85 35,85 L65,85 Q80,85 70,75" fill="#F59E0B"/></svg>`,
+            '八爪魚型': `<svg viewBox="0 0 100 100" class="w-48 h-48 mx-auto"><circle cx="50" cy="40" r="25" fill="#F472B6"/><circle cx="40" cy="35" r="3" fill="black"/><circle cx="60" cy="35" r="3" fill="black"/><path d="M30,60 Q20,80 35,90 M40,63 Q45,85 50,95 M55,63 Q60,85 65,90 M70,60 Q80,80 65,90" stroke="#F472B6" stroke-width="6" fill="none" stroke-linecap="round"/></svg>`
         };
 
         // --- 4. 核心邏輯狀態 ---
@@ -332,6 +366,18 @@
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
         }
 
+        function openModal(yr) {
+            let item;
+            MILESTONES.forEach(p => { const found = p.items.find(x => x.year === yr); if (found) item = found; });
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-year').innerText = item.year;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-detail').innerText = item.content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
         // --- 核心：渲染地圖標記 ---
         function renderMapMarkers() {
             const container = document.getElementById('map-markers-container');
@@ -355,9 +401,9 @@
         // --- 初始化頁面 ---
         window.onload = () => {
             renderQuiz();
-            renderMapMarkers(); // 渲染地圖
+            renderMapMarkers();
 
-            // 品牌夥伴
+            // 品牌夥伴 (修復反字)
             document.getElementById('partners-grid').innerHTML = PARTNERS.map(b => `
                 <div class="group h-80 perspective-1000 cursor-pointer font-black">
                     <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-2xl rounded-[3rem]">
@@ -366,8 +412,30 @@
                             <span class="text-xl font-black text-slate-800 uppercase text-center">${b.name}</span>
                         </div>
                         <div class="absolute inset-0 bg-green-700 text-white rounded-[3rem] p-10 flex items-center justify-center rotate-y-180 backface-hidden text-center font-bold italic text-lg leading-relaxed shadow-inner">
-                            ${b.desc}
+                            <div style="transform: scaleX(-1);">${b.desc}</div>
                         </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // 發展歷程 (分階段)
+            document.getElementById('milestones-list').innerHTML = MILESTONES.map((phase) => `
+                <div class="relative py-12">
+                    <div class="bg-green-700 text-white inline-block px-10 py-4 rounded-full font-black text-2xl uppercase tracking-widest shadow-xl mb-16 relative z-10">${phase.phase}</div>
+                    <div class="space-y-32">
+                        ${phase.items.map((m, idx) => `
+                            <div class="flex flex-col md:flex-row items-center gap-16 relative z-10 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} group">
+                                <div class="flex-1 w-full">
+                                    <div onclick="openModal('${m.year}')" class="p-12 bg-white border-4 border-slate-50 rounded-[4rem] shadow-2xl hover:scale-105 transition-all cursor-pointer relative overflow-hidden ${idx % 2 === 0 ? 'md:text-right' : 'md:text-left'}">
+                                        <div class="text-green-700 font-black text-7xl mb-4 tracking-tighter">${m.year}</div>
+                                        <h4 class="text-4xl font-black mb-4 uppercase">${m.title}</h4>
+                                        <p class="text-slate-400 font-bold text-2xl italic">點擊查看詳情 <i data-lucide="chevron-right"></i></p>
+                                    </div>
+                                </div>
+                                <div class="relative z-10 w-24 h-24 bg-green-700 border-[10px] border-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-125 transition-transform"><i data-lucide="map-pin" class="text-white w-10 h-10"></i></div>
+                                <div class="flex-1 hidden md:block"></div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `).join('');
@@ -384,7 +452,7 @@
                 </div>
             `;
 
-            // ESG 渲染 (使用圖片)
+            // ESG 渲染 (修復反字)
             document.getElementById('esg-grid').innerHTML = ESG_CARDS.map(e => `
                 <div class="group h-[550px] perspective-1000 cursor-pointer font-black">
                     <div class="relative h-full w-full transition-all duration-700 preserve-3d group-hover:rotate-y-180 shadow-2xl rounded-[4rem] overflow-hidden">
@@ -396,16 +464,18 @@
                             </div>
                         </div>
                         <div class="absolute inset-0 bg-green-700 text-white rounded-[4rem] p-12 flex flex-col items-center justify-center rotate-y-180 backface-hidden text-center shadow-inner border-[4px] border-green-800">
-                            <div class="bg-green-800/50 p-8 rounded-[3rem] border-2 border-green-500/30 w-full mb-10 shadow-inner"><div class="text-6xl font-black">${e.val}</div></div>
-                            <ul class="space-y-5 text-xl font-bold text-green-50 text-left w-full pl-4">
-                                ${e.list.map(li => `<li class="flex items-start gap-4"><i data-lucide="check-circle-2" class="w-6 h-6 text-green-300 shrink-0 mt-1"></i> <span>${li}</span></li>`).join('')}
-                            </ul>
+                            <div style="transform: scaleX(-1);">
+                                <div class="bg-green-800/50 p-8 rounded-[3rem] border-2 border-green-500/30 w-full mb-10 shadow-inner"><div class="text-6xl font-black">${e.val}</div></div>
+                                <ul class="space-y-5 text-xl font-bold text-green-50 text-left w-full pl-4">
+                                    ${e.list.map(li => `<li class="flex items-start gap-4"><i data-lucide="check-circle-2" class="w-6 h-6 text-green-300 shrink-0 mt-1"></i> <span>${li}</span></li>`).join('')}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             `).join('');
 
-            // 檢查清單 (更新內容與樣式)
+            // 檢查清單 (文字修正+樣式修復)
             const ITEMS = [
                 { t: '護照正本', sub: '有效期限 6 個月以上' },
                 { t: '簽證正本', sub: '由公司辦理之工作簽證' },
