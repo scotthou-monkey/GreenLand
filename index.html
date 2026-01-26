@@ -10,58 +10,52 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
         
-        /* 載入動畫 */
-        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; justify-content: center; align-items: center; transition: opacity 0.5s; }
+        /* 載入動畫 (預設顯示) */
+        #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
         
-        /* 隱藏捲軸但保留功能 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .perspective-1000 { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
         
-        /* 動畫效果 */
-        .fade-in { animation: fadeIn 0.8s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* 卡片滑動特效 (取代翻轉，避免反字) */
+        /* 卡片滑動特效 */
         .card-hover-container { position: relative; overflow: hidden; }
         .card-content { transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
         .card-overlay { 
-            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.95); 
+            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.98); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             text-align: center; padding: 2rem; 
             transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         .group:hover .card-overlay { transform: translateY(0); }
 
-        /* 檢查清單選中樣式 (強制深綠底白字) */
-        .checked-item { 
-            background-color: #15803d !important; 
-            border-color: #15803d !important; 
-            color: white !important; 
-            box-shadow: 0 10px 15px -3px rgba(21, 128, 61, 0.3);
-        }
-        .checked-item .check-icon { opacity: 1 !important; color: white !important; }
+        /* 檢查清單選中樣式 */
+        .checked-item { background-color: #15803d !important; border-color: #15803d !important; color: white !important; box-shadow: 0 10px 15px -3px rgba(21, 128, 61, 0.3); }
+        .checked-item i { opacity: 1 !important; color: white !important; }
         .checked-item span { color: white !important; }
 
-        /* 地圖標點動畫 */
-        .map-dot { width: 16px; height: 16px; background: #dc2626; border-radius: 50%; border: 3px solid white; position: absolute; transform: translate(-50%, -50%); cursor: pointer; z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.3s; }
-        .map-dot:hover { transform: translate(-50%, -50%) scale(1.5); background: #16a34a; z-index: 20; }
+        /* 地圖標點 */
+        .map-dot { width: 20px; height: 20px; background: #dc2626; border-radius: 50%; border: 3px solid white; position: absolute; transform: translate(-50%, -50%); cursor: pointer; z-index: 20; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.3s; }
+        .map-dot:hover { transform: translate(-50%, -50%) scale(1.5); background: #16a34a; z-index: 30; }
         .map-dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(220, 38, 38, 0.3); border-radius: 50%; animation: pulse 2s infinite; pointer-events: none; }
         @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
         
         /* 地圖資訊框 */
         .map-tooltip {
-            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%) scale(0.9);
-            background: white; padding: 1.5rem; border-radius: 1rem; width: 280px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); pointer-events: none; opacity: 0;
-            transition: all 0.3s ease; border-left: 6px solid #16a34a; z-index: 30;
+            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9);
+            background: white; padding: 1.5rem; border-radius: 1rem; width: 300px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25); pointer-events: none; opacity: 0;
+            transition: all 0.3s ease; border-left: 6px solid #16a34a; z-index: 40;
         }
-        .map-dot:hover .map-tooltip { opacity: 1; transform: translateX(-50%) scale(1); bottom: 35px; }
+        .map-dot:hover .map-tooltip { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; bottom: 40px; }
     </style>
 </head>
 <body class="text-slate-900">
 
     <div id="loading-overlay">
-        <div class="w-12 h-12 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <p class="font-bold text-green-800 tracking-widest uppercase">系統掛載中...</p>
+        <div class="w-16 h-16 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-6"></div>
+        <p class="font-black text-green-800 tracking-widest text-xl uppercase">SYSTEM LOADING...</p>
     </div>
 
     <nav class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b flex items-center justify-between px-6 h-24 shadow-sm">
@@ -74,7 +68,7 @@
             <button onclick="scrollToId('journey')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">三月旅程</button>
             <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">品牌夥伴</button>
             <button onclick="scrollToId('map-section')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">全球佈局</button>
-            <button onclick="scrollToId('esg')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">永續責任</button>
+            <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">培訓計畫</button>
             <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">出發清單</button>
         </div>
     </nav>
@@ -141,10 +135,10 @@
             </div>
             
             <div class="relative w-full aspect-[16/9] md:aspect-[2/1] bg-blue-50/50 rounded-[3rem] overflow-hidden border-4 border-white shadow-xl max-w-6xl mx-auto">
-                <svg viewBox="0 0 800 600" class="absolute inset-0 w-full h-full text-slate-200 fill-current" style="pointer-events: none;">
-                    <path d="M550,150 Q600,100 650,120 T700,200 T650,300 T500,350 T400,300 T450,200 T550,150 Z" /> <image href="https://upload.wikimedia.org/wikipedia/commons/5/5f/Asia_location_map.svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" opacity="0.4" />
+                <svg viewBox="0 0 1000 800" class="absolute inset-0 w-full h-full" style="pointer-events: none;">
+                    <path d="M700,200 L680,220 L660,210 L650,230 L670,250 L660,280 L630,300 L600,320 L580,350 L560,340 L550,320 L530,330 L520,310 L500,300 L480,320 L450,310 L440,290 L420,300 L400,280 L380,300 L350,280 L300,300 L250,250 L280,200 L300,180 L350,150 L400,120 L450,100 L500,80 L550,70 L600,80 L650,100 L700,130 L750,150 L800,180 L850,220 L800,250 L750,230 Z" fill="#cbd5e1" opacity="0.3"></path>
+                    <image href="https://upload.wikimedia.org/wikipedia/commons/5/5f/Asia_location_map.svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" opacity="0.5" />
                 </svg>
-                
                 <div id="map-markers-container" class="absolute inset-0 z-10"></div>
             </div>
             <div class="text-center text-slate-400 font-bold italic">提示：將滑鼠移至紅色據點查看詳細資訊</div>
@@ -196,6 +190,7 @@
                             <span class="px-10 py-6 bg-white text-red-600 rounded-[2.5rem] font-black shadow-xl text-2xl border-4 border-red-50">❌ 延長線</span>
                             <span class="px-10 py-6 bg-white text-red-600 rounded-[2.5rem] font-black shadow-xl text-2xl border-4 border-red-50">❌ 吹風機</span>
                         </div>
+                        <p class="text-red-800 font-black text-xl italic pt-12 underline decoration-red-200 uppercase">註：北越四季分明，請備妥保暖衣物。</p>
                     </div>
                 </div>
             </div>
@@ -207,9 +202,23 @@
         <p class="text-slate-300 text-xs font-bold uppercase tracking-[0.4em] italic">© 2024 GreenLand Footwear Group. All Rights Reserved.</p>
     </footer>
 
+    <div id="modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-md">
+        <div class="bg-white rounded-[4rem] max-w-3xl w-full shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div class="relative h-96">
+                <img id="modal-img" src="" class="w-full h-full object-cover" />
+                <button onclick="closeModal()" class="absolute top-8 right-8 w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-500 shadow-2xl border"><i data-lucide="x" class="w-8 h-8"></i></button>
+            </div>
+            <div class="p-16 space-y-10 font-black">
+                <div id="modal-year" class="inline-block px-8 py-3 bg-green-100 text-green-700 rounded-full text-2xl uppercase tracking-widest shadow-sm"></div>
+                <h3 id="modal-title" class="text-5xl text-slate-900 leading-tight uppercase font-black"></h3>
+                <p id="modal-detail" class="text-2xl text-slate-500 font-bold italic leading-relaxed"></p>
+                <button onclick="closeModal()" class="w-full py-8 bg-green-700 text-white rounded-[2.5rem] text-2xl shadow-xl hover:bg-green-800 active:scale-95 uppercase">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. 資料庫 ---
-        // 地圖座標 (Top, Left %)
+        // --- 1. 地圖資料 ---
         const MAP_LOCATIONS = [
             { top: '45%', left: '82%', year: '1994', title: '台灣台中總部', desc: '聯玖興業成立，集團發源地。', code: '' },
             { top: '48%', left: '76%', year: '1997', title: '中國東莞研發中心', desc: '技術研發重鎮。', code: '523380 广东省东莞市业兴路' },
@@ -219,22 +228,23 @@
             { top: '53%', left: '57%', year: '2009', title: '孟加拉達卡廠', desc: 'Blue Ocean Footwear Ltd.', code: '27M7+XJ Shafipur' }
         ];
 
+        // --- 2. 品牌資料 ---
         const PARTNERS = [
-            { name: "UGG", desc: "奢華高品質羊皮雪靴。", img: "https://duk.tw/7PC91g.png" },
-            { name: "ECCO", desc: "丹麥皇室御用，強調實用。", img: "https://duk.tw/EPGeHt.jpg" },
-            { name: "Dansko", desc: "專業木底鞋，足弓支撐。", img: "https://duk.tw/93aT9z.jpg" },
-            { name: "CAT", desc: "工裝機能與街頭潮流。", img: "https://duk.tw/s4jeqG.png" },
-            { name: "SPERRY", desc: "帆船鞋創始品牌。", img: "https://duk.tw/bD40R3.jpg" },
-            { name: "FRED PERRY", desc: "英倫體育文化經典。", img: "https://duk.tw/QgUjMd.jpg" },
-            { name: "CAMPER", desc: "西班牙創意設計。", img: "https://duk.tw/Oc74Xg.png" },
-            { name: "Blundstone", desc: "澳洲百年工裝靴。", img: "https://duk.tw/6YLDED.png" },
-            { name: "JOHNSTON & MURPHY", desc: "美國總統級紳士鞋。", img: "https://duk.tw/EijVva.png" },
-            { name: "rag & bone", desc: "紐約摩登英式剪裁。", img: "https://duk.tw/9OmiSH.jpg" }
+            { name: "UGG", desc: "奢華高品質羊皮雪靴，享譽全球。", img: "https://duk.tw/7PC91g.png" },
+            { name: "ECCO", desc: "丹麥皇室御用，強調人體工學與簡約。", img: "https://duk.tw/EPGeHt.jpg" },
+            { name: "Dansko", desc: "專業木底鞋，強調足弓極致支撐。", img: "https://duk.tw/93aT9z.jpg" },
+            { name: "CAT", desc: "工業硬派工裝機能與街頭潮流。", img: "https://duk.tw/s4jeqG.png" },
+            { name: "SPERRY", desc: "帆船鞋創始品牌，代表經典學院風。", img: "https://duk.tw/bD40R3.jpg" },
+            { name: "FRED PERRY", desc: "英倫體育與次文化融合的經典。", img: "https://duk.tw/QgUjMd.jpg" },
+            { name: "CAMPER", desc: "西班牙創意設計，想像力與製鞋的火花。", img: "https://duk.tw/Oc74Xg.png" },
+            { name: "Blundstone", desc: "澳洲百年工裝靴，極致耐穿。", img: "https://duk.tw/6YLDED.png" },
+            { name: "JOHNSTON & MURPHY", desc: "美國總統級紳士鞋，商務精湛工藝。", img: "https://duk.tw/EijVva.png" },
+            { name: "rag & bone", desc: "紐約品牌，英式剪裁與美式工裝融合。", img: "https://duk.tw/9OmiSH.jpg" }
         ];
 
         const MILESTONES = [
             { phase: "奠基與起步 (1994-1997)", items: [
-                { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業」。" },
+                { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
                 { year: "1996", title: "前進海防", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
                 { year: "1997", title: "跨足陸越", content: "成立中國東莞聯運鞋業及越南海防 GL1 工廠。" }
             ]},
@@ -247,4 +257,236 @@
             { phase: "現代化與重塑 (2019-2024)", items: [
                 { year: "2019", title: "大規模擴廠", content: "GL 3 廠現代化擴建。" },
                 { year: "2020", title: "垂直整合", content: "越南義安省成立鞋面廠。" },
-                { year: "2022", title
+                { year: "2022", title: "重返柬埔寨", content: "磅湛省成立 SKY NICE II。" },
+                { year: "2024", title: "品牌更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
+            ]}
+        ];
+
+        const TRAINING = {
+            p1: [{d:"面版課",t:1,info:"認識鞋面結構"},{d:"底版課",t:1,info:"大底開發邏輯"},{d:"倉庫",t:5,info:"物料入庫準備"},{d:"打料組",t:2,info:"物料切割加工"},{d:"底部課",t:2,info:"組件結合流程"},{d:"面部課",t:4,info:"縫製針車裝飾"},{d:"成型課",t:2,info:"零件組合成品"},{d:"研發營運",t:9,info:"生管開發 CSR"}],
+            p2: [{d:"半成品",t:6,info:"管理流向"},{d:"大貨倉庫",t:2,info:"物流倉儲"},{d:"自動裁斷",t:4,info:"精準精益"},{d:"物資控制",t:3,info:"精準調度"},{d:"鞋面部",t:4,info:"流水協作"},{d:"生產管理",t:3,info:"實踐排程"},{d:"大貨成型",t:4,info:"品質穩定"},{d:"樣品轉換",t:6,info:"開發轉換"},{d:"專業管理",t:10,info:"品管採購業務"}]
+        };
+
+        const ESG_CARDS = [
+            { title: "環境保護 (Planet)", icon: "leaf", val: "25.46%", sub: "Solar Power", list: ["太陽能替代率 25.46%", "年減碳 925,820 kgCO2e", "取得 ISO 14064/14067 認證"] },
+            { title: "社會公益 (People)", icon: "heart", val: "95.7%", sub: "Her+ Project", list: ["女性生理知識理解度 95.7%", "自我檢查能力 100%", "190 人完成永續培訓"] },
+            { title: "企業治理 (Governance)", icon: "gavel", val: "FEM", sub: "Supply Chain", list: ["HIGG FEM 環境評估", "Better Work 跨國認證", "供應鏈透明化"] }
+        ];
+
+        const JOURNEY_MONTHS = [
+            { title: "研發中心 (R&D)", desc: "任務：「親手做出一雙鞋」", detail: "Month 1: 學習材料、結構原理，完成第一雙手工鞋。" },
+            { title: "大貨現場 (Production)", desc: "任務：「熟悉產線與管理」", detail: "Month 2-3: 深入產線，學習生管排程與品控邏輯。" },
+            { title: "結訓考核 (Graduation)", desc: "任務：「部門交接與報告」", detail: "完成交接，進行每週六口頭報告分享成長。" }
+        ];
+
+        // --- 3. Emoji 動物圖示 (高辨識度 & 不破圖) ---
+        const ANIMAL_ICONS = {
+            '老虎型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐅</div>`,
+            '海豚型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐬</div>`,
+            '蜜蜂型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐝</div>`,
+            '企鵝型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐧</div>`,
+            '八爪魚型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐙</div>`
+        };
+
+        // --- 核心邏輯 ---
+        let currentDiscIdx = 0;
+        let discScores = { A: 0, B: 0, C: 0, D: 0 };
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            const DISC_QUESTIONS = [
+                { options: { A: "活潑生動", B: "冒險精神", C: "善於分析", D: "順從性強" } }, { options: { A: "善於社交", B: "善於說服", C: "堅持不懈", D: "平和溫順" } },
+                { options: { A: "可愛", B: "勇敢", C: "自律", D: "體貼" } }, { options: { A: "無拘無束", B: "善於應變", C: "注意細節", D: "具有毅力" } },
+                { options: { A: "使人振作", B: "喜競爭勝", C: "自我犧牲", D: "較少爭辯" } }, { options: { A: "活力充沛", B: "自立", C: "敏感", D: "滿足" } },
+                { options: { A: "情感外露", B: "果斷", C: "深沉", D: "淡然無爭" } }, { options: { A: "樂觀", B: "坦率", C: "井井有條", D: "遷就" } },
+                { options: { A: "愛插嘴", B: "沒耐性", C: "優柔寡斷", D: "無安全感" } }, { options: { A: "散漫", B: "缺乏同情心", C: "報復", D: "缺乏熱情" } },
+                { options: { A: "煩躁", B: "輕率", C: "挑剔", D: "膽小" } }, { options: { A: "健忘", B: "控制欲", C: "孤僻", D: "隨興" } },
+                { options: { A: "激勵人心", B: "獨立", C: "理想主義", D: "含蓄" } }, { options: { A: "推動者", B: "領導者", C: "計畫者", D: "聆聽者" } },
+                { options: { A: "多言", B: "執著", C: "考慮周到", D: "耐性" } }, { options: { A: "即興", B: "固執", C: "難於取悅", D: "猶豫不決" } },
+                { options: { A: "天真", B: "魯莽", C: "消極", D: "冷漠" } }, { options: { A: "受歡迎", B: "工作狂", C: "過於嚴肅", D: "羞澀" } },
+                { options: { A: "露骨", B: "專橫", C: "乏味", D: "扭捏" } }, { options: { A: "不專注", B: "不容忍", C: "鑽牛角尖", D: "無目標" } },
+                { options: { A: "善變", B: "強勢", C: "喜歡批評", D: "妥協" } }, { options: { A: "不專注", B: "易怒", C: "多疑", D: "拖延" } },
+                { options: { A: "淩亂", B: "跋扈", C: "抑鬱", D: "靦腆" } }, { options: { A: "喋喋不休", B: "直截了當", C: "過分敏感", D: "喃喃自語" } },
+                { options: { A: "放任", B: "喜操縱", C: "有戒心", D: "緩慢" } }
+            ];
+
+            if (currentDiscIdx < 25) {
+                const q = DISC_QUESTIONS[currentDiscIdx];
+                container.innerHTML = `
+                    <div class="space-y-12 max-w-4xl mx-auto text-center">
+                        <div class="flex justify-between items-center text-sm font-black text-slate-400 uppercase tracking-widest">
+                            <span>Question ${currentDiscIdx + 1} / 25</span>
+                            <div class="w-1/2 h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentDiscIdx+1)/25)*100}%"></div></div>
+                        </div>
+                        <p class="text-4xl font-black py-8 text-slate-800">哪一個特質最像您？</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 font-black">
+                            ${Object.entries(q.options).map(([k, v]) => `<button onclick="handleDisc('${k}')" class="p-10 text-left border-[3px] border-slate-100 rounded-[2.5rem] hover:border-green-600 hover:bg-green-50 flex justify-between items-center transition-all bg-white shadow-sm group"><span class="text-2xl font-black text-slate-700">${v}</span><i data-lucide="chevron-right" class="text-slate-200 group-hover:text-green-600"></i></button>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                showDiscResult();
+            }
+            lucide.createIcons();
+        }
+
+        function handleDisc(key) {
+            discScores[key]++;
+            currentDiscIdx++;
+            renderQuiz();
+        }
+
+        function showDiscResult() {
+            const m = Math.max(...Object.values(discScores));
+            const winKeys = Object.keys(discScores).filter(k => discScores[k] === m);
+            let result = "";
+            let intro = "";
+
+            if (m >= 5 && m <= 8 && winKeys.length > 1) {
+                result = "八爪魚型"; intro = "全方位能力平衡，在各崗位間游刃有餘。";
+            } else {
+                const map = { A: "海豚型", B: "老虎型", C: "蜜蜂型", D: "企鵝型" };
+                const desc = { A: "活潑社交，團隊正能量。", B: "勇往直前，果斷推路。", C: "精準細節，品質守門員。", D: "平和穩健，耐性聆聽。" };
+                result = map[winKeys[0]];
+                intro = desc[winKeys[0]];
+            }
+
+            document.getElementById('quiz-container').innerHTML = `
+                <div class="text-center py-16 space-y-12 animate-in fade-in">
+                    <div class="mb-10">${ANIMAL_ICONS[result]}</div>
+                    <h3 class="text-7xl font-black text-slate-900 uppercase">你是 <span class="text-green-700 underline decoration-green-200 decoration-8">${result}</span></h3>
+                    <p class="text-slate-500 max-w-2xl mx-auto text-3xl font-bold italic leading-relaxed">"${intro}"</p>
+                    <button onclick="location.reload()" class="px-12 py-6 bg-slate-900 text-white rounded-full font-black text-xl shadow-xl hover:bg-green-700 transition-all uppercase">重新測試</button>
+                </div>
+            `;
+        }
+
+        function updateJourney(pct) {
+            document.getElementById('journey-progress').style.width = pct + '%';
+            const detail = document.getElementById('journey-detail');
+            const item = JOURNEY_MONTHS[pct === 0 ? 0 : pct === 50 ? 1 : 2];
+            document.getElementById('node-2').className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-900 ${pct >= 50 ? 'bg-green-500' : 'bg-slate-700'}`;
+            document.getElementById('node-3').className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-900 ${pct >= 100 ? 'bg-green-500' : 'bg-slate-700'}`;
+            detail.innerHTML = `<h3 class="text-4xl font-black text-green-400 mb-4">${item.title}</h3><p class="text-2xl font-bold leading-relaxed italic">${item.desc}<br/><span class="text-slate-400 text-lg mt-4 block font-black">${item.detail}</span></p>`;
+        }
+
+        function scrollToId(id) {
+            const el = document.getElementById(id);
+            if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+        }
+
+        function openModal(yr) {
+            let item;
+            MILESTONES.forEach(p => { const found = p.items.find(x => x.year === yr); if (found) item = found; });
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-year').innerText = item.year;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-detail').innerText = item.content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
+        // --- 初始化 (強制保險) ---
+        window.onload = () => {
+            renderQuiz();
+
+            // 地圖標點
+            const mapContainer = document.getElementById('map-markers-container');
+            MAP_LOCATIONS.forEach(loc => {
+                const dot = document.createElement('div');
+                dot.className = 'map-dot';
+                dot.style.top = loc.top;
+                dot.style.left = loc.left;
+                dot.innerHTML = `<div class="map-tooltip"><div class="text-green-700 font-black text-xl mb-2">${loc.year}</div><h4 class="text-lg font-black mb-2 text-slate-900">${loc.title}</h4><p class="text-sm text-slate-500 font-bold mb-3">${loc.desc}</p>${loc.code ? `<div class="bg-slate-100 p-2 rounded text-xs font-mono text-slate-600 flex items-center gap-2"><i data-lucide="map-pin" class="w-3 h-3"></i> ${loc.code}</div>` : ''}</div>`;
+                mapContainer.appendChild(dot);
+            });
+
+            // 品牌夥伴 (滑動特效，避免反字)
+            document.getElementById('partners-grid').innerHTML = PARTNERS.map(b => `
+                <div class="group h-80 cursor-pointer card-hover-container rounded-[3rem] shadow-xl overflow-hidden bg-white border-2 border-slate-100">
+                    <div class="absolute inset-0 p-8 flex flex-col items-center justify-center card-content group-hover:-translate-y-4">
+                        <img src="${b.img}" class="h-16 mb-6 object-contain grayscale group-hover:grayscale-0 transition-all duration-500" />
+                        <span class="text-xl font-black text-slate-800 uppercase text-center">${b.name}</span>
+                    </div>
+                    <div class="card-overlay"><p class="text-lg font-bold text-white italic leading-relaxed">${b.desc}</p></div>
+                </div>
+            `).join('');
+
+            // 發展歷程
+            document.getElementById('milestones-list').innerHTML = MILESTONES.map((phase) => `
+                <div class="relative py-12">
+                    <div class="bg-green-700 text-white inline-block px-10 py-4 rounded-full font-black text-2xl uppercase tracking-widest shadow-xl mb-16 relative z-10">${phase.phase}</div>
+                    <div class="space-y-32">
+                        ${phase.items.map((m, idx) => `
+                            <div class="flex flex-col md:flex-row items-center gap-16 relative z-10 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} group">
+                                <div class="flex-1 w-full bg-white p-10 border-4 border-slate-50 rounded-[3rem] shadow-xl text-left hover:border-green-200 transition-all cursor-pointer" onclick="openModal('${m.year}')">
+                                    <div class="text-green-700 font-black text-6xl mb-4 tracking-tighter">${m.year}</div>
+                                    <h4 class="text-3xl font-black mb-4 uppercase">${m.title}</h4>
+                                    <p class="text-slate-400 font-bold text-xl italic line-clamp-2">點擊查看詳情 <i data-lucide="chevron-right" class="inline w-6 h-6"></i></p>
+                                </div>
+                                <div class="relative z-10 w-20 h-20 bg-green-700 border-[8px] border-white rounded-full flex items-center justify-center shadow-2xl shrink-0"><i data-lucide="map-pin" class="text-white w-8 h-8"></i></div>
+                                <div class="flex-1 hidden md:block"></div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            // 培訓導航
+            document.getElementById('training-grid').innerHTML = `
+                <div class="bg-white border-4 border-slate-50 rounded-[4rem] shadow-xl overflow-hidden font-bold hover:shadow-2xl transition-all">
+                    <div class="bg-green-700 p-12 text-white"><h3 class="text-4xl font-black uppercase">第一階段：開發</h3><p class="text-green-100 text-xl mt-2">25 天實習 | 材料認識與開發流程</p></div>
+                    <div class="p-12 space-y-4">${TRAINING.p1.map(s => `<div class="flex justify-between p-4 bg-slate-50 rounded-2xl border hover:border-green-300"><div><div class="font-black text-lg">${s.d}</div><div class="text-xs text-slate-400 font-bold uppercase">${s.info}</div></div><span class="font-black text-green-700 bg-white px-4 py-2 rounded-xl shadow-sm border">${s.t} 天</span></div>`).join('')}</div>
+                </div>
+                <div class="bg-white border-4 border-slate-50 rounded-[4rem] shadow-xl overflow-hidden font-bold hover:shadow-2xl transition-all">
+                    <div class="bg-slate-900 p-12 text-white"><h3 class="text-4xl font-black uppercase">第二階段：量產</h3><p class="text-slate-400 text-xl mt-2">42 天實習 | 量產工藝與體系營運</p></div>
+                    <div class="p-12 space-y-4">${TRAINING.p2.map(s => `<div class="flex justify-between p-4 bg-slate-50 rounded-2xl border hover:border-slate-300"><div class="font-black text-lg">${s.d}</div><span class="font-black text-slate-800 bg-white px-4 py-2 rounded-xl shadow-sm border">${s.t} 天</span></div>`).join('')}</div>
+                </div>
+            `;
+
+            // ESG (滑動特效，避免反字)
+            document.getElementById('esg-grid').innerHTML = ESG_CARDS.map(e => `
+                <div class="group h-[500px] cursor-pointer card-hover-container rounded-[4rem] shadow-xl overflow-hidden bg-white border-4 border-white">
+                    <div class="absolute inset-0 p-12 flex flex-col items-center justify-center card-content bg-gradient-to-br from-white to-green-50">
+                        <div class="w-24 h-24 bg-green-100 text-green-700 rounded-3xl flex items-center justify-center shadow-lg mb-8"><i data-lucide="${e.icon}" class="w-12 h-12"></i></div>
+                        <h3 class="text-3xl font-black text-center uppercase">${e.title}<br/><span class="text-sm text-slate-400 mt-2 block">${e.sub}</span></h3>
+                    </div>
+                    <div class="card-overlay bg-green-800 text-white">
+                        <div class="text-5xl font-black mb-6 underline decoration-green-400">${e.val}</div>
+                        <ul class="space-y-4 text-lg font-bold text-left w-full pl-4">${e.list.map(li => `<li class="flex items-start gap-3"><i data-lucide="check" class="w-5 h-5 shrink-0 mt-1"></i> ${li}</li>`).join('')}</ul>
+                    </div>
+                </div>
+            `).join('');
+
+            // 檢查清單 (深綠底白字)
+            const ITEMS = [
+                { t: '護照正本', sub: '有效期限 6 個月以上' }, { t: '簽證正本', sub: '由公司辦理之工作簽證' },
+                { t: '衣物準備', sub: '北越四季變化，需備禦寒外套' }, { t: '電子產品', sub: '筆電或平板 (視個人需求)' },
+                { t: '個人藥品', sub: '常備藥物 (感冒/腸胃/外傷)' }, { t: '少許現金', sub: '備用金 (台幣/美金皆可)' },
+                { t: '通訊網路', sub: '建議先買 1 天漫遊，抵達後公司提供 4GB/日 網卡' }
+            ];
+            document.getElementById('checklist-items').innerHTML = ITEMS.map((it) => `
+                <div onclick="this.classList.toggle('checked-item');" class="flex items-center gap-6 p-8 rounded-[3rem] border-4 border-slate-100 cursor-pointer transition-all duration-200 shadow-lg bg-white group hover:border-green-300">
+                    <i data-lucide="check-circle" class="check-icon w-10 h-10 text-slate-200 transition-all opacity-50"></i>
+                    <div class="space-y-1">
+                        <span class="font-black text-2xl uppercase italic block text-slate-900 transition-colors">${it.t}</span>
+                        <span class="text-sm font-bold text-slate-400 block transition-colors">${it.sub}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            lucide.createIcons();
+            
+            // 安全鎖：確保3秒內隱藏載入畫面
+            setTimeout(() => { 
+                const overlay = document.getElementById('loading-overlay');
+                if(overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.style.display = 'none', 500); }
+            }, 1000);
+        };
+        
+        // 雙重保險
+        setTimeout(() => { document.getElementById('loading-overlay').style.display = 'none'; }, 3000);
+    </script>
+</body>
+</html>
