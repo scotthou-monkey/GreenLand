@@ -10,7 +10,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
         body { font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; }
         
-        /* 載入動畫 (預設顯示) */
+        /* 載入動畫 */
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
         
         .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -35,27 +35,41 @@
         .checked-item i { opacity: 1 !important; color: white !important; }
         .checked-item span { color: white !important; }
 
-        /* 地圖標點 */
-        .map-dot { width: 20px; height: 20px; background: #dc2626; border-radius: 50%; border: 3px solid white; position: absolute; transform: translate(-50%, -50%); cursor: pointer; z-index: 20; box-shadow: 0 4px 6px rgba(0,0,0,0.3); transition: transform 0.3s; }
-        .map-dot:hover { transform: translate(-50%, -50%) scale(1.5); background: #16a34a; z-index: 30; }
-        .map-dot::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: rgba(220, 38, 38, 0.3); border-radius: 50%; animation: pulse 2s infinite; pointer-events: none; }
+        /* 戰略地圖節點 */
+        .map-node { 
+            position: absolute; display: flex; flex-direction: column; align-items: center; 
+            transition: all 0.3s ease; cursor: pointer; z-index: 10;
+        }
+        .map-node:hover { transform: scale(1.1); z-index: 20; }
+        .map-dot { 
+            width: 24px; height: 24px; background: #dc2626; border: 4px solid white; border-radius: 50%; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); margin-bottom: 0.5rem; position: relative;
+        }
+        .map-dot::after {
+            content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px; border-radius: 50%; background: rgba(220, 38, 38, 0.2);
+            animation: pulse 2s infinite;
+        }
         @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
         
-        /* 地圖資訊框 */
-        .map-tooltip {
-            position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) scale(0.9);
-            background: white; padding: 1.5rem; border-radius: 1rem; width: 300px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25); pointer-events: none; opacity: 0;
-            transition: all 0.3s ease; border-left: 6px solid #16a34a; z-index: 40;
+        .map-label {
+            background: white; padding: 0.8rem 1.2rem; border-radius: 1rem; border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); text-align: center; min-width: 180px;
         }
-        .map-dot:hover .map-tooltip { opacity: 1; transform: translateX(-50%) scale(1); pointer-events: auto; bottom: 40px; }
+        .map-label h4 { font-weight: 900; color: #15803d; font-size: 1.1rem; margin-bottom: 0.2rem; }
+        .map-label span { font-size: 0.8rem; font-weight: 700; color: #64748b; display: block; }
+        
+        /* 連接線 (SVG) */
+        .map-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .map-line { stroke: #cbd5e1; stroke-width: 2; stroke-dasharray: 6; animation: dash 30s linear infinite; }
+        @keyframes dash { to { stroke-dashoffset: 1000; } }
     </style>
 </head>
 <body class="text-slate-900">
 
     <div id="loading-overlay">
         <div class="w-16 h-16 border-4 border-green-700 border-t-transparent rounded-full animate-spin mb-6"></div>
-        <p class="font-black text-green-800 tracking-widest text-xl uppercase">SYSTEM LOADING...</p>
+        <p class="font-black text-green-800 tracking-widest text-xl uppercase">LOADING...</p>
     </div>
 
     <nav class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b flex items-center justify-between px-6 h-24 shadow-sm">
@@ -134,18 +148,24 @@
                 <p class="text-slate-500 text-2xl font-bold italic">跨越國界，深耕亞洲</p>
             </div>
             
-            <div class="relative w-full aspect-[16/9] md:aspect-[2/1] bg-blue-50/50 rounded-[3rem] overflow-hidden border-4 border-white shadow-xl max-w-6xl mx-auto">
-                <svg viewBox="0 0 1000 800" class="absolute inset-0 w-full h-full" style="pointer-events: none;">
-                    <path d="M700,200 L680,220 L660,210 L650,230 L670,250 L660,280 L630,300 L600,320 L580,350 L560,340 L550,320 L530,330 L520,310 L500,300 L480,320 L450,310 L440,290 L420,300 L400,280 L380,300 L350,280 L300,300 L250,250 L280,200 L300,180 L350,150 L400,120 L450,100 L500,80 L550,70 L600,80 L650,100 L700,130 L750,150 L800,180 L850,220 L800,250 L750,230 Z" fill="#cbd5e1" opacity="0.3"></path>
-                    <image href="https://upload.wikimedia.org/wikipedia/commons/5/5f/Asia_location_map.svg" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" opacity="0.5" />
+            <div class="relative w-full aspect-[16/9] md:aspect-[2/1] bg-white rounded-[3rem] overflow-hidden border-4 border-slate-100 shadow-xl max-w-6xl mx-auto hidden md:block">
+                <svg class="map-lines" viewBox="0 0 1000 500">
+                    <line x1="850" y1="150" x2="750" y2="180" class="map-line" />
+                    <line x1="850" y1="150" x2="680" y2="250" class="map-line" />
+                    <line x1="680" y1="250" x2="650" y2="300" class="map-line" />
+                    <line x1="650" y1="300" x2="620" y2="350" class="map-line" />
+                    <line x1="680" y1="250" x2="200" y2="280" class="map-line" />
                 </svg>
+
                 <div id="map-markers-container" class="absolute inset-0 z-10"></div>
             </div>
-            <div class="text-center text-slate-400 font-bold italic">提示：將滑鼠移至紅色據點查看詳細資訊</div>
+
+            <div class="grid grid-cols-1 gap-6 md:hidden" id="mobile-map-list">
+                </div>
         </section>
 
         <section id="milestones" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
-            <h2 class="text-6xl font-black text-center text-slate-900 uppercase">三十年足跡</h2>
+            <h2 class="text-6xl font-black text-center text-slate-900 uppercase">發展足跡</h2>
             <div class="relative max-w-5xl mx-auto py-10">
                 <div class="timeline-line"></div>
                 <div class="space-y-32 relative" id="milestones-list"></div>
@@ -218,14 +238,14 @@
     </div>
 
     <script>
-        // --- 1. 地圖資料 ---
+        // --- 1. 地圖資料 (戰略佈局 - 無代碼) ---
         const MAP_LOCATIONS = [
-            { top: '45%', left: '82%', year: '1994', title: '台灣台中總部', desc: '聯玖興業成立，集團發源地。', code: '' },
-            { top: '48%', left: '76%', year: '1997', title: '中國東莞研發中心', desc: '技術研發重鎮。', code: '523380 广东省东莞市业兴路' },
-            { top: '56%', left: '72%', year: '1996-2019', title: '越南海防基地群', desc: 'GL1, GL2, GL3, 研發中心及榮保廠。', code: 'GL1/2/RD: QPV9+Q3 陽京郡\nGL3: JGRR+2V 永寶縣' },
-            { top: '58%', left: '70%', year: '2020', title: '越南義安鞋面廠', desc: '垂直整合關鍵。', code: 'PF8W+39 南壇縣' },
-            { top: '62%', left: '69%', year: '2007/2022', title: '柬埔寨基地', desc: '金邊(已結束) & 磅湛 Right Union。', code: 'Right Union: 3325+CQ5 Skun' },
-            { top: '53%', left: '57%', year: '2009', title: '孟加拉達卡廠', desc: 'Blue Ocean Footwear Ltd.', code: '27M7+XJ Shafipur' }
+            { top: '30%', left: '85%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業' },
+            { top: '36%', left: '75%', year: '1997', title: '中國研發', desc: '東莞 | 研發中心' },
+            { top: '50%', left: '68%', year: '1996', title: '海防基地群', desc: 'GL1/2/3, 研發, 榮保' },
+            { top: '60%', left: '65%', year: '2020', title: '宜安鞋面廠', desc: '垂直整合 | 南壇縣' },
+            { top: '70%', left: '62%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛' },
+            { top: '56%', left: '20%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡' }
         ];
 
         // --- 2. 品牌資料 ---
@@ -244,27 +264,27 @@
 
         const MILESTONES = [
             { phase: "奠基與起步 (1994-1997)", items: [
-                { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
-                { year: "1996", title: "前進海防", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
+                { year: "1994", title: "公司起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
+                { year: "1996", title: "前進越南", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
                 { year: "1997", title: "跨足陸越", content: "成立中國東莞聯運鞋業及越南海防 GL1 工廠。" }
             ]},
             { phase: "深耕與擴張 (2004-2009)", items: [
-                { year: "2004", title: "產能擴增", content: "成立海防 GL 2 工廠。" },
-                { year: "2007", title: "跨足柬埔寨", content: "成立金邊 SKY NICE I 工廠。" },
-                { year: "2008", title: "海防 3 廠", content: "成立海防 GL 3 工廠。" },
-                { year: "2009", title: "南亞佈局", content: "孟加拉成立 BLUE OCEAN FOOTWEAR。" }
+                { year: "2004", title: "產能擴增", content: "成立 越南 GL 2 工廠。" },
+                { year: "2007", title: "跨足柬埔寨", content: "成立 柬埔寨 SKY NICE I 工廠。" },
+                { year: "2008", title: "擴大投產", content: "成立 越南 GL 3 工廠。" },
+                { year: "2009", title: "孟加拉佈局", content: "孟加拉成立 BLUE OCEAN FOOTWEAR。" }
             ]},
             { phase: "現代化與重塑 (2019-2024)", items: [
                 { year: "2019", title: "大規模擴廠", content: "GL 3 廠現代化擴建。" },
-                { year: "2020", title: "垂直整合", content: "越南義安省成立鞋面廠。" },
-                { year: "2022", title: "重返柬埔寨", content: "磅湛省成立 SKY NICE II。" },
-                { year: "2024", title: "品牌更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
+                { year: "2020", title: "垂直整合", content: "越南義安省成立宜安鞋面廠。" },
+                { year: "2022", title: "重返柬埔寨", content: "磅湛省成立 SKY NICE II 廠。" },
+                { year: "2024", title: "柬埔寨廠更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
             ]}
         ];
 
         const TRAINING = {
-            p1: [{d:"面版課",t:1,info:"認識鞋面結構"},{d:"底版課",t:1,info:"大底開發邏輯"},{d:"倉庫",t:5,info:"物料入庫準備"},{d:"打料組",t:2,info:"物料切割加工"},{d:"底部課",t:2,info:"組件結合流程"},{d:"面部課",t:4,info:"縫製針車裝飾"},{d:"成型課",t:2,info:"零件組合成品"},{d:"研發營運",t:9,info:"生管開發 CSR"}],
-            p2: [{d:"半成品",t:6,info:"管理流向"},{d:"大貨倉庫",t:2,info:"物流倉儲"},{d:"自動裁斷",t:4,info:"精準精益"},{d:"物資控制",t:3,info:"精準調度"},{d:"鞋面部",t:4,info:"流水協作"},{d:"生產管理",t:3,info:"實踐排程"},{d:"大貨成型",t:4,info:"品質穩定"},{d:"樣品轉換",t:6,info:"開發轉換"},{d:"專業管理",t:10,info:"品管採購業務"}]
+            p1: [{d:"面版",t:1,info:"認識鞋面結構"},{d:"底版",t:1,info:"認識底部結構"},{d:"倉庫",t:5,info:"認識原材料特性"},{d:"打料組",t:2,info:"裁片的認識"},{d:"底部",t:2,info:"認識底部組合流程"},{d:"面部",t:4,info:"認識鞋面工藝"},{d:"成型",t:2,info:"鞋面與大底的組合成品"},{d:"其他部門",t:9,info:"生管 開發業務 報價 CSR"}],
+            p2: [{d:"半成品",t:6,info:"各項鞋子部件半成品"},{d:"大貨倉庫",t:2,info:"物流倉儲"},{d:"裁斷",t:4,info:"合理運用材料"},{d:"物料控制",t:3,info:"精準控制材料用量"},{d:"鞋面部",t:4,info:"流水協作"},{d:"生產管理",t:3,info:"實踐排程"},{d:"大貨成型",t:4,info:"生產線的最後一關"},{d:"樣品室",t:6,info:"認識量產紙板結構及流程"},{d:"間接部門",t:10,info:"品管採購業務"}]
         };
 
         const ESG_CARDS = [
@@ -279,7 +299,7 @@
             { title: "結訓考核 (Graduation)", desc: "任務：「部門交接與報告」", detail: "完成交接，進行每週六口頭報告分享成長。" }
         ];
 
-        // --- 3. Emoji 動物圖示 (高辨識度 & 不破圖) ---
+        // --- 3. Emoji 動物圖示 ---
         const ANIMAL_ICONS = {
             '老虎型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐅</div>`,
             '海豚型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐬</div>`,
@@ -345,9 +365,9 @@
             if (m >= 5 && m <= 8 && winKeys.length > 1) {
                 result = "八爪魚型"; intro = "全方位能力平衡，在各崗位間游刃有餘。";
             } else {
-                const map = { A: "海豚型", B: "老虎型", C: "蜜蜂型", D: "企鵝型" };
+                const map = { A: ["海豚型", "🐬"], B: ["老虎型", "🐅"], C: ["蜜蜂型", "🐝"], D: ["企鵝型", "🐧"] };
                 const desc = { A: "活潑社交，團隊正能量。", B: "勇往直前，果斷推路。", C: "精準細節，品質守門員。", D: "平和穩健，耐性聆聽。" };
-                result = map[winKeys[0]];
+                result = map[winKeys[0]][0];
                 intro = desc[winKeys[0]];
             }
 
@@ -375,31 +395,36 @@
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
         }
 
-        function openModal(yr) {
-            let item;
-            MILESTONES.forEach(p => { const found = p.items.find(x => x.year === yr); if (found) item = found; });
-            document.getElementById('modal-img').src = item.img;
-            document.getElementById('modal-year').innerText = item.year;
-            document.getElementById('modal-title').innerText = item.title;
-            document.getElementById('modal-detail').innerText = item.content;
-            document.getElementById('modal').classList.remove('hidden');
-        }
-
-        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
-
         // --- 初始化 (強制保險) ---
         window.onload = () => {
             renderQuiz();
 
-            // 地圖標點
+            // 地圖標點 (戰略圖)
             const mapContainer = document.getElementById('map-markers-container');
+            const mobileMapList = document.getElementById('mobile-map-list');
             MAP_LOCATIONS.forEach(loc => {
+                // 電腦版: 戰略地圖點
                 const dot = document.createElement('div');
-                dot.className = 'map-dot';
+                dot.className = 'map-node';
                 dot.style.top = loc.top;
                 dot.style.left = loc.left;
-                dot.innerHTML = `<div class="map-tooltip"><div class="text-green-700 font-black text-xl mb-2">${loc.year}</div><h4 class="text-lg font-black mb-2 text-slate-900">${loc.title}</h4><p class="text-sm text-slate-500 font-bold mb-3">${loc.desc}</p>${loc.code ? `<div class="bg-slate-100 p-2 rounded text-xs font-mono text-slate-600 flex items-center gap-2"><i data-lucide="map-pin" class="w-3 h-3"></i> ${loc.code}</div>` : ''}</div>`;
+                dot.innerHTML = `
+                    <div class="map-dot"></div>
+                    <div class="map-label">
+                        <h4>${loc.year} ${loc.title}</h4>
+                        <span>${loc.desc}</span>
+                    </div>
+                `;
                 mapContainer.appendChild(dot);
+
+                // 手機版: 列表
+                mobileMapList.innerHTML += `
+                    <div class="bg-white p-6 rounded-3xl shadow-md border-2 border-slate-100">
+                        <div class="text-green-700 font-black text-2xl mb-2">${loc.year}</div>
+                        <h4 class="text-lg font-black text-slate-900 mb-2">${loc.title}</h4>
+                        <p class="text-slate-500 font-bold text-sm mb-3">${loc.desc}</p>
+                    </div>
+                `;
             });
 
             // 品牌夥伴 (滑動特效，避免反字)
@@ -420,10 +445,10 @@
                     <div class="space-y-32">
                         ${phase.items.map((m, idx) => `
                             <div class="flex flex-col md:flex-row items-center gap-16 relative z-10 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} group">
-                                <div class="flex-1 w-full bg-white p-10 border-4 border-slate-50 rounded-[3rem] shadow-xl text-left hover:border-green-200 transition-all cursor-pointer" onclick="openModal('${m.year}')">
+                                <div class="flex-1 w-full bg-white p-10 border-4 border-slate-50 rounded-[3rem] shadow-xl text-left hover:border-green-200 transition-all">
                                     <div class="text-green-700 font-black text-6xl mb-4 tracking-tighter">${m.year}</div>
                                     <h4 class="text-3xl font-black mb-4 uppercase">${m.title}</h4>
-                                    <p class="text-slate-400 font-bold text-xl italic line-clamp-2">點擊查看詳情 <i data-lucide="chevron-right" class="inline w-6 h-6"></i></p>
+                                    <p class="text-slate-400 font-bold text-xl italic">${m.content}</p>
                                 </div>
                                 <div class="relative z-10 w-20 h-20 bg-green-700 border-[8px] border-white rounded-full flex items-center justify-center shadow-2xl shrink-0"><i data-lucide="map-pin" class="text-white w-8 h-8"></i></div>
                                 <div class="flex-1 hidden md:block"></div>
@@ -461,7 +486,7 @@
 
             // 檢查清單 (深綠底白字)
             const ITEMS = [
-                { t: '護照正本', sub: '有效期限 6 個月以上' }, { t: '簽證正本', sub: '由公司辦理之工作簽證' },
+                { t: '護照正本', sub: '有效期限 6 個月以上' }, { t: '簽證正本', sub: '由公司辦理的商務簽證' },
                 { t: '衣物準備', sub: '北越四季變化，需備禦寒外套' }, { t: '電子產品', sub: '筆電或平板 (視個人需求)' },
                 { t: '個人藥品', sub: '常備藥物 (感冒/腸胃/外傷)' }, { t: '少許現金', sub: '備用金 (台幣/美金皆可)' },
                 { t: '通訊網路', sub: '建議先買 1 天漫遊，抵達後公司提供 4GB/日 網卡' }
