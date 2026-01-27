@@ -150,12 +150,7 @@
             
             <div class="relative w-full aspect-[16/9] md:aspect-[2/1] bg-white rounded-[3rem] overflow-hidden border-4 border-slate-100 shadow-xl max-w-6xl mx-auto hidden md:block">
                 <svg class="map-lines" viewBox="0 0 1000 500">
-                    <line x1="850" y1="150" x2="750" y2="180" class="map-line" />
-                    <line x1="850" y1="150" x2="680" y2="250" class="map-line" />
-                    <line x1="680" y1="250" x2="650" y2="300" class="map-line" />
-                    <line x1="650" y1="300" x2="620" y2="350" class="map-line" />
-                    <line x1="680" y1="250" x2="200" y2="280" class="map-line" />
-                </svg>
+                    <line x1="850" y1="150" x2="750" y2="180" class="map-line" /> <line x1="850" y1="150" x2="680" y2="250" class="map-line" /> <line x1="680" y1="250" x2="650" y2="300" class="map-line" /> <line x1="650" y1="300" x2="620" y2="350" class="map-line" /> <line x1="680" y1="250" x2="200" y2="280" class="map-line" /> </svg>
 
                 <div id="map-markers-container" class="absolute inset-0 z-10"></div>
             </div>
@@ -165,7 +160,7 @@
         </section>
 
         <section id="milestones" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
-            <h2 class="text-6xl font-black text-center text-slate-900 uppercase">發展足跡</h2>
+            <h2 class="text-6xl font-black text-center text-slate-900 uppercase">三十年足跡</h2>
             <div class="relative max-w-5xl mx-auto py-10">
                 <div class="timeline-line"></div>
                 <div class="space-y-32 relative" id="milestones-list"></div>
@@ -238,14 +233,14 @@
     </div>
 
     <script>
-        // --- 1. 地圖資料 (戰略佈局 - 無代碼) ---
+        // --- 1. 地圖資料 (戰略佈局) ---
         const MAP_LOCATIONS = [
-            { top: '30%', left: '85%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業' },
-            { top: '36%', left: '75%', year: '1997', title: '中國研發', desc: '東莞 | 研發中心' },
-            { top: '50%', left: '68%', year: '1996', title: '海防基地群', desc: 'GL1/2/3, 研發, 榮保' },
-            { top: '60%', left: '65%', year: '2020', title: '宜安鞋面廠', desc: '垂直整合 | 南壇縣' },
-            { top: '70%', left: '62%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛' },
-            { top: '56%', left: '20%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡' }
+            { top: '30%', left: '85%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業', code: '營運核心' },
+            { top: '36%', left: '75%', year: '1997', title: '中國研發', desc: '東莞 | 技術中心', code: '523380' },
+            { top: '50%', left: '68%', year: '1996', title: '海防基地群', desc: 'GL1/2/3, 研發, 榮保', code: 'QPV9+Q3' },
+            { top: '60%', left: '65%', year: '2020', title: '義安鞋面廠', desc: '垂直整合 | 南壇縣', code: 'PF8W+39' },
+            { top: '70%', left: '62%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛', code: '3325+CQ5' },
+            { top: '56%', left: '20%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡', code: '27M7+XJ' }
         ];
 
         // --- 2. 品牌資料 ---
@@ -264,27 +259,28 @@
 
         const MILESTONES = [
             { phase: "奠基與起步 (1994-1997)", items: [
-                { year: "1994", title: "公司起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
-                { year: "1996", title: "前進越南", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
+                { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
+                { year: "1996", title: "前進海防", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
                 { year: "1997", title: "跨足陸越", content: "成立中國東莞聯運鞋業及越南海防 GL1 工廠。" }
             ]},
             { phase: "深耕與擴張 (2004-2009)", items: [
-                { year: "2004", title: "產能擴增", content: "成立 越南 GL 2 工廠。" },
-                { year: "2007", title: "跨足柬埔寨", content: "成立 柬埔寨 SKY NICE I 工廠。" },
-                { year: "2008", title: "擴大投產", content: "成立 越南 GL 3 工廠。" },
-                { year: "2009", title: "孟加拉佈局", content: "孟加拉成立 BLUE OCEAN FOOTWEAR。" }
+                { year: "2004", title: "產能擴增", content: "成立海防 GL 2 工廠。" },
+                { year: "2007", title: "跨足柬埔寨", content: "成立金邊 SKY NICE I 工廠。" },
+                { year: "2008", title: "海防 3 廠", content: "成立海防 GL 3 工廠。" },
+                { year: "2009", title: "南亞佈局", content: "孟加拉成立 BLUE OCEAN FOOTWEAR。" }
             ]},
             { phase: "現代化與重塑 (2019-2024)", items: [
                 { year: "2019", title: "大規模擴廠", content: "GL 3 廠現代化擴建。" },
-                { year: "2020", title: "垂直整合", content: "越南義安省成立宜安鞋面廠。" },
-                { year: "2022", title: "重返柬埔寨", content: "磅湛省成立 SKY NICE II 廠。" },
-                { year: "2024", title: "柬埔寨廠更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
+                { year: "2020", title: "垂直整合", content: "越南義安省成立鞋面廠。" },
+                { year: "2022", title: "重返柬埔寨", content: "磅湛省成立 SKY NICE II。" },
+                { year: "2024", title: "品牌更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
             ]}
         ];
 
+        // 培訓課程 (修正名稱: 面版/底板)
         const TRAINING = {
-            p1: [{d:"面版",t:1,info:"認識鞋面結構"},{d:"底版",t:1,info:"認識底部結構"},{d:"倉庫",t:5,info:"認識原材料特性"},{d:"打料組",t:2,info:"裁片的認識"},{d:"底部",t:2,info:"認識底部組合流程"},{d:"面部",t:4,info:"認識鞋面工藝"},{d:"成型",t:2,info:"鞋面與大底的組合成品"},{d:"其他部門",t:9,info:"生管 開發業務 報價 CSR"}],
-            p2: [{d:"半成品",t:6,info:"各項鞋子部件半成品"},{d:"大貨倉庫",t:2,info:"物流倉儲"},{d:"裁斷",t:4,info:"合理運用材料"},{d:"物料控制",t:3,info:"精準控制材料用量"},{d:"鞋面部",t:4,info:"流水協作"},{d:"生產管理",t:3,info:"實踐排程"},{d:"大貨成型",t:4,info:"生產線的最後一關"},{d:"樣品室",t:6,info:"認識量產紙板結構及流程"},{d:"間接部門",t:10,info:"品管採購業務"}]
+            p1: [{d:"面版",t:1,info:"鑽研鞋面結構與版型"},{d:"底板",t:1,info:"掌握大底開發與開模"},{d:"資材部",t:5,info:"物料倉儲與生產備料"},{d:"裁斷部",t:2,info:"精準物料裁切與加工"},{d:"組底",t:2,info:"底部組件結合與加工"},{d:"針車部",t:4,info:"鞋面縫製與針車工藝"},{d:"成型部",t:2,info:"鞋面大底結合成品"},{d:"營運部",t:9,info:"統籌生管開發與CSR"}],
+            p2: [{d:"半成品",t:6,info:"半成品流向管控"},{d:"成品倉",t:2,info:"成品倉儲與物流"},{d:"自動裁斷",t:4,info:"自動化精準裁切"},{d:"物控部",t:3,info:"物料需求精準調度"},{d:"量產針車",t:4,info:"大規模流水線協作"},{d:"生管部",t:3,info:"生產排程實踐追蹤"},{d:"量產成型",t:4,info:"量產組裝品質穩定"},{d:"技術轉移",t:6,info:"開發至量產技術轉移"},{d:"行政管理",t:10,info:"品管採購業務統籌"}]
         };
 
         const ESG_CARDS = [
@@ -395,6 +391,18 @@
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
         }
 
+        function openModal(yr) {
+            let item;
+            MILESTONES.forEach(p => { const found = p.items.find(x => x.year === yr); if (found) item = found; });
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-year').innerText = item.year;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-detail').innerText = item.content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
         // --- 初始化 (強制保險) ---
         window.onload = () => {
             renderQuiz();
@@ -403,28 +411,16 @@
             const mapContainer = document.getElementById('map-markers-container');
             const mobileMapList = document.getElementById('mobile-map-list');
             MAP_LOCATIONS.forEach(loc => {
-                // 電腦版: 戰略地圖點
+                // 電腦版
                 const dot = document.createElement('div');
                 dot.className = 'map-node';
                 dot.style.top = loc.top;
                 dot.style.left = loc.left;
-                dot.innerHTML = `
-                    <div class="map-dot"></div>
-                    <div class="map-label">
-                        <h4>${loc.year} ${loc.title}</h4>
-                        <span>${loc.desc}</span>
-                    </div>
-                `;
+                dot.innerHTML = `<div class="map-dot"></div><div class="map-label"><h4>${loc.year} ${loc.title}</h4><span>${loc.desc}</span></div>`;
                 mapContainer.appendChild(dot);
 
-                // 手機版: 列表
-                mobileMapList.innerHTML += `
-                    <div class="bg-white p-6 rounded-3xl shadow-md border-2 border-slate-100">
-                        <div class="text-green-700 font-black text-2xl mb-2">${loc.year}</div>
-                        <h4 class="text-lg font-black text-slate-900 mb-2">${loc.title}</h4>
-                        <p class="text-slate-500 font-bold text-sm mb-3">${loc.desc}</p>
-                    </div>
-                `;
+                // 手機版
+                mobileMapList.innerHTML += `<div class="bg-white p-6 rounded-3xl shadow-md border-2 border-slate-100"><div class="text-green-700 font-black text-2xl mb-2">${loc.year}</div><h4 class="text-lg font-black text-slate-900 mb-2">${loc.title}</h4><p class="text-slate-500 font-bold text-sm mb-3">${loc.desc}</p></div>`;
             });
 
             // 品牌夥伴 (滑動特效，避免反字)
@@ -445,10 +441,10 @@
                     <div class="space-y-32">
                         ${phase.items.map((m, idx) => `
                             <div class="flex flex-col md:flex-row items-center gap-16 relative z-10 ${idx % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} group">
-                                <div class="flex-1 w-full bg-white p-10 border-4 border-slate-50 rounded-[3rem] shadow-xl text-left hover:border-green-200 transition-all">
+                                <div class="flex-1 w-full bg-white p-10 border-4 border-slate-50 rounded-[3rem] shadow-xl text-left hover:border-green-200 transition-all cursor-pointer" onclick="openModal('${m.year}')">
                                     <div class="text-green-700 font-black text-6xl mb-4 tracking-tighter">${m.year}</div>
                                     <h4 class="text-3xl font-black mb-4 uppercase">${m.title}</h4>
-                                    <p class="text-slate-400 font-bold text-xl italic">${m.content}</p>
+                                    <p class="text-slate-400 font-bold text-xl italic line-clamp-2">點擊查看詳情 <i data-lucide="chevron-right" class="inline w-6 h-6"></i></p>
                                 </div>
                                 <div class="relative z-10 w-20 h-20 bg-green-700 border-[8px] border-white rounded-full flex items-center justify-center shadow-2xl shrink-0"><i data-lucide="map-pin" class="text-white w-8 h-8"></i></div>
                                 <div class="flex-1 hidden md:block"></div>
@@ -486,7 +482,7 @@
 
             // 檢查清單 (深綠底白字)
             const ITEMS = [
-                { t: '護照正本', sub: '有效期限 6 個月以上' }, { t: '簽證正本', sub: '由公司辦理的商務簽證' },
+                { t: '護照正本', sub: '有效期限 6 個月以上' }, { t: '簽證正本', sub: '由公司辦理之商務簽證' },
                 { t: '衣物準備', sub: '北越四季變化，需備禦寒外套' }, { t: '電子產品', sub: '筆電或平板 (視個人需求)' },
                 { t: '個人藥品', sub: '常備藥物 (感冒/腸胃/外傷)' }, { t: '少許現金', sub: '備用金 (台幣/美金皆可)' },
                 { t: '通訊網路', sub: '建議先買 1 天漫遊，抵達後公司提供 4GB/日 網卡' }
