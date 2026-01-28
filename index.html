@@ -10,51 +10,34 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
         body { font-family: 'Inter', 'Noto Sans TC', sans-serif; scroll-behavior: smooth; background-color: #f8fafc; color: #0f172a; }
         
-        /* 載入動畫 */
+        /* Loading */
         #loading-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.5s ease; }
         
-        /* 隱藏捲軸 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .perspective-1000 { perspective: 1000px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
         
-        /* 卡片特效 */
+        /* Card Hover */
         .card-hover-container { position: relative; overflow: hidden; }
         .card-overlay { 
-            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.98); 
+            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.96); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             text-align: center; padding: 2rem; 
             transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         .group:hover .card-overlay { transform: translateY(0); }
 
-        /* 檢查清單選中樣式 (強制變色) */
-        .checked-item { background-color: #15803d !important; border-color: #15803d !important; }
-        .checked-item span, .checked-item p, .checked-item h4 { color: white !important; }
+        /* Checklist Selected */
+        .checked-item { background-color: #15803d !important; border-color: #15803d !important; color: white !important; }
         .checked-item i { opacity: 1 !important; color: white !important; }
+        .checked-item span { color: white !important; }
+        .checked-item p { color: #bbf7d0 !important; }
 
-        /* 時間軸設計 */
-        .timeline-line {
-            position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #e2e8f0; transform: translateX(-50%); z-index: 0;
-        }
-        
-        /* 地圖標記點 */
-        .map-pin { position: absolute; transform: translate(-50%, -50%); cursor: pointer; z-index: 20; display: flex; flex-direction: column; align-items: center; }
-        .pin-dot { width: 16px; height: 16px; background: #dc2626; border: 3px solid #fff; border-radius: 50%; box-shadow: 0 4px 6px rgba(0,0,0,0.3); position: relative; z-index: 10; transition: transform 0.3s; }
-        .map-pin:hover .pin-dot { transform: scale(1.5); background: #16a34a; }
-        .pin-pulse { position: absolute; width: 40px; height: 40px; background: rgba(220, 38, 38, 0.3); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: pulse 2s infinite; pointer-events: none; }
-        @keyframes pulse { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(2.5); opacity: 0; } }
-        
-        /* 地圖 Tooltip */
-        .map-tooltip {
-            position: absolute; bottom: 25px; left: 50%; transform: translateX(-50%) translateY(10px);
-            background: white; padding: 1.2rem; border-radius: 1rem; width: 260px; text-align: left;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2); opacity: 0; pointer-events: none;
-            transition: all 0.3s ease; border-left: 6px solid #15803d; z-index: 100; visibility: hidden;
-        }
-        .map-pin:hover .map-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); visibility: visible; }
+        /* Timeline */
+        .timeline-line { position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #e2e8f0; transform: translateX(-50%); z-index: 0; }
+        .footprint-icon { position: absolute; left: 50%; transform: translateX(-50%); width: 40px; height: 40px; background: #fff; border: 4px solid #15803d; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 10; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
     </style>
 </head>
 <body class="text-slate-900">
@@ -70,12 +53,12 @@
             <span class="font-black text-xl text-slate-800 hidden md:block">新人互動網頁</span>
         </div>
         <div class="flex gap-2 overflow-x-auto no-scrollbar py-2">
-            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">人格特質</button>
-            <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">品牌夥伴</button>
-            <button onclick="scrollToId('map-section')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">全球佈局</button>
-            <button onclick="scrollToId('history')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">公司發展史</button>
-            <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">培訓計畫</button>
-            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">出發清單</button>
+            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">人格特質</button>
+            <button onclick="scrollToId('journey')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">三月旅程</button>
+            <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">品牌夥伴</button>
+            <button onclick="scrollToId('history')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">公司發展史</button>
+            <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">培訓計畫</button>
+            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 whitespace-nowrap transition-colors">出發清單</button>
         </div>
     </nav>
 
@@ -101,27 +84,37 @@
                 </div>
         </section>
 
+        <section id="journey" class="max-w-6xl mx-auto px-6 py-32">
+            <h2 class="text-5xl font-black text-center mb-16 text-slate-900">新人前三個月旅程</h2>
+            <div class="bg-slate-900 rounded-[4rem] p-10 md:p-20 text-white relative overflow-hidden shadow-2xl">
+                <div class="relative z-10">
+                    <div class="flex justify-between items-center mb-16 relative">
+                        <div class="absolute top-1/2 left-0 w-full h-1 bg-white/20 -translate-y-1/2"></div>
+                        <div id="journey-progress" class="absolute top-1/2 left-0 h-1 bg-green-500 -translate-y-1/2 transition-all duration-700" style="width: 0%"></div>
+                        <div class="relative z-20 flex flex-col items-center gap-4 cursor-pointer group" onclick="updateJourney(0)">
+                            <div class="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-2xl font-black border-4 border-slate-900 shadow-xl group-hover:scale-110 transition-transform">1</div>
+                            <span class="font-black text-sm uppercase">Month 1</span>
+                        </div>
+                        <div class="relative z-20 flex flex-col items-center gap-4 cursor-pointer group" onclick="updateJourney(50)">
+                            <div id="node-2" class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center text-2xl font-black border-4 border-slate-900 group-hover:scale-110 transition-transform">2</div>
+                            <span class="font-black text-sm uppercase">Month 2-3</span>
+                        </div>
+                        <div class="relative z-20 flex flex-col items-center gap-4 cursor-pointer group" onclick="updateJourney(100)">
+                            <div id="node-3" class="w-16 h-16 rounded-full bg-slate-700 flex items-center justify-center text-2xl font-black border-4 border-slate-900 group-hover:scale-110 transition-transform">3</div>
+                            <span class="font-black text-sm uppercase">結訓</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/5 backdrop-blur-md rounded-[3rem] p-10 border border-white/10 text-center min-h-[250px] flex flex-col justify-center transition-all" id="journey-detail">
+                        <h3 class="text-4xl font-black text-green-400 mb-4">研發中心 (R&D Center)</h3>
+                        <p class="text-2xl font-bold leading-relaxed italic">核心任務：「親手做出一雙鞋」<br/><span class="text-slate-400 text-lg mt-4 block font-black">了解材料、結構與版型設計。</span></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="partners" class="max-w-7xl mx-auto px-6 py-32 space-y-24">
             <h2 class="text-6xl font-black text-center text-slate-900 uppercase">全球品牌夥伴</h2>
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10" id="partners-grid"></div>
-        </section>
-
-        <section id="map-section" class="max-w-7xl mx-auto px-6 py-32 space-y-16">
-            <div class="text-center space-y-4">
-                <h2 class="text-6xl font-black uppercase text-slate-900">全球佈局</h2>
-                <p class="text-slate-500 text-2xl font-bold italic">跨越國界，深耕亞洲</p>
-            </div>
-            
-            <div class="relative w-full aspect-[16/9] md:aspect-[2.2/1] bg-blue-50/50 rounded-[3rem] overflow-hidden border-4 border-white shadow-xl max-w-6xl mx-auto">
-                <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full" style="pointer-events: none;">
-                    <rect width="1000" height="500" fill="#f0f9ff" />
-                    <path d="M720,200 L700,220 L650,200 L620,250 L600,280 L550,250 L520,300 L500,280 L450,300 L400,280 L350,300 L300,280 L250,300 L200,280 L150,300 L100,280 L50,300 L0,250 V0 H1000 V250 L950,200 L900,220 L850,200 L800,220 L750,200 Z" fill="#cbd5e1" opacity="0.5" />
-                    <path d="M550,150 Q600,250 650,350 L700,300 L750,200 Q700,150 650,120 Z" fill="#cbd5e1" opacity="0.5" />
-                </svg>
-                
-                <div id="map-markers-container" class="absolute inset-0 z-10"></div>
-            </div>
-            <div class="text-center text-slate-400 font-bold italic">提示：將滑鼠移至紅色據點查看詳細資訊</div>
         </section>
 
         <section id="history" class="max-w-5xl mx-auto px-6 py-32">
@@ -197,17 +190,7 @@
     </div>
 
     <script>
-        // --- 1. Map Data (Positioned for "World Map" layout - Asia Focus) ---
-        const MAP_LOCATIONS = [
-            { top: '35%', left: '80%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業', code: '營運核心' },
-            { top: '38%', left: '76%', year: '1997', title: '中國研發', desc: '東莞 | 技術中心', code: '523380' },
-            { top: '50%', left: '73%', year: '1996', title: '海防基地', desc: 'GL1/2/3, 研發, 榮保', code: 'QPV9+Q3' },
-            { top: '52%', left: '71%', year: '2020', title: '義安鞋面廠', desc: '垂直整合 | 南壇縣', code: 'PF8W+39' },
-            { top: '58%', left: '69%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛', code: '3325+CQ5' },
-            { top: '48%', left: '55%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡', code: '27M7+XJ' }
-        ];
-
-        // --- 2. 歷史資料 ---
+        // --- History ---
         const HISTORY = [
             { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
             { year: "1996", title: "前進海防", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
@@ -222,10 +205,31 @@
             { year: "2024", title: "品牌更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
         ];
 
-        // --- 3. 培訓資料 (簡化部門) ---
+        // --- Training (Professional Terms & Correct Order) ---
+        // P1: 面版(1), 底版(1), 倉庫(5), 裁斷(2), 組底(2), 針車(4), 成型(2), 營運(9)
+        // P2: 半成品(6), 倉庫(2), 裁斷(4), 物控(3), 針車(4), 生管(3), 成型(4), 樣品(6), 專業管理(10)
         const TRAINING = {
-            p1: [{d:"面版",t:1,info:"鑽研鞋面結構與版型"},{d:"底版",t:1,info:"掌握大底開發與開模"},{d:"資材",t:5,info:"物料倉儲與生產備料"},{d:"裁斷",t:2,info:"精準物料裁切與加工"},{d:"組底",t:2,info:"底部組件結合與加工"},{d:"針車",t:4,info:"鞋面縫製與針車工藝"},{d:"成型",t:2,info:"鞋面大底結合成品"},{d:"營運",t:9,info:"統籌生管開發與CSR"}],
-            p2: [{d:"中倉",t:6,info:"半成品流向管控"},{d:"成品倉",t:2,info:"成品倉儲與物流"},{d:"裁斷",t:4,info:"自動化精準裁切"},{d:"物控",t:3,info:"物料需求精準調度"},{d:"針車",t:4,info:"大規模流水線協作"},{d:"生管",t:3,info:"生產排程實踐追蹤"},{d:"成型",t:4,info:"量產組裝品質穩定"},{d:"技轉",t:6,info:"開發至量產技術轉移"},{d:"品管",t:10,info:"品質檢測與出貨標準"}]
+            p1: [
+                {d:"面版", t:1, info:"鞋面結構與版型設計"},
+                {d:"底版", t:1, info:"大底開發邏輯與開模"},
+                {d:"資材倉庫", t:5, info:"物料入庫與生產準備"},
+                {d:"裁斷", t:2, info:"物料切割與加工製程"},
+                {d:"組底", t:2, info:"底部組件結合流程"},
+                {d:"針車", t:4, info:"鞋面縫製加工技術"},
+                {d:"成型", t:2, info:"結合成品製程見習"},
+                {d:"營運支援", t:9, info:"生管/開發/CSR視野"}
+            ],
+            p2: [
+                {d:"半成品倉", t:6, info:"中倉管理流向管控"},
+                {d:"成品倉", t:2, info:"大貨倉儲與物流管理"},
+                {d:"裁斷", t:4, info:"自動化精準裁斷作業"},
+                {d:"物控", t:3, info:"物料需求精準調度"},
+                {d:"針車", t:4, info:"大規模流水線協作"},
+                {d:"生管", t:3, info:"生產排程實踐追蹤"},
+                {d:"成型", t:4, info:"量產品質穩定管控"},
+                {d:"樣品室", t:6, info:"開發至量產技術轉移"},
+                {d:"專業管理", t:10, info:"品管/採購/業務統籌"}
+            ]
         };
 
         const PARTNERS = [
@@ -286,7 +290,7 @@
             if (currentDiscIdx < 25) {
                 const q = DISC_QUESTIONS[currentDiscIdx];
                 container.innerHTML = `
-                    <div class="space-y-12 max-w-4xl mx-auto text-center">
+                    <div class="space-y-12 max-w-4xl mx-auto text-center animate-[fadeIn_0.5s]">
                         <div class="flex justify-between items-center text-sm font-black text-slate-400 uppercase tracking-widest">
                             <span>Question ${currentDiscIdx + 1} / 25</span>
                             <div class="w-1/2 h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentDiscIdx+1)/25)*100}%"></div></div>
@@ -334,6 +338,15 @@
             `;
         }
 
+        function updateJourney(pct) {
+            document.getElementById('journey-progress').style.width = pct + '%';
+            const detail = document.getElementById('journey-detail');
+            const item = JOURNEY_MONTHS[pct === 0 ? 0 : pct === 50 ? 1 : 2];
+            document.getElementById('node-2').className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-900 ${pct >= 50 ? 'bg-green-500' : 'bg-slate-700'}`;
+            document.getElementById('node-3').className = `w-16 h-16 rounded-full flex items-center justify-center text-2xl font-black border-4 border-slate-900 ${pct >= 100 ? 'bg-green-500' : 'bg-slate-700'}`;
+            detail.innerHTML = `<h3 class="text-4xl font-black text-green-400 mb-4">${item.title}</h3><p class="text-2xl font-bold leading-relaxed italic">${item.desc}<br/><span class="text-slate-400 text-lg mt-4 block font-black">${item.detail}</span></p>`;
+        }
+
         function scrollToId(id) {
             const el = document.getElementById(id);
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
@@ -355,26 +368,6 @@
         window.onload = () => {
             renderQuiz();
 
-            // Map Pins
-            const mapContainer = document.getElementById('map-markers-container');
-            MAP_LOCATIONS.forEach(loc => {
-                const pin = document.createElement('div');
-                pin.className = 'map-pin';
-                pin.style.top = loc.top;
-                pin.style.left = loc.left;
-                pin.innerHTML = `
-                    <div class="pin-dot"></div>
-                    <div class="pin-pulse"></div>
-                    <div class="map-tooltip">
-                        <div class="text-green-700 font-black text-xl mb-1">${loc.year}</div>
-                        <h4 class="text-lg font-black text-slate-900 mb-2">${loc.title}</h4>
-                        <p class="text-sm text-slate-500 font-bold mb-2">${loc.desc}</p>
-                        <p class="text-xs text-slate-400 bg-slate-100 p-2 rounded flex items-center gap-2 font-mono"><i data-lucide="map-pin" class="w-3 h-3"></i> ${loc.code}</p>
-                    </div>
-                `;
-                mapContainer.appendChild(pin);
-            });
-
             // Partners
             document.getElementById('partners-grid').innerHTML = PARTNERS.map(b => `
                 <div class="group h-80 cursor-pointer card-hover-container rounded-[3rem] shadow-xl overflow-hidden bg-white border-2 border-slate-100">
@@ -386,7 +379,7 @@
                 </div>
             `).join('');
 
-            // History (Footprints Rotated)
+            // History (Footprints Flipped)
             document.getElementById('history-container').innerHTML += HISTORY.map((h, i) => `
                 <div class="flex items-center justify-between w-full mb-20 relative z-10 group">
                     <div class="w-5/12 text-right pr-12 ${i%2===0 ? '' : 'order-last text-left pl-12 pr-0'}">
@@ -445,16 +438,8 @@
             `).join('');
 
             lucide.createIcons();
-            
-            // Failsafe
-            setTimeout(() => { 
-                const overlay = document.getElementById('loading-overlay');
-                if(overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.style.display = 'none', 500); }
-            }, 1000);
+            setTimeout(() => { document.getElementById('loading-overlay').style.opacity = '0'; setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 500); }, 500);
         };
-        
-        // Double Failsafe
-        setTimeout(() => { document.getElementById('loading-overlay').style.display = 'none'; }, 3000);
     </script>
 </body>
 </html>
