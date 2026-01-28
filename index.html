@@ -15,30 +15,29 @@
         
         /* 隱藏捲軸 */
         .no-scrollbar::-webkit-scrollbar { display: none; }
+        .perspective-1000 { perspective: 1000px; }
+        .preserve-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
         
         /* 卡片特效 */
         .card-hover-container { position: relative; overflow: hidden; }
         .card-overlay { 
-            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.96); 
+            position: absolute; inset: 0; background: rgba(21, 128, 61, 0.98); 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             text-align: center; padding: 2rem; 
             transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         .group:hover .card-overlay { transform: translateY(0); }
 
-        /* 檢查清單選中樣式 */
-        .checked-item { background-color: #15803d !important; border-color: #15803d !important; color: white !important; }
+        /* 檢查清單選中樣式 (強制變色) */
+        .checked-item { background-color: #15803d !important; border-color: #15803d !important; }
+        .checked-item span, .checked-item p, .checked-item h4 { color: white !important; }
         .checked-item i { opacity: 1 !important; color: white !important; }
-        .checked-item span { color: white !important; }
-        .checked-item p { color: #bbf7d0 !important; }
 
         /* 時間軸設計 */
         .timeline-line {
             position: absolute; left: 50%; top: 0; bottom: 0; width: 4px; background: #e2e8f0; transform: translateX(-50%); z-index: 0;
-        }
-        .timeline-progress {
-            position: absolute; left: 50%; top: 0; width: 4px; background: #15803d; transform: translateX(-50%); z-index: 0; height: 100%;
-            background: linear-gradient(to bottom, #15803d 0%, #15803d 80%, #e2e8f0 100%);
         }
         
         /* 地圖標記點 */
@@ -71,12 +70,12 @@
             <span class="font-black text-xl text-slate-800 hidden md:block">新人互動網頁</span>
         </div>
         <div class="flex gap-2 overflow-x-auto no-scrollbar py-2">
-            <button onclick="scrollToId('disc')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">人格特質</button>
-            <button onclick="scrollToId('partners')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">品牌夥伴</button>
-            <button onclick="scrollToId('map-section')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">全球佈局</button>
-            <button onclick="scrollToId('history')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">發展史</button>
-            <button onclick="scrollToId('training')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">培訓計畫</button>
-            <button onclick="scrollToId('checklist')" class="nav-btn text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">出發清單</button>
+            <button onclick="scrollToId('disc')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">人格特質</button>
+            <button onclick="scrollToId('partners')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">品牌夥伴</button>
+            <button onclick="scrollToId('map-section')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">全球佈局</button>
+            <button onclick="scrollToId('history')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">公司發展史</button>
+            <button onclick="scrollToId('training')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">培訓計畫</button>
+            <button onclick="scrollToId('checklist')" class="text-xs font-bold px-4 py-2 rounded-xl text-slate-500 hover:text-green-700 hover:bg-green-50 transition-all whitespace-nowrap">出發清單</button>
         </div>
     </nav>
 
@@ -113,50 +112,11 @@
                 <p class="text-slate-500 text-2xl font-bold italic">跨越國界，深耕亞洲</p>
             </div>
             
-            <div class="relative w-full aspect-[16/9] md:aspect-[2.2/1] bg-white rounded-[3rem] overflow-hidden border-4 border-slate-100 shadow-xl max-w-6xl mx-auto">
+            <div class="relative w-full aspect-[16/9] md:aspect-[2.2/1] bg-blue-50/50 rounded-[3rem] overflow-hidden border-4 border-white shadow-xl max-w-6xl mx-auto">
                 <svg viewBox="0 0 1000 500" class="absolute inset-0 w-full h-full" style="pointer-events: none;">
-                    <path d="M947.1,190.7c1.7-1.7,3.6-2.8,6-2.8c3.7,0,6.9,1.8,8.9,4.6c0.5,0.7,1.4,1.1,2.2,1.1c0.9,0,1.8-0.4,2.3-1.1l3.7-5.3
-                        c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4c0,0.9-0.3,1.8-0.8,2.5l-3.7,5.3c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4
-                        c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7c-1.2-1.2-1.9-2.8-1.9-4.6c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7
-                        c0.9-0.3,1.8-0.4,2.7-0.4c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7
-                        c-0.6,0.3-1.3,0.4-2,0.4c-2.4,0-4.4-2-4.4-4.4c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4
-                        c0,0.9-0.1,1.8-0.4,2.7l5.7,5.7c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7
-                        c-0.9,0.3-1.8,0.4-2.7,0.4c-5.2,0-9.4-4.2-9.4-9.4S941.9,190.7,947.1,190.7z M826.5,178c0.6-0.9,1.6-1.5,2.7-1.5
-                        c1.8,0,3.3,1.5,3.3,3.3c0,0.9-0.4,1.8-1,2.4l-1.7,1.7c-0.6,0.6-1.5,1-2.4,1c-1.8,0-3.3-1.5-3.3-3.3
-                        C824.2,180.1,825.1,178.8,826.5,178z M766.3,353.5c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4c0,0.9-0.3,1.8-0.8,2.5l-3.7,5.3
-                        c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7c-1.2-1.2-1.9-2.8-1.9-4.6
-                        c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7c0.9-0.3,1.8-0.4,2.7-0.4c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4
-                        c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7c-0.6,0.3-1.3,0.4-2,0.4c-2.4,0-4.4-2-4.4-4.4
-                        c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4c0,0.9-0.1,1.8-0.4,2.7l5.7,5.7
-                        c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7c-0.9,0.3-1.8,0.4-2.7,0.4
-                        c-5.2,0-9.4-4.2-9.4-9.4S761.1,353.5,766.3,353.5z M640.7,340.7c1.7-1.7,3.6-2.8,6-2.8c3.7,0,6.9,1.8,8.9,4.6
-                        c0.5,0.7,1.4,1.1,2.2,1.1c0.9,0,1.8-0.4,2.3-1.1l3.7-5.3c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4c0,0.9-0.3,1.8-0.8,2.5
-                        l-3.7,5.3c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7c-1.2-1.2-1.9-2.8-1.9-4.6
-                        c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7c0.9-0.3,1.8-0.4,2.7-0.4c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4
-                        c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7c-0.6,0.3-1.3,0.4-2,0.4c-2.4,0-4.4-2-4.4-4.4
-                        c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4c0,0.9-0.1,1.8-0.4,2.7l5.7,5.7
-                        c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7c-0.9,0.3-1.8,0.4-2.7,0.4
-                        c-5.2,0-9.4-4.2-9.4-9.4S635.6,340.7,640.7,340.7z M554.5,426.7c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4
-                        c0,0.9-0.3,1.8-0.8,2.5l-3.7,5.3c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7
-                        c-1.2-1.2-1.9-2.8-1.9-4.6c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7c0.9-0.3,1.8-0.4,2.7-0.4
-                        c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7c-0.6,0.3-1.3,0.4-2,0.4
-                        c-2.4,0-4.4-2-4.4-4.4c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4c0,0.9-0.1,1.8-0.4,2.7
-                        l5.7,5.7c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7c-0.9,0.3-1.8,0.4-2.7,0.4
-                        c-5.2,0-9.4-4.2-9.4-9.4S549.3,426.7,554.5,426.7z M426.3,293c1.7-1.7,3.6-2.8,6-2.8c3.7,0,6.9,1.8,8.9,4.6
-                        c0.5,0.7,1.4,1.1,2.2,1.1c0.9,0,1.8-0.4,2.3-1.1l3.7-5.3c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4c0,0.9-0.3,1.8-0.8,2.5
-                        l-3.7,5.3c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7c-1.2-1.2-1.9-2.8-1.9-4.6
-                        c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7c0.9-0.3,1.8-0.4,2.7-0.4c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4
-                        c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7c-0.6,0.3-1.3,0.4-2,0.4c-2.4,0-4.4-2-4.4-4.4
-                        c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4c0,0.9-0.1,1.8-0.4,2.7l5.7,5.7
-                        c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7c-0.9,0.3-1.8,0.4-2.7,0.4
-                        c-5.2,0-9.4-4.2-9.4-9.4S421.1,293,426.3,293z M233.6,168c0.8-1.1,2-1.8,3.4-1.8c2.4,0,4.4,2,4.4,4.4c0,0.9-0.3,1.8-0.8,2.5
-                        l-3.7,5.3c-1.7,2.4-4.4,3.9-7.4,3.9c-5.2,0-9.4-4.2-9.4-9.4c0-0.9,0.1-1.8,0.4-2.7l-5.7-5.7c-1.2-1.2-1.9-2.8-1.9-4.6
-                        c0-3.6,2.9-6.6,6.6-6.6c1.8,0,3.4,0.7,4.6,1.9l5.7,5.7c0.9-0.3,1.8-0.4,2.7-0.4c5.2,0,9.4,4.2,9.4,9.4s-4.2,9.4-9.4,9.4
-                        c-2.4,0-4.6-0.9-6.3-2.4l-4.6,4.6c-0.3,0.3-0.7,0.5-1.1,0.7c-0.6,0.3-1.3,0.4-2,0.4c-2.4,0-4.4-2-4.4-4.4
-                        c0-0.9,0.3-1.8,0.8-2.5l3.7-5.3c1.7-2.4,4.4-3.9,7.4-3.9c5.2,0,9.4,4.2,9.4,9.4c0,0.9-0.1,1.8-0.4,2.7l5.7,5.7
-                        c1.2,1.2,1.9,2.8,1.9,4.6c0,3.6-2.9,6.6-6.6,6.6c-1.8,0-3.4-0.7-4.6-1.9l-5.7-5.7c-0.9,0.3-1.8,0.4-2.7,0.4
-                        c-5.2,0-9.4-4.2-9.4-9.4S228.4,168,233.6,168z" 
-                        fill="none" stroke="#94a3b8" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
+                    <rect width="1000" height="500" fill="#f0f9ff" />
+                    <path d="M720,200 L700,220 L650,200 L620,250 L600,280 L550,250 L520,300 L500,280 L450,300 L400,280 L350,300 L300,280 L250,300 L200,280 L150,300 L100,280 L50,300 L0,250 V0 H1000 V250 L950,200 L900,220 L850,200 L800,220 L750,200 Z" fill="#cbd5e1" opacity="0.5" />
+                    <path d="M550,150 Q600,250 650,350 L700,300 L750,200 Q700,150 650,120 Z" fill="#cbd5e1" opacity="0.5" />
                 </svg>
                 
                 <div id="map-markers-container" class="absolute inset-0 z-10"></div>
@@ -168,7 +128,6 @@
             <h2 class="text-6xl font-black text-center text-slate-900 uppercase mb-24">公司發展史</h2>
             <div class="relative py-10" id="history-container">
                 <div class="timeline-line"></div>
-                <div class="timeline-progress"></div>
                 </div>
         </section>
 
@@ -222,18 +181,33 @@
         <p class="text-slate-300 text-xs font-bold uppercase tracking-[0.4em] italic">© 2024 GreenLand Footwear Group. All Rights Reserved.</p>
     </footer>
 
+    <div id="modal" class="fixed inset-0 z-[200] hidden flex items-center justify-center p-6 bg-slate-900/90 backdrop-blur-md">
+        <div class="bg-white rounded-[4rem] max-w-3xl w-full shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300">
+            <div class="relative h-96">
+                <img id="modal-img" src="" class="w-full h-full object-cover" />
+                <button onclick="closeModal()" class="absolute top-8 right-8 w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-slate-500 shadow-2xl border"><i data-lucide="x" class="w-8 h-8"></i></button>
+            </div>
+            <div class="p-16 space-y-10 font-black">
+                <div id="modal-year" class="inline-block px-8 py-3 bg-green-100 text-green-700 rounded-full text-2xl uppercase tracking-widest shadow-sm"></div>
+                <h3 id="modal-title" class="text-5xl text-slate-900 leading-tight uppercase font-black"></h3>
+                <p id="modal-detail" class="text-2xl text-slate-500 font-bold italic leading-relaxed"></p>
+                <button onclick="closeModal()" class="w-full py-8 bg-green-700 text-white rounded-[2.5rem] text-2xl shadow-xl hover:bg-green-800 active:scale-95 uppercase">關閉視窗</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // --- 1. Map Data ---
+        // --- 1. Map Data (Positioned for "World Map" layout - Asia Focus) ---
         const MAP_LOCATIONS = [
-            { top: '38%', left: '85%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業', code: '營運核心' },
-            { top: '42%', left: '78%', year: '1997', title: '中國研發', desc: '東莞 | 技術中心', code: '523380' },
-            { top: '58%', left: '74%', year: '1996', title: '海防基地', desc: 'GL1/2/3, 研發, 榮保', code: 'QPV9+Q3' },
-            { top: '62%', left: '72%', year: '2020', title: '義安鞋面廠', desc: '垂直整合 | 南壇縣', code: 'PF8W+39' },
-            { top: '68%', left: '70%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛', code: '3325+CQ5' },
-            { top: '55%', left: '60%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡', code: '27M7+XJ' }
+            { top: '35%', left: '80%', year: '1994', title: '台灣總部', desc: '台中 | 聯玖興業', code: '營運核心' },
+            { top: '38%', left: '76%', year: '1997', title: '中國研發', desc: '東莞 | 技術中心', code: '523380' },
+            { top: '50%', left: '73%', year: '1996', title: '海防基地', desc: 'GL1/2/3, 研發, 榮保', code: 'QPV9+Q3' },
+            { top: '52%', left: '71%', year: '2020', title: '義安鞋面廠', desc: '垂直整合 | 南壇縣', code: 'PF8W+39' },
+            { top: '58%', left: '69%', year: '2022', title: '柬埔寨基地', desc: 'Right Union | 磅湛', code: '3325+CQ5' },
+            { top: '48%', left: '55%', year: '2009', title: '孟加拉廠', desc: 'Blue Ocean | 達卡', code: '27M7+XJ' }
         ];
 
-        // --- 2. History Data ---
+        // --- 2. 歷史資料 ---
         const HISTORY = [
             { year: "1994", title: "品牌起源", content: "於台灣台中市成立「聯玖興業股份有限公司」，開啟事業版圖。" },
             { year: "1996", title: "前進海防", content: "成立 GREEN LAND INTERNATIONAL 與 GOLDEN TOP。" },
@@ -248,7 +222,7 @@
             { year: "2024", title: "品牌更名", content: "更名為 RIGHT UNION INTERNATIONAL。" }
         ];
 
-        // --- 3. Training Data (Professional Terms) ---
+        // --- 3. 培訓資料 (簡化部門) ---
         const TRAINING = {
             p1: [{d:"面版",t:1,info:"鑽研鞋面結構與版型"},{d:"底版",t:1,info:"掌握大底開發與開模"},{d:"資材",t:5,info:"物料倉儲與生產備料"},{d:"裁斷",t:2,info:"精準物料裁切與加工"},{d:"組底",t:2,info:"底部組件結合與加工"},{d:"針車",t:4,info:"鞋面縫製與針車工藝"},{d:"成型",t:2,info:"鞋面大底結合成品"},{d:"營運",t:9,info:"統籌生管開發與CSR"}],
             p2: [{d:"中倉",t:6,info:"半成品流向管控"},{d:"成品倉",t:2,info:"成品倉儲與物流"},{d:"裁斷",t:4,info:"自動化精準裁切"},{d:"物控",t:3,info:"物料需求精準調度"},{d:"針車",t:4,info:"大規模流水線協作"},{d:"生管",t:3,info:"生產排程實踐追蹤"},{d:"成型",t:4,info:"量產組裝品質穩定"},{d:"技轉",t:6,info:"開發至量產技術轉移"},{d:"品管",t:10,info:"品質檢測與出貨標準"}]
@@ -267,7 +241,18 @@
             { name: "rag & bone", desc: "紐約品牌，英式剪裁美式工裝。", img: "https://duk.tw/9OmiSH.jpg" }
         ];
 
-        // --- 4. Emoji Animals ---
+        const ESG_CARDS = [
+            { title: "環境保護 (Planet)", icon: "leaf", val: "25.46%", sub: "Solar Power", list: ["太陽能替代率 25.46%", "年減碳 925,820 kgCO2e", "取得 ISO 14064/14067 認證"] },
+            { title: "社會公益 (People)", icon: "heart", val: "95.7%", sub: "Her+ Project", list: ["女性生理知識理解度 95.7%", "自我檢查能力 100%", "190 人完成永續培訓"] },
+            { title: "企業治理 (Governance)", icon: "gavel", val: "FEM", sub: "Supply Chain", list: ["HIGG FEM 環境評估", "Better Work 跨國認證", "供應鏈透明化"] }
+        ];
+
+        const JOURNEY_MONTHS = [
+            { title: "研發中心 (R&D)", desc: "任務：「親手做出一雙鞋」", detail: "Month 1: 學習材料、結構原理，完成第一雙手工鞋。" },
+            { title: "大貨現場 (Production)", desc: "任務：「熟悉產線與管理」", detail: "Month 2-3: 深入產線，學習生管排程與品控邏輯。" },
+            { title: "結訓考核 (Graduation)", desc: "任務：「部門交接與報告」", detail: "完成交接，進行每週六口頭報告分享成長。" }
+        ];
+
         const ANIMAL_ICONS = {
             '老虎型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐅</div>`,
             '海豚型': `<div class="text-[8rem] filter drop-shadow-lg transform transition hover:scale-110">🐬</div>`,
@@ -301,7 +286,7 @@
             if (currentDiscIdx < 25) {
                 const q = DISC_QUESTIONS[currentDiscIdx];
                 container.innerHTML = `
-                    <div class="space-y-12 max-w-4xl mx-auto text-center animate-[fadeIn_0.5s]">
+                    <div class="space-y-12 max-w-4xl mx-auto text-center">
                         <div class="flex justify-between items-center text-sm font-black text-slate-400 uppercase tracking-widest">
                             <span>Question ${currentDiscIdx + 1} / 25</span>
                             <div class="w-1/2 h-3 bg-slate-100 rounded-full overflow-hidden shadow-inner"><div class="h-full bg-green-600 transition-all duration-500" style="width: ${((currentDiscIdx+1)/25)*100}%"></div></div>
@@ -354,11 +339,23 @@
             if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
         }
 
+        function openModal(yr) {
+            let item;
+            MILESTONES.forEach(p => { const found = p.items.find(x => x.year === yr); if (found) item = found; });
+            document.getElementById('modal-img').src = item.img;
+            document.getElementById('modal-year').innerText = item.year;
+            document.getElementById('modal-title').innerText = item.title;
+            document.getElementById('modal-detail').innerText = item.content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+
         // --- Init ---
         window.onload = () => {
             renderQuiz();
 
-            // Markers
+            // Map Pins
             const mapContainer = document.getElementById('map-markers-container');
             MAP_LOCATIONS.forEach(loc => {
                 const pin = document.createElement('div');
@@ -389,7 +386,7 @@
                 </div>
             `).join('');
 
-            // History (Footprints Flipped)
+            // History (Footprints Rotated)
             document.getElementById('history-container').innerHTML += HISTORY.map((h, i) => `
                 <div class="flex items-center justify-between w-full mb-20 relative z-10 group">
                     <div class="w-5/12 text-right pr-12 ${i%2===0 ? '' : 'order-last text-left pl-12 pr-0'}">
@@ -448,8 +445,16 @@
             `).join('');
 
             lucide.createIcons();
-            setTimeout(() => { document.getElementById('loading-overlay').style.opacity = '0'; setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 500); }, 500);
+            
+            // Failsafe
+            setTimeout(() => { 
+                const overlay = document.getElementById('loading-overlay');
+                if(overlay) { overlay.style.opacity = '0'; setTimeout(() => overlay.style.display = 'none', 500); }
+            }, 1000);
         };
+        
+        // Double Failsafe
+        setTimeout(() => { document.getElementById('loading-overlay').style.display = 'none'; }, 3000);
     </script>
 </body>
 </html>
